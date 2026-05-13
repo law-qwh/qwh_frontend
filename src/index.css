@@ -1,0 +1,273 @@
+@import url("https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap");
+/* Import fonts */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap");
+@import "tailwindcss";
+
+/* Custom Theme Configuration */
+@theme {
+  /* --color-lawyer-primary: #1e293b;
+  --color-lawyer-secondary: #334155;
+  --color-lawyer-accent: #c2410c;
+  --color-lawyer-gold: #9a3412;
+  --color-lawyer-dark: #0f172a;
+  --color-lawyer-light: #f8fafc; */
+
+  /* --color-lawyer-primary: #0f172a;
+  --color-lawyer-secondary: #1e293b;
+  --color-lawyer-accent: #d4af37;
+  --color-lawyer-gold: #b8942e;
+  --color-lawyer-dark: #020617;
+  --color-lawyer-light: #f8fafc; */
+
+  /* --color-lawyer-primary: #1f2937;
+  --color-lawyer-secondary: #374151;
+  --color-lawyer-accent: #dc2626;
+  --color-lawyer-gold: #b91c1c;
+  --color-lawyer-dark: #111827;
+  --color-lawyer-light: #f9fafb; */
+
+  /* --color-lawyer-primary: #0f172a;
+  --color-lawyer-secondary: #1e293b;
+  --color-lawyer-accent: #64748b;
+  --color-lawyer-gold: #475569;
+  --color-lawyer-dark: #020617;
+  --color-lawyer-light: #f8fafc; */
+
+  --color-lawyer-primary: #0f172a;
+  --color-lawyer-secondary: #1e293b;
+  --color-lawyer-accent: #854d0e;
+  --color-lawyer-gold: #713f12;
+  --color-lawyer-dark: #020617;
+  --color-lawyer-light: #f8fafc;
+
+  /* #b37734 */
+
+  --font-arabic: "Cairo", sans-serif;
+  --font-english: "Inter", sans-serif;
+}
+
+/* src/index.css */
+
+/* Ciro Font for Arabic */
+@font-face {
+  font-family: "Ciro";
+  src: url("/src/assets/fonts/ciro/Ciro-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Ciro";
+  src: url("/src/assets/fonts/ciro/Ciro-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Ciro";
+  src: url("/src/assets/fonts/ciro/Ciro-Light.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+}
+
+/* RTL Support */
+[dir="rtl"] {
+  text-align: right;
+}
+
+[dir="rtl"] .container-custom {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+[dir="rtl"] .space-x-3 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 1;
+  margin-right: calc(0.75rem * var(--tw-space-x-reverse));
+  margin-left: calc(0.75rem * calc(1 - var(--tw-space-x-reverse)));
+}
+
+/* Language-based font family */
+[lang="ar"] {
+  font-family: "Ciro", "Tahoma", "Arial", sans-serif;
+}
+
+[lang="en"] {
+  font-family:
+    "Inter",
+    system-ui,
+    -apple-system,
+    sans-serif;
+}
+
+/* Smooth transitions for language switching */
+* {
+  transition: font-family 0.3s ease;
+}
+/* Global Styles */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: var(--font-english);
+  }
+
+  body.arabic {
+    font-family: var(--font-arabic);
+    direction: rtl;
+  }
+
+  body.english {
+    direction: ltr;
+  }
+}
+
+@layer components {
+  .container-custom {
+    width: 100%;
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .container-custom {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .container-custom {
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
+  }
+
+  .section-title {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    position: relative;
+    display: inline-block;
+  }
+
+  .section-title::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50%;
+    height: 0.25rem;
+    background-color: var(--color-lawyer-accent);
+    margin-top: 0.5rem;
+  }
+
+  .arabic .section-title::after {
+    left: auto;
+    right: 0;
+  }
+
+  @media (min-width: 768px) {
+    .section-title {
+      font-size: 2.25rem;
+      line-height: 2.5rem;
+    }
+  }
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for Firefox */
+.hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+/* RTL Support for Dashboard Layout */
+[dir="rtl"] {
+  text-align: right;
+}
+
+[dir="rtl"] .lg\:pl-64 {
+  padding-left: 0;
+  padding-right: 16rem;
+}
+
+[dir="rtl"] .lg\:pr-64 {
+  padding-right: 0;
+  padding-left: 16rem;
+}
+
+[dir="rtl"] .lg\:pl-64 {
+  padding-left: 0;
+  padding-right: 16rem;
+}
+
+/* Ensure proper sidebar positioning in RTL */
+@media (min-width: 1024px) {
+  [dir="rtl"] header {
+    right: 16rem !important;
+    left: 0 !important;
+  }
+
+  [dir="rtl"] .fixed.right-0 {
+    right: auto;
+    left: 0;
+  }
+}
+
+@media (max-width: 1023px) {
+  [dir="rtl"] .-translate-x-full {
+    transform: translateX(100%);
+  }
+
+  [dir="rtl"] .translate-x-0 {
+    transform: translateX(0);
+  }
+
+  [dir="rtl"] aside {
+    right: 0;
+    left: auto;
+  }
+}
+
+[dir="rtl"] aside.fixed {
+  right: 0 !important;
+  left: auto !important;
+}
+
+/* Fix main content margin for RTL */
+[dir="rtl"] .ml-64 {
+  margin-left: 0 !important;
+  margin-right: 16rem !important;
+}
+
+[dir="rtl"] .mr-64 {
+  margin-right: 0 !important;
+  margin-left: 16rem !important;
+}
+
+/* Fix header position for RTL */
+[dir="rtl"] header.fixed {
+  left: 0 !important;
+}
+html[dir="rtl"] aside.bg-gradient-to-b {
+  right: 0 !important;
+  left: auto !important;
+}
+
+html[dir="rtl"] .ml-64 {
+  margin-left: 0 !important;
+  margin-right: 16rem !important;
+}
+
+html[dir="rtl"] header.bg-white {
+  left: 0 !important;
+}
