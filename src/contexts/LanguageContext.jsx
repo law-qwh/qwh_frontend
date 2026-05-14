@@ -20,10 +20,25 @@ export const LanguageProvider = ({ children }) => {
 
   const isRTL = language === "arabic";
 
+  // useEffect(() => {
+  //   localStorage.setItem("language", language);
+  //   document.documentElement.dir = isRTL ? "rtl" : "ltr";
+  //   document.documentElement.lang = language === "arabic" ? "ar" : "en";
+  // }, [language, isRTL]);
+
   useEffect(() => {
     localStorage.setItem("language", language);
     document.documentElement.dir = isRTL ? "rtl" : "ltr";
     document.documentElement.lang = language === "arabic" ? "ar" : "en";
+
+    // ✅ Add/remove class on body
+    if (language === "arabic") {
+      document.body.classList.add("arabic");
+      document.body.classList.remove("english");
+    } else {
+      document.body.classList.add("english");
+      document.body.classList.remove("arabic");
+    }
   }, [language, isRTL]);
 
   const toggleLanguage = () => {
