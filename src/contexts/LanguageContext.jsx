@@ -19,13 +19,6 @@ export const LanguageProvider = ({ children }) => {
   });
 
   const isRTL = language === "arabic";
-
-  // useEffect(() => {
-  //   localStorage.setItem("language", language);
-  //   document.documentElement.dir = isRTL ? "rtl" : "ltr";
-  //   document.documentElement.lang = language === "arabic" ? "ar" : "en";
-  // }, [language, isRTL]);
-
   useEffect(() => {
     localStorage.setItem("language", language);
     document.documentElement.dir = isRTL ? "rtl" : "ltr";
@@ -51,7 +44,7 @@ export const LanguageProvider = ({ children }) => {
     toggleLanguage,
     setLanguage,
   };
-
+  console.log(value);
   return (
     <LanguageContext.Provider value={value}>
       {children}
