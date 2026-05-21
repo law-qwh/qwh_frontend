@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { useEffect, useState } from "react";
 import { apiService } from "../services/api";
+import { getImageUrl } from "../utils/imageHelper";
 
 const Home = () => {
   const { language } = useLanguage();
@@ -246,10 +247,9 @@ const Home = () => {
           transition={{ duration: 1.5 }}
           className="absolute inset-0"
           style={{
-            backgroundImage:
-              heroData?.image_url || heroData?.image_path
-                ? `url(${heroData?.image_url || `https://qwh.com.sa/storage/${heroData.image_path}`})`
-                : "url('/src/assets/bg-image.jpeg')",
+            backgroundImage: heroData
+              ? `url(${getImageUrl(heroData.image_path, heroData.image_url)})`
+              : "url('/src/assets/bg-image.jpeg')",
             backgroundSize: "cover",
             backgroundPosition: "center",
             opacity: 0.15,
