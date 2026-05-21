@@ -8,32 +8,40 @@ PROJECT_PATH="/Users/mohammadshahzeb/QWH/qwh-frontend"
 
 echo "🚀 Starting frontend deployment..."
 
-# Navigate to project
-cd "$PROJECT_PATH"
+cd "$PROJECT_PATH" || { echo "❌ Project path not found!"; exit 1; }
 
-# Push to GitHub (optional)
+# Clean old files
+echo "🧹 Cleaning old build..."
+rm -rf dist
+rm -f dist.tar.gz
+
+# Git push (optional - comment out if not needed)
 echo "📤 Pushing to GitHub..."
-git add .
-git commit -m "Update frontend - $(date +'%Y-%m-%d %H:%M:%S')"
-git push origin main
+git add . 2>/dev/null
+git commit -m "Update frontend - $(date +'%Y-%m-%d %H:%M:%S')" 2>/dev/null
+git push origin main 2>/dev/null
 
-# Build the app
+# Build
 echo "🏗️ Building React app..."
 npm run build
 
-# Compress
-echo "📦 Creating archive..."
-tar -czf dist.tar.gz dist/
+# Verify
+if [ ! -d "dist" ]; then
+    echo "❌ Build failed!"
+    exit 1
+fi
 
-# Upload
-echo "📤 Uploading to server..."
+# Archive and upload
+echo "📦 Creating and uploading archive..."
+tar -czf dist.tar.gz dist/
 scp -i "$KEY_PATH" dist.tar.gz "$SERVER:/tmp/"
 
-# Deploy on server
+# Deploy
 echo "🚀 Deploying on server..."
 ssh -i "$KEY_PATH" "$SERVER" "sudo /usr/local/bin/deploy-frontend.sh"
 
-# Clean up local
-rm dist.tar.gz
+# Clean archive, keep dist for inspection
+rm -f dist.tar.gz
 
 echo "✅ Deployment complete! Visit: http://8.213.84.249"
+echo "📁 Build files preserved in ./dist for inspection"
