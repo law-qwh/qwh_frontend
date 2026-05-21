@@ -2,10 +2,13 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import StatsCard from "../components/StatsCard";
 import { apiService } from "../../services/api";
+import { useLanguage } from "../../contexts/LanguageContext";
 
 const DashboardHome = () => {
   const navigate = useNavigate();
+  const { language } = useLanguage();
   const [greeting, setGreeting] = useState("");
   const [currentTime, setCurrentTime] = useState("");
   const [dashboardData, setDashboardData] = useState(null);
@@ -15,23 +18,28 @@ const DashboardHome = () => {
   // Set greeting based on time of day
   useEffect(() => {
     const hour = new Date().getHours();
-    if (hour < 12) setGreeting("Good Morning");
-    else if (hour < 18) setGreeting("Good Afternoon");
-    else setGreeting("Good Evening");
+    if (hour < 12)
+      setGreeting(language === "arabic" ? "صباح الخير" : "Good Morning");
+    else if (hour < 18)
+      setGreeting(language === "arabic" ? "مساء الخير" : "Good Afternoon");
+    else setGreeting(language === "arabic" ? "مساء الخير" : "Good Evening");
 
     const updateTime = () => {
       setCurrentTime(
-        new Date().toLocaleTimeString("en-US", {
-          hour: "2-digit",
-          minute: "2-digit",
-          hour12: true,
-        }),
+        new Date().toLocaleTimeString(
+          language === "arabic" ? "ar-SA" : "en-US",
+          {
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: true,
+          },
+        ),
       );
     };
     updateTime();
     const interval = setInterval(updateTime, 60000);
     return () => clearInterval(interval);
-  }, []);
+  }, [language]);
 
   // Fetch dashboard data
   useEffect(() => {
@@ -49,7 +57,7 @@ const DashboardHome = () => {
         const statsData = response.data.data.stats;
         const formattedStats = [
           {
-            label: "Total Services",
+            title: language === "arabic" ? "إجمالي الخدمات" : "Total Services",
             value: statsData.services.total.toString(),
             icon: (
               <svg
@@ -66,12 +74,11 @@ const DashboardHome = () => {
                 />
               </svg>
             ),
-            path: "/dashboard/services",
-            color: "lawyer-primary",
             change: 8.2,
+            color: "lawyer-primary",
           },
           {
-            label: "Team Members",
+            title: language === "arabic" ? "أعضاء الفريق" : "Team Members",
             value: statsData.team_members.total.toString(),
             icon: (
               <svg
@@ -88,12 +95,11 @@ const DashboardHome = () => {
                 />
               </svg>
             ),
-            path: "/dashboard/team",
-            color: "blue",
             change: 5.1,
+            color: "blue",
           },
           {
-            label: "Contact Messages",
+            title: language === "arabic" ? "رسائل الاتصال" : "Contact Messages",
             value: statsData.contact_messages.total.toString(),
             icon: (
               <svg
@@ -110,15 +116,14 @@ const DashboardHome = () => {
                 />
               </svg>
             ),
-            path: "/dashboard/contact",
-            color: "purple",
             change:
               statsData.contact_messages.unread > 0
                 ? -statsData.contact_messages.unread
                 : 2.3,
+            color: "purple",
           },
           {
-            label: "Active Slides",
+            title: language === "arabic" ? "الشرائح النشطة" : "Active Slides",
             value: statsData.hero_slides.active.toString(),
             icon: (
               <svg
@@ -141,9 +146,8 @@ const DashboardHome = () => {
                 />
               </svg>
             ),
-            path: "/dashboard/hero",
-            color: "green",
             change: 15.3,
+            color: "green",
           },
         ];
         setStats(formattedStats);
@@ -157,37 +161,37 @@ const DashboardHome = () => {
 
   const quickActions = dashboardData?.quick_actions || [
     {
-      name: "Edit Hero Section",
+      name: language === "arabic" ? "تعديل قسم البطل" : "Edit Hero Section",
       icon: "🎨",
       path: "/dashboard/hero",
       color: "from-pink-500 to-rose-500",
     },
     {
-      name: "Add New Service",
+      name: language === "arabic" ? "إضافة خدمة جديدة" : "Add New Service",
       icon: "➕",
       path: "/dashboard/services",
       color: "from-blue-500 to-cyan-500",
     },
     {
-      name: "Add Team Member",
+      name: language === "arabic" ? "إضافة عضو فريق" : "Add Team Member",
       icon: "👤",
       path: "/dashboard/team",
       color: "from-green-500 to-emerald-500",
     },
     {
-      name: "View Messages",
+      name: language === "arabic" ? "عرض الرسائل" : "View Messages",
       icon: "📧",
       path: "/dashboard/contact",
       color: "from-purple-500 to-indigo-500",
     },
     {
-      name: "Update Stats",
+      name: language === "arabic" ? "تحديث الإحصائيات" : "Update Stats",
       icon: "📊",
       path: "/dashboard/stats",
       color: "from-orange-500 to-red-500",
     },
     {
-      name: "Manage Settings",
+      name: language === "arabic" ? "إدارة الإعدادات" : "Manage Settings",
       icon: "⚙️",
       path: "/dashboard/settings",
       color: "from-gray-600 to-gray-800",
@@ -222,7 +226,11 @@ const DashboardHome = () => {
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-lawyer-accent mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading dashboard...</p>
+          <p className="mt-4 text-gray-600">
+            {language === "arabic"
+              ? "جاري تحميل لوحة التحكم..."
+              : "Loading dashboard..."}
+          </p>
         </div>
       </div>
     );
@@ -247,21 +255,26 @@ const DashboardHome = () => {
           <div>
             <div className="flex items-center gap-2 mb-2">
               <span className="text-3xl md:text-4xl">
-                {greeting === "Good Morning" && "🌅"}
-                {greeting === "Good Afternoon" && "☀️"}
+                {greeting === "Good Morning" ||
+                  (greeting === "صباح الخير" && "🌅")}
+                {greeting === "Good Afternoon" ||
+                  (greeting === "مساء الخير" && "☀️")}
                 {greeting === "Good Evening" && "🌙"}
               </span>
               <h1 className="text-2xl md:text-3xl font-bold">{greeting}!</h1>
             </div>
             <p className="text-white/90 text-sm md:text-base mt-1">
-              Welcome back to your QWH Legal Dashboard. Here's what's happening
-              with your website today.
+              {language === "arabic"
+                ? "مرحباً بعودتك إلى لوحة تحكم QWH Legal. إليك ما يحدث في موقعك اليوم."
+                : "Welcome back to your QWH Legal Dashboard. Here's what's happening with your website today."}
             </p>
           </div>
 
           <div className="mt-4 md:mt-0">
             <div className="rounded-lg bg-white/10 backdrop-blur-sm px-4 py-2 text-center">
-              <p className="text-xs text-white/80">Current Time</p>
+              <p className="text-xs text-white/80">
+                {language === "arabic" ? "الوقت الحالي" : "Current Time"}
+              </p>
               <p className="text-lg md:text-xl font-semibold">{currentTime}</p>
             </div>
           </div>
@@ -275,33 +288,15 @@ const DashboardHome = () => {
             <div
               key={index}
               onClick={() => navigate(stat.path)}
-              className="bg-white rounded-xl p-4 md:p-6 shadow-sm border border-gray-100 hover:shadow-md transition-all cursor-pointer group"
+              className="cursor-pointer"
             >
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-500">{stat.label}</p>
-                  <p className="text-2xl md:text-3xl font-bold text-gray-900 mt-1">
-                    {stat.value}
-                  </p>
-                  {stat.change && (
-                    <div
-                      className={`flex items-center gap-1 mt-2 text-xs ${stat.change > 0 ? "text-green-600" : "text-red-600"}`}
-                    >
-                      {stat.change > 0 ? "↑" : "↓"} {Math.abs(stat.change)}%
-                      <span className="text-gray-400">vs last month</span>
-                    </div>
-                  )}
-                </div>
-                <div
-                  className={`w-12 h-12 rounded-full bg-${stat.color === "lawyer-primary" ? "lawyer-accent" : stat.color}-100 flex items-center justify-center group-hover:scale-110 transition-transform`}
-                >
-                  <div
-                    className={`text-${stat.color === "lawyer-primary" ? "lawyer-accent" : stat.color}-600`}
-                  >
-                    {stat.icon}
-                  </div>
-                </div>
-              </div>
+              <StatsCard
+                title={stat.title}
+                value={stat.value}
+                icon={stat.icon}
+                change={stat.change}
+                color={stat.color}
+              />
             </div>
           ))}
         </div>
@@ -311,7 +306,7 @@ const DashboardHome = () => {
       <motion.div variants={itemVariants}>
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4 md:mb-6">
           <h2 className="text-xl md:text-2xl font-bold text-gray-900">
-            Quick Actions
+            {language === "arabic" ? "إجراءات سريعة" : "Quick Actions"}
           </h2>
           <div className="flex items-center gap-2 text-sm text-gray-500">
             <svg
@@ -327,7 +322,11 @@ const DashboardHome = () => {
                 d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
               />
             </svg>
-            <span>Click any card to navigate</span>
+            <span>
+              {language === "arabic"
+                ? "انقر على أي بطاقة للتنقل"
+                : "Click any card to navigate"}
+            </span>
           </div>
         </div>
 
@@ -366,17 +365,21 @@ const DashboardHome = () => {
             <div className="flex items-center justify-between">
               <div>
                 <h2 className="text-lg md:text-xl font-bold text-gray-900">
-                  Recent Messages
+                  {language === "arabic"
+                    ? "الرسائل الأخيرة"
+                    : "Recent Messages"}
                 </h2>
                 <p className="text-sm text-gray-500 mt-1">
-                  Latest inquiries from clients
+                  {language === "arabic"
+                    ? "أحدث الاستفسارات من العملاء"
+                    : "Latest inquiries from clients"}
                 </p>
               </div>
               <button
                 onClick={() => navigate("/dashboard/contact")}
                 className="text-sm text-lawyer-accent hover:text-lawyer-primary font-medium transition-colors"
               >
-                View All
+                {language === "arabic" ? "عرض الكل" : "View All"}
               </button>
             </div>
           </div>
@@ -397,14 +400,14 @@ const DashboardHome = () => {
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
                           {!message.is_read && (
-                            <div className="h-2 w-2 rounded-full bg-lawyer-accent"></div>
+                            <div className="h-2 w-2 rounded-full bg-lawyer-accent animate-pulse"></div>
                           )}
                           <p className="text-sm font-semibold text-gray-900">
                             {message.name}
                           </p>
                           {!message.is_read && (
                             <span className="inline-flex items-center rounded-full bg-red-100 px-2 py-0.5 text-xs font-medium text-red-800">
-                              New
+                              {language === "arabic" ? "جديد" : "New"}
                             </span>
                           )}
                         </div>
@@ -425,7 +428,11 @@ const DashboardHome = () => {
                 ))
               ) : (
                 <div className="text-center py-12">
-                  <p className="text-gray-500">No messages yet</p>
+                  <p className="text-gray-500">
+                    {language === "arabic"
+                      ? "لا توجد رسائل بعد"
+                      : "No messages yet"}
+                  </p>
                 </div>
               )}
             </AnimatePresence>
@@ -441,17 +448,21 @@ const DashboardHome = () => {
             <div className="flex items-center justify-between">
               <div>
                 <h2 className="text-lg md:text-xl font-bold text-gray-900">
-                  Popular Services
+                  {language === "arabic"
+                    ? "الخدمات الشائعة"
+                    : "Popular Services"}
                 </h2>
                 <p className="text-sm text-gray-500 mt-1">
-                  Most viewed services this month
+                  {language === "arabic"
+                    ? "الخدمات الأكثر مشاهدة هذا الشهر"
+                    : "Most viewed services this month"}
                 </p>
               </div>
               <button
                 onClick={() => navigate("/dashboard/services")}
                 className="text-sm text-lawyer-accent hover:text-lawyer-primary font-medium transition-colors"
               >
-                Manage Services
+                {language === "arabic" ? "إدارة الخدمات" : "Manage Services"}
               </button>
             </div>
           </div>
@@ -475,7 +486,9 @@ const DashboardHome = () => {
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-semibold text-gray-900">
-                          {service.title_english}
+                          {language === "arabic"
+                            ? service.title_arabic
+                            : service.title_english}
                         </p>
                         <p className="text-xs text-gray-500">
                           {service.category}
@@ -487,7 +500,9 @@ const DashboardHome = () => {
                         <p className="text-lg font-bold text-lawyer-accent">
                           {service.views}
                         </p>
-                        <p className="text-xs text-gray-500">views</p>
+                        <p className="text-xs text-gray-500">
+                          {language === "arabic" ? "مشاهدة" : "views"}
+                        </p>
                       </div>
                       <div className="h-8 w-8 rounded-full bg-green-100 flex items-center justify-center">
                         <svg
@@ -509,7 +524,11 @@ const DashboardHome = () => {
                 ))
               ) : (
                 <div className="text-center py-12">
-                  <p className="text-gray-500">No services yet</p>
+                  <p className="text-gray-500">
+                    {language === "arabic"
+                      ? "لا توجد خدمات بعد"
+                      : "No services yet"}
+                  </p>
                 </div>
               )}
             </div>
@@ -521,13 +540,19 @@ const DashboardHome = () => {
                   <p className="text-2xl font-bold text-blue-600">
                     {dashboardData?.stats?.contact_messages?.unread || 0}
                   </p>
-                  <p className="text-xs text-gray-600">Unread Messages</p>
+                  <p className="text-xs text-gray-600">
+                    {language === "arabic"
+                      ? "رسائل غير مقروءة"
+                      : "Unread Messages"}
+                  </p>
                 </div>
                 <div className="text-center p-3 rounded-lg bg-gradient-to-br from-green-50 to-green-100">
                   <p className="text-2xl font-bold text-green-600">
                     {dashboardData?.stats?.services?.active || 0}
                   </p>
-                  <p className="text-xs text-gray-600">Active Services</p>
+                  <p className="text-xs text-gray-600">
+                    {language === "arabic" ? "خدمات نشطة" : "Active Services"}
+                  </p>
                 </div>
               </div>
             </div>
@@ -544,10 +569,13 @@ const DashboardHome = () => {
           <div className="flex items-start gap-3">
             <div className="text-3xl">💡</div>
             <div>
-              <h3 className="font-bold text-gray-900 text-lg">Pro Tip</h3>
+              <h3 className="font-bold text-gray-900 text-lg">
+                {language === "arabic" ? "نصيحة احترافية" : "Pro Tip"}
+              </h3>
               <p className="text-gray-700 text-sm md:text-base mt-1">
-                Update your hero section with the new promotional banner to
-                increase engagement by up to 40%!
+                {language === "arabic"
+                  ? "قم بتحديث قسم البطل الخاص بك بلافتة ترويجية جديدة لزيادة التفاعل بنسبة تصل إلى 40%!"
+                  : "Update your hero section with the new promotional banner to increase engagement by up to 40%!"}
               </p>
             </div>
           </div>
@@ -555,7 +583,7 @@ const DashboardHome = () => {
             onClick={() => navigate("/dashboard/hero")}
             className="inline-flex items-center justify-center gap-2 rounded-lg bg-lawyer-accent px-4 py-2 text-sm font-semibold text-white transition-all hover:bg-lawyer-primary hover:scale-105 shadow-md whitespace-nowrap"
           >
-            Update Hero Section
+            {language === "arabic" ? "تحديث قسم البطل" : "Update Hero Section"}
             <svg
               className="h-4 w-4"
               fill="none"
