@@ -246,9 +246,10 @@ const Home = () => {
           transition={{ duration: 1.5 }}
           className="absolute inset-0"
           style={{
-            backgroundImage: heroData?.image_path
-              ? `url(${import.meta.env.VITE_API_URL || ""}/storage/${heroData.image_path})`
-              : "url('/src/assets/bg-image.jpeg')",
+            backgroundImage:
+              heroData?.image_url || heroData?.image_path
+                ? `url(${heroData?.image_url || `https://qwh.com.sa/storage/${heroData.image_path}`})`
+                : "url('/src/assets/bg-image.jpeg')",
             backgroundSize: "cover",
             backgroundPosition: "center",
             opacity: 0.15,
