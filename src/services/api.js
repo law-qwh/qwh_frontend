@@ -142,6 +142,10 @@ export const apiService = {
     },
     reorderTeamMembers: (orders) => api.post('/api/admin/team-members/reorder', { orders }),
     bulkDeleteTeamMembers: (ids) => api.post('/api/admin/team-members/bulk-delete', { ids }),
+
+    // ==================== DASHBOARD ====================
+    getDashboardStats: () => api.get('/api/admin/dashboard/stats'),
+    getDashboardChartData: (days = 30) => api.get(`/api/admin/dashboard/chart-data?days=${days}`),
 };
 
 export default api;
