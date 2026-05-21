@@ -43,5 +43,5 @@ ssh -i "$KEY_PATH" "$SERVER" "sudo /usr/local/bin/deploy-frontend.sh"
 # Clean archive, keep dist for inspection
 rm -f dist.tar.gz
 
-echo "✅ Deployment complete! Visit: http://8.213.84.249"
+echo "✅ Deployment complete! Visit: https://qwh.com.sa/"
 echo "📁 Build files preserved in ./dist for inspection"
