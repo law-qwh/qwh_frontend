@@ -1,5 +1,5 @@
 // src/App.jsx
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import { AuthProvider } from "./contexts/AuthContext"; // Use the correct one
 import Navbar from "./components/Navbar";
@@ -34,7 +34,7 @@ function App() {
       <AuthProvider>
         {" "}
         {/* Make sure AuthProvider is here */}
-        <BrowserRouter>
+        <HashRouter>
           <ScrollToTop />
           <Routes>
             {/* Main Website Routes */}
@@ -90,7 +90,7 @@ function App() {
               }
             />
           </Routes>
-        </BrowserRouter>
+        </HashRouter>
       </AuthProvider>
     </LanguageProvider>
   );

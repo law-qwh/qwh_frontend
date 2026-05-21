@@ -1,0 +1,31 @@
+# Disable directory browsing and multi-views
+
+Options -Indexes -MultiViews
+
+# Enable rewrite engine
+
+RewriteEngine On
+RewriteBase /
+
+# Force HTTPS (optional but recommended – uncomment if needed)
+
+# RewriteCond %{HTTPS} off
+
+# RewriteRule ^(.\*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+
+# If requested file/directory exists, serve it directly
+
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d [OR]
+RewriteCond %{REQUEST_FILENAME} -l
+RewriteRule ^ - [L]
+
+# Otherwise, rewrite all requests to index.html
+
+# The QSA flag preserves query strings (e.g., ?page=2)
+
+RewriteRule ^ index.html [QSA,L]
+
+# Custom 404 page – redirects to index.html (React handles 404)
+
+ErrorDocument 404 /index.html

@@ -1,6 +1,6 @@
 // src/contexts/AuthContext.jsx
 import { createContext, useContext, useState, useEffect } from "react";
-import api from "../services/api";
+import api, { apiService } from "../services/api";
 
 const AuthContext = createContext();
 
@@ -27,8 +27,7 @@ export const AuthProvider = ({ children }) => {
 
   const fetchUser = async () => {
     try {
-      // Use the correct endpoint from your routes
-      const response = await api.get("/api/admin/user");
+      const response = await apiService.getUser();
       if (response.data.success) {
         setUser(response.data.data);
       } else {

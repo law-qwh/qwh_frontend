@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // API Configuration
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://qwh.com.sa';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://qwh.com.sa/backend/public/api';
 
 // Create axios instance
 const api = axios.create({
@@ -32,7 +32,8 @@ api.interceptors.response.use(
         if (error.response?.status === 401) {
             localStorage.removeItem('token');
             localStorage.removeItem('user');
-            window.location.href = '/login';
+            window.location.href = '#/login';
+            window.location.reload();
         }
         return Promise.reject(error);
     }
@@ -44,7 +45,7 @@ export const apiService = {
     login: (credentials) => api.post('/api/login', credentials),
     register: (userData) => api.post('/api/register', userData),
     logout: () => api.post('/api/logout'),
-    getUser: () => api.get('/api/user'),
+    getUser: () => api.get('/api/admin/user'),
     
     // ==================== HERO SLIDES ====================
     getHeroSlides: () => api.get('/api/hero'),

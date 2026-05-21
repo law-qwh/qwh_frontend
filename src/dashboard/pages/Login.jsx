@@ -25,7 +25,6 @@ const Login = () => {
       setRememberMe(true);
     }
   }, []);
-  // src/dashboard/pages/Login.jsx
 
   const handleSubmit = async (e) => {
     e.preventDefault();

@@ -1,20 +1,17 @@
-// src/main.jsx
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import { AuthProvider } from "./contexts/AuthContext";
 import "./index.css";
 
-// Main website components
+// Components
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Services from "./pages/Services";
 import Contact from "./pages/Contact";
-
-// Dashboard components
 import DashboardLayout from "./dashboard/components/DashboardLayout";
 import ProtectedRoute from "./dashboard/components/ProtectedRoute";
 import Login from "./dashboard/pages/Login";
@@ -28,7 +25,6 @@ import TeamManagement from "./dashboard/pages/TeamManagement";
 import ContactMessages from "./dashboard/pages/ContactMessages";
 import Settings from "./dashboard/pages/Settings";
 
-// Wrapper for main website
 const MainWebsiteLayout = ({ children }) => (
   <>
     <Navbar />
@@ -37,71 +33,68 @@ const MainWebsiteLayout = ({ children }) => (
   </>
 );
 
-const router = createBrowserRouter([
-  // Main website routes
-  {
-    path: "/",
-    element: (
-      <MainWebsiteLayout>
-        <Home />
-      </MainWebsiteLayout>
-    ),
-  },
-  {
-    path: "/about",
-    element: (
-      <MainWebsiteLayout>
-        <About />
-      </MainWebsiteLayout>
-    ),
-  },
-  {
-    path: "/services",
-    element: (
-      <MainWebsiteLayout>
-        <Services />
-      </MainWebsiteLayout>
-    ),
-  },
-  {
-    path: "/contact",
-    element: (
-      <MainWebsiteLayout>
-        <Contact />
-      </MainWebsiteLayout>
-    ),
-  },
-  // Dashboard routes
-  {
-    path: "/dashboard/login",
-    element: <Login />,
-  },
-  {
-    path: "/dashboard",
-    element: (
-      <ProtectedRoute>
-        <DashboardLayout />
-      </ProtectedRoute>
-    ),
-    children: [
-      { index: true, element: <DashboardHome /> },
-      { path: "hero", element: <HeroSection /> },
-      { path: "services", element: <ServicesManagement /> },
-      { path: "featured-services", element: <FeaturedServices /> },
-      { path: "stats", element: <StatsManagement /> },
-      { path: "about", element: <AboutPage /> },
-      { path: "team", element: <TeamManagement /> },
-      { path: "contact", element: <ContactMessages /> },
-      { path: "settings", element: <Settings /> },
-    ],
-  },
-]);
-
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <LanguageProvider>
       <AuthProvider>
-        <RouterProvider router={router} />
+        <HashRouter>
+          <Routes>
+            {/* Main website routes */}
+            <Route
+              path="/"
+              element={
+                <MainWebsiteLayout>
+                  <Home />
+                </MainWebsiteLayout>
+              }
+            />
+            <Route
+              path="/about"
+              element={
+                <MainWebsiteLayout>
+                  <About />
+                </MainWebsiteLayout>
+              }
+            />
+            <Route
+              path="/services"
+              element={
+                <MainWebsiteLayout>
+                  <Services />
+                </MainWebsiteLayout>
+              }
+            />
+            <Route
+              path="/contact"
+              element={
+                <MainWebsiteLayout>
+                  <Contact />
+                </MainWebsiteLayout>
+              }
+            />
+
+            {/* Dashboard routes */}
+            <Route path="/dashboard/login" element={<Login />} />
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRoute>
+                  <DashboardLayout />
+                </ProtectedRoute>
+              }
+            >
+              <Route index element={<DashboardHome />} />
+              <Route path="hero" element={<HeroSection />} />
+              <Route path="services" element={<ServicesManagement />} />
+              <Route path="featured-services" element={<FeaturedServices />} />
+              <Route path="stats" element={<StatsManagement />} />
+              <Route path="about" element={<AboutPage />} />
+              <Route path="team" element={<TeamManagement />} />
+              <Route path="contact" element={<ContactMessages />} />
+              <Route path="settings" element={<Settings />} />
+            </Route>
+          </Routes>
+        </HashRouter>
       </AuthProvider>
     </LanguageProvider>
   </React.StrictMode>,
