@@ -356,7 +356,7 @@ const Home = () => {
             transition={{ duration: 0.6 }}
             className="text-center mb-12"
           >
-            <h2 className="section-title">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-lawyer-primary">
               {language === "english"
                 ? "Our Legal Services"
                 : "خدماتنا القانونية"}
@@ -405,10 +405,7 @@ const Home = () => {
       </section>
 
       {/* Calculator Cards Section */}
-      <section
-        className="py-20 bg-gradient-to-br from-gray-50 to-white"
-        ref={calculatorRef}
-      >
+      <section className="py-20" ref={calculatorRef}>
         <div className="container-custom">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
