@@ -42,10 +42,13 @@ const Login = () => {
     }
     try {
       // Make sure you're passing email and password
-      const result = await login({
-        email: email, // Make sure field name is 'email'
-        password: password, // Make sure field name is 'password'
-      });
+      const result = await login(
+        {
+          email: email, // Make sure field name is 'email'
+          password: password, // Make sure field name is 'password'
+        },
+        language,
+      );
 
       if (result.success) {
         if (rememberMe) {

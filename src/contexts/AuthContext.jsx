@@ -43,7 +43,7 @@ export const AuthProvider = ({ children }) => {
 
   // src/contexts/AuthContext.jsx
 
-  const login = async (credentials) => {
+  const login = async (credentials, language = "english") => {
     try {
       // Make sure credentials has email and password fields
       const response = await api.post("/api/login", {
@@ -61,12 +61,18 @@ export const AuthProvider = ({ children }) => {
       return { success: false, error: response.data.message };
     } catch (error) {
       console.error("Login error:", error.response?.data);
+      // Define error messages based on language parameter
+      const errorMessages = {
+        english: "These credentials do not match our records.",
+        arabic: "بيانات الاعتماد هذه لا تتطابق مع سجلاتنا.",
+      };
       return {
         success: false,
         error:
           error.response?.data?.message ||
           error.response?.data?.errors ||
-          "Login failed",
+          errorMessages[language] ||
+          errorMessages.english,
       };
     }
   };

@@ -81,6 +81,7 @@ function App() {
 
             {/* Dashboard Routes */}
             <Route path="/login" element={<Login />} />
+            <Route path="/dashboard/login" element={<Login />} />
             <Route
               path="/dashboard/*"
               element={
