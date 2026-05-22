@@ -5,6 +5,7 @@ import { useLanguage } from "../contexts/LanguageContext";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { apiService } from "../services/api";
+import { getImageUrl } from "../utils/imageHelper";
 
 const Contact = () => {
   const { language } = useLanguage();
