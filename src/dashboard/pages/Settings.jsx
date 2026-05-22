@@ -116,7 +116,7 @@ const Settings = () => {
       label: language === "arabic" ? "وسائل التواصل" : "Social Media",
       icon: "📱",
     },
-    { id: "seo", label: "SEO", icon: "🔍" },
+    // { id: "seo", label: "SEO", icon: "🔍" },
   ];
 
   const inputClasses =
@@ -487,7 +487,7 @@ const Settings = () => {
             )}
 
             {/* SEO Tab */}
-            {activeTab === "seo" && (
+            {/* {activeTab === "seo" && (
               <div className="space-y-6">
                 <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
                   <div className="flex items-start gap-3">
@@ -607,7 +607,7 @@ const Settings = () => {
                   </div>
                 </div>
               </div>
-            )}
+            )} */}
 
             {/* Actions */}
             <div className="flex gap-3 pt-8 mt-8 border-t border-gray-200">

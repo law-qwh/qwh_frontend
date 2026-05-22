@@ -427,7 +427,7 @@ const ContactMessages = () => {
                     </p>
                   </div>
                   <div className="flex gap-2">
-                    <button
+                    {/* <button
                       onClick={() => {
                         setReplyingTo(selectedMessage);
                         setShowReplyModal(true);
@@ -435,7 +435,7 @@ const ContactMessages = () => {
                       className="px-3 py-1.5 text-sm bg-lawyer-accent text-white rounded-lg hover:bg-lawyer-primary transition-colors"
                     >
                       {language === "arabic" ? "رد" : "Reply"}
-                    </button>
+                    </button> */}
                     <button
                       onClick={() => {
                         setMessageToDelete(selectedMessage.id);

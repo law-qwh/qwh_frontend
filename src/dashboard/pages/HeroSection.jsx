@@ -350,8 +350,8 @@ const HeroSection = () => {
           </h1>
           <p className="text-gray-600 mt-1 text-sm md:text-base">
             {language === "arabic"
-              ? "تخصيص البanner الرئيسي لموقعك"
-              : "Customize the main banner of your website"}
+              ? "تخصيص القسم الرئيسي لموقعك"
+              : "Customize the main section of your website"}
           </p>
         </div>
         <div className="flex gap-2">
@@ -391,7 +391,8 @@ const HeroSection = () => {
                 d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
               />
             </svg>
-            Save as Preset
+
+            {language === "arabic" ? "حفظ كقالب" : "Save as Preset"}
           </button>
           <button
             onClick={handleReset}
@@ -732,9 +733,11 @@ const HeroSection = () => {
                 {language === "arabic" ? "معاينة مباشرة" : "Live Preview"}
               </h2>
               <div className="flex gap-2">
-                <span className="text-xs text-gray-500">Real-time preview</span>
+                <span className="text-xs text-gray-500">
+                  {language === "arabic" ? "معاينة فورية" : "Real-time preview"}
+                </span>
                 <span className="text-xs text-green-500 animate-pulse">
-                  ● Live
+                  ● {language === "arabic" ? "مباشر" : "Live"}
                 </span>
               </div>
             </div>

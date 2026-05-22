@@ -161,7 +161,7 @@ const DashboardHome = () => {
 
   const quickActions = dashboardData?.quick_actions || [
     {
-      name: language === "arabic" ? "تعديل قسم البطل" : "Edit Hero Section",
+      name: language === "arabic" ? "تعديل القسم الرئيسي" : "Edit Main Section",
       icon: "🎨",
       path: "/dashboard/hero",
       color: "from-pink-500 to-rose-500",

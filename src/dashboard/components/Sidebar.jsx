@@ -36,7 +36,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
       items: [
         {
           path: "/dashboard/hero",
-          name: language === "arabic" ? "قسم البطل" : "Hero Section",
+          name: language === "arabic" ? "القسم الرئيسي" : "Main Section",
           icon: "🎨",
         },
         {
