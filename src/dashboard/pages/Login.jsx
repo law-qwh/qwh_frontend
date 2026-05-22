@@ -30,7 +30,16 @@ const Login = () => {
     e.preventDefault();
     setError("");
     setLoading(true);
-
+    // Validation
+    if (!email || !password) {
+      setError(
+        language === "arabic"
+          ? "الرجاء إدخال البريد الإلكتروني وكلمة المرور"
+          : "Please enter email and password",
+      );
+      setLoading(false);
+      return;
+    }
     try {
       // Make sure you're passing email and password
       const result = await login({
@@ -39,13 +48,28 @@ const Login = () => {
       });
 
       if (result.success) {
+        if (rememberMe) {
+          localStorage.setItem("rememberedEmail", email);
+        } else {
+          localStorage.removeItem("rememberedEmail");
+        }
         navigate("/dashboard");
       } else {
-        setError(result.error || "Login failed");
+        // Display the error message from the API
+        setError(
+          result.error ||
+            (language === "arabic"
+              ? "بيانات الاعتماد غير صحيحة"
+              : "Invalid credentials"),
+        );
       }
     } catch (error) {
       console.error("Login error:", error);
-      setError("An error occurred during login");
+      setError(
+        language === "arabic"
+          ? "حدث خطأ أثناء تسجيل الدخول"
+          : "An error occurred during login",
+      );
     } finally {
       setLoading(false);
     }
