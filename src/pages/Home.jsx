@@ -109,7 +109,7 @@ const Home = () => {
     }
   };
 
-  // End of Service Calculator Functions
+  // End of Service Calculator Functions - Saudi Labor Law Accurate
   const calculateEndOfService = () => {
     const salary = parseFloat(basicSalary) || 0;
     const years = parseFloat(yearsOfService) || 0;
@@ -119,23 +119,38 @@ const Home = () => {
     let total = 0;
 
     if (contractType === "limited") {
+      // Limited Contract (Fixed-term contract)
       if (years < 2) {
-        total = salary * 0.5 * (years / 12);
+        // Less than 2 years: No EOS benefit
+        total = 0;
       } else if (years < 5) {
-        const first2Years = salary * 0.5 * 2;
-        const remainingYears = years - 2;
-        const remainingAmount = salary * remainingYears;
-        total = first2Years + remainingAmount;
+        // 2 to 5 years: Half month salary per year
+        total = (salary / 2) * years;
       } else {
+        // 5+ years: Full month salary per year
         total = salary * years;
       }
     } else {
+      // Unlimited Contract (Open-ended contract)
       if (years < 2) {
+        // Less than 2 years: No EOS benefit for resignation
         total = 0;
       } else if (years < 5) {
-        total = salary * 0.5 * years;
+        // 2 to 5 years: One-third of 21 days salary per year
+        // Standard calculation: (21 days / 3) = 7 days salary per year
+        const dailyRate = salary / 30;
+        total = dailyRate * 7 * years;
       } else {
-        total = salary * years;
+        // 5+ years: Full 21 days salary per year for first 5 years, then 30 days after
+        const dailyRate = salary / 30;
+        if (years <= 5) {
+          total = dailyRate * 21 * years;
+        } else {
+          const first5Years = dailyRate * 21 * 5;
+          const remainingYears = years - 5;
+          const remainingAmount = dailyRate * 30 * remainingYears;
+          total = first5Years + remainingAmount;
+        }
       }
     }
 
@@ -405,7 +420,10 @@ const Home = () => {
       </section>
 
       {/* Calculator Cards Section */}
-      <section className="py-20" ref={calculatorRef}>
+      <section
+        className="py-20 bg-white/50 backdrop-blur-sm"
+        ref={calculatorRef}
+      >
         <div className="container-custom">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -746,7 +764,7 @@ const Home = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 bg-black/20 backdrop-blur-sm z-50 flex items-center justify-center p-4"
           onClick={handleModalCloseWithReset}
         >
           <motion.div
@@ -794,9 +812,15 @@ const Home = () => {
                       value={saleValue}
                       onChange={(e) => setSaleValue(e.target.value)}
                       className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-lawyer-accent"
-                      placeholder="Enter sale value"
+                      placeholder={
+                        language === "english"
+                          ? "Enter sale value"
+                          : "أدخل قيمة البيع"
+                      }
                     />
-                    <span className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500">
+                    <span
+                      className={`absolute ${language === "english" ? "right-4" : "left-12"} top-1/2 transform -translate-y-1/2 text-gray-500`}
+                    >
                       SAR
                     </span>
                   </div>
@@ -829,7 +853,7 @@ const Home = () => {
                         onChange={() => setIsInclusive(false)}
                         className="w-4 h-4 text-lawyer-accent"
                       />
-                      <span className="ml-2">
+                      <span className="m-2">
                         {language === "english" ? "No" : "لا"}
                       </span>
                     </label>
@@ -840,7 +864,7 @@ const Home = () => {
                         onChange={() => setIsInclusive(true)}
                         className="w-4 h-4 text-lawyer-accent"
                       />
-                      <span className="ml-2">
+                      <span className="m-2">
                         {language === "english" ? "Yes" : "نعم"}
                       </span>
                     </label>
@@ -911,7 +935,7 @@ const Home = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 bg-black/20 backdrop-blur-sm z-50 flex items-center justify-center p-4"
           onClick={handleModalCloseWithReset}
         >
           <motion.div
@@ -958,7 +982,11 @@ const Home = () => {
                     value={basicSalary}
                     onChange={(e) => setBasicSalary(e.target.value)}
                     className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-lawyer-accent"
-                    placeholder="Enter basic salary"
+                    placeholder={
+                      language === "english"
+                        ? "Enter basic salary"
+                        : "أدخل الراتب الأساسي"
+                    }
                   />
                 </div>
                 <div>
@@ -973,7 +1001,11 @@ const Home = () => {
                     value={yearsOfService}
                     onChange={(e) => setYearsOfService(e.target.value)}
                     className="w-full px-4 py-3 border border-gray-300 rounded-xl"
-                    placeholder="Enter years of service"
+                    placeholder={
+                      language === "english"
+                        ? "Enter years of service"
+                        : "أدخل سنوات الخدمة"
+                    }
                   />
                 </div>
                 <div>
@@ -988,7 +1020,7 @@ const Home = () => {
                         onChange={() => setContractType("limited")}
                         className="w-4 h-4 text-lawyer-accent"
                       />
-                      <span className="ml-2">
+                      <span className="m-2">
                         {language === "english"
                           ? "Limited Contract"
                           : "عقد محدد المدة"}
@@ -1001,7 +1033,7 @@ const Home = () => {
                         onChange={() => setContractType("unlimited")}
                         className="w-4 h-4 text-lawyer-accent"
                       />
-                      <span className="ml-2">
+                      <span className="m-2">
                         {language === "english"
                           ? "Unlimited Contract"
                           : "عقد غير محدد المدة"}
