@@ -437,33 +437,33 @@ const About = () => {
       </section>
 
       {/* Team Section */}
-      <section className="py-20 bg-gray-50" ref={teamRef}>
-        <div className="container-custom">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={teamInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-3xl md:text-5xl font-bold mb-4 text-lawyer-primary">
-              {language === "english"
-                ? "Meet Our Expert Team"
-                : "تعرف على فريقنا الخبير"}
-            </h2>
-            <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-              {language === "english"
-                ? "Dedicated professionals committed to providing you with the best legal representation."
-                : "محترفون مخلصون ملتزمون بتقديم أفضل تمثيل قانوني لك."}
-            </p>
-          </motion.div>
-          <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            animate={teamInView ? "visible" : "hidden"}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-          >
-            {teamMembers && teamMembers.length > 0 ? (
-              teamMembers.map((member, index) => (
+      {teamMembers && teamMembers.length > 0 ? (
+        <section className="py-20 bg-gray-50" ref={teamRef}>
+          <div className="container-custom">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={teamInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6 }}
+              className="text-center mb-12"
+            >
+              <h2 className="text-3xl md:text-5xl font-bold mb-4 text-lawyer-primary">
+                {language === "english"
+                  ? "Meet Our Expert Team"
+                  : "تعرف على فريقنا الخبير"}
+              </h2>
+              <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+                {language === "english"
+                  ? "Dedicated professionals committed to providing you with the best legal representation."
+                  : "محترفون مخلصون ملتزمون بتقديم أفضل تمثيل قانوني لك."}
+              </p>
+            </motion.div>
+            <motion.div
+              variants={staggerContainer}
+              initial="hidden"
+              animate={teamInView ? "visible" : "hidden"}
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+            >
+              {teamMembers.map((member, index) => (
                 <motion.div
                   key={member.id || index}
                   variants={fadeInUp}
@@ -558,17 +558,13 @@ const About = () => {
                     </div>
                   </div>
                 </motion.div>
-              ))
-            ) : (
-              <div className="col-span-full text-center text-gray-500 py-12">
-                {language === "english"
-                  ? "No team members found"
-                  : "لا يوجد أعضاء في الفريق"}
-              </div>
-            )}
-          </motion.div>
-        </div>
-      </section>
+              ))}
+            </motion.div>
+          </div>
+        </section>
+      ) : (
+        <div></div>
+      )}
 
       {/* CTA Section */}
       <motion.section
