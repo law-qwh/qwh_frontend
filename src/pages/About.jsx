@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { apiService } from "../services/api";
 import { useEffect, useState } from "react";
+import { getImageUrl } from "../utils/imageHelper";
 
 const About = () => {
   const { language } = useLanguage();
@@ -30,6 +31,7 @@ const About = () => {
   const [coreValues, setCoreValues] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [heroData, setHeroData] = useState(null);
 
   useEffect(() => {
     const fetchAllData = async () => {
@@ -39,13 +41,19 @@ const About = () => {
         // Get language code
         const langCode = language === "english" ? "en" : "ar";
         // Fetch all data in parallel
-        const [teamResponse, statsResponse, aboutResponse, coreValuesResponse] =
-          await Promise.all([
-            apiService.getTeamMembers(),
-            apiService.getActiveStats(),
-            apiService.getAboutContent(langCode),
-            apiService.getCoreValues(),
-          ]);
+        const [
+          teamResponse,
+          statsResponse,
+          aboutResponse,
+          coreValuesResponse,
+          heroResponse,
+        ] = await Promise.all([
+          apiService.getTeamMembers(),
+          apiService.getActiveStats(),
+          apiService.getAboutContent(langCode),
+          apiService.getCoreValues(),
+          apiService.getHeroSlides(),
+        ]);
         if (teamResponse.data.success) {
           setTeamMembers(teamResponse.data.data);
         }
@@ -60,6 +68,10 @@ const About = () => {
 
         if (coreValuesResponse.data.success) {
           setCoreValues(coreValuesResponse.data.data);
+        }
+
+        if (heroResponse.data.success) {
+          setHeroData(heroResponse.data.data);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -160,7 +172,9 @@ const About = () => {
           transition={{ duration: 1.5 }}
           className="absolute inset-0"
           style={{
-            backgroundImage: "url('src/assets/bg-image.jpeg')",
+            backgroundImage: heroData
+              ? `url(${getImageUrl(heroData.image_path, heroData.image_url)})`
+              : "url('/src/assets/bg-image.jpeg')",
             backgroundSize: "cover",
             backgroundPosition: "center",
             opacity: 0.15,
