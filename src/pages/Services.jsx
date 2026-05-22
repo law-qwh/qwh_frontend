@@ -5,6 +5,8 @@ import { useLanguage } from "../contexts/LanguageContext";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import api from "../services/api";
+import { getImageUrl } from "../utils/imageHelper";
+import { apiService } from "../services/api";
 
 const Services = () => {
   const { language } = useLanguage();
@@ -12,6 +14,7 @@ const Services = () => {
   const [featuredServices, setFeaturedServices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [heroData, setHeroData] = useState(null);
 
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
   const [servicesRef, servicesInView] = useInView({
@@ -52,6 +55,17 @@ const Services = () => {
       }
     };
 
+    const fetchHeroData = async () => {
+      try {
+        const response = await apiService.getHeroSlides();
+        if (response.data.success && response.data.data) {
+          setHeroData(response.data.data);
+        }
+      } catch (error) {
+        console.error("Error fetching hero data:", error);
+      }
+    };
+    fetchHeroData();
     fetchServices();
   }, []);
 
@@ -176,7 +190,9 @@ const Services = () => {
         <div
           className="absolute inset-0 opacity-10"
           style={{
-            backgroundImage: "url('src/assets/bg-image.jpeg')",
+            backgroundImage: heroData
+              ? `url(${getImageUrl(heroData.image_path, heroData.image_url)})`
+              : "url('/src/assets/bg-image.jpeg')",
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
