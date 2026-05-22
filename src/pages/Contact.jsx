@@ -27,11 +27,7 @@ const Contact = () => {
     threshold: 0.1,
   });
   const [submitStatus, setSubmitStatus] = useState(null);
-
-  // Fetch settings
-  useEffect(() => {
-    fetchSettings();
-  }, []);
+  const [heroData, setHeroData] = useState(null);
 
   const fetchSettings = async () => {
     try {
@@ -43,6 +39,21 @@ const Contact = () => {
       console.error("Error fetching settings:", error);
     }
   };
+  const fetchHeroData = async () => {
+    try {
+      const response = await apiService.getHeroSlides();
+      if (response.data.success && response.data.data) {
+        setHeroData(response.data.data);
+      }
+    } catch (error) {
+      console.error("Error fetching hero data:", error);
+    }
+  };
+  // Fetch settings
+  useEffect(() => {
+    fetchSettings();
+    fetchHeroData();
+  }, []);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -210,6 +221,20 @@ const Contact = () => {
       {/* Hero Section */}
       <section className="relative bg-gradient-to-r from-lawyer-primary to-lawyer-secondary text-white py-20 overflow-hidden">
         <div className="absolute inset-0 bg-black opacity-40"></div>
+        <motion.div
+          initial={{ scale: 1.1 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 1.5 }}
+          className="absolute inset-0"
+          style={{
+            backgroundImage: heroData
+              ? `url(${getImageUrl(heroData.image_path, heroData.image_url)})`
+              : "url('/src/assets/bg-image.jpeg')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            opacity: 0.15,
+          }}
+        ></motion.div>
         <div className="container-custom relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
