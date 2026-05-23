@@ -4,6 +4,24 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "../../contexts/LanguageContext";
 import { apiService } from "../../services/api";
+import {
+  Settings as SettingsIcon,
+  Mail,
+  Phone,
+  MapPin,
+  Clock,
+  Facebook,
+  Twitter,
+  Instagram,
+  Linkedin,
+  Save,
+  RefreshCw,
+  CheckCircle,
+  AlertCircle,
+  Globe,
+  Building,
+  User,
+} from "lucide-react";
 
 const Settings = () => {
   const { language } = useLanguage();
@@ -13,6 +31,148 @@ const Settings = () => {
   const [message, setMessage] = useState(null);
   const [settings, setSettings] = useState({});
   const [originalSettings, setOriginalSettings] = useState({});
+
+  // Working hours state
+  const [workingHours, setWorkingHours] = useState({
+    startDay: "Sunday",
+    endDay: "Thursday",
+    startTime: "09:00",
+    endTime: "18:00",
+  });
+
+  // Day options for dropdown
+  const dayOptions = {
+    english: [
+      { value: "Sunday", label: "Sunday" },
+      { value: "Monday", label: "Monday" },
+      { value: "Tuesday", label: "Tuesday" },
+      { value: "Wednesday", label: "Wednesday" },
+      { value: "Thursday", label: "Thursday" },
+      { value: "Friday", label: "Friday" },
+      { value: "Saturday", label: "Saturday" },
+    ],
+    arabic: [
+      { value: "Sunday", label: "الأحد" },
+      { value: "Monday", label: "الاثنين" },
+      { value: "Tuesday", label: "الثلاثاء" },
+      { value: "Wednesday", label: "الأربعاء" },
+      { value: "Thursday", label: "الخميس" },
+      { value: "Friday", label: "الجمعة" },
+      { value: "Saturday", label: "السبت" },
+    ],
+  };
+
+  // Generate working hours string
+  const generateWorkingHoursString = (hours) => {
+    const startDayEn = hours.startDay;
+    const endDayEn = hours.endDay;
+    const startTime = hours.startTime;
+    const endTime = hours.endTime;
+
+    // Format time to 12-hour format
+    const formatTime = (time) => {
+      const [hour, minute] = time.split(":");
+      const h = parseInt(hour);
+      const ampm = h >= 12 ? "PM" : "AM";
+      const hour12 = h % 12 || 12;
+      return `${hour12}:${minute} ${ampm}`;
+    };
+
+    const startTimeFormatted = formatTime(startTime);
+    const endTimeFormatted = formatTime(endTime);
+
+    // English version
+    const englishHours = `${startDayEn} - ${endDayEn}: ${startTimeFormatted} - ${endTimeFormatted}`;
+
+    // Get Arabic day names
+    const getArabicDay = (day) => {
+      const arabicDays = {
+        Sunday: "الأحد",
+        Monday: "الاثنين",
+        Tuesday: "الثلاثاء",
+        Wednesday: "الأربعاء",
+        Thursday: "الخميس",
+        Friday: "الجمعة",
+        Saturday: "السبت",
+      };
+      return arabicDays[day];
+    };
+
+    // Format time in Arabic (24-hour format for Arabic)
+    const formatTimeArabic = (time) => {
+      const [hour, minute] = time.split(":");
+      return `${hour}:${minute}`;
+    };
+
+    const startTimeArabic = formatTimeArabic(startTime);
+    const endTimeArabic = formatTimeArabic(endTime);
+
+    // Arabic version
+    const arabicHours = `${getArabicDay(startDayEn)} - ${getArabicDay(endDayEn)}: ${startTimeArabic} - ${endTimeArabic}`;
+
+    return { english: englishHours, arabic: arabicHours };
+  };
+
+  // Update working hours and sync with settings
+  const updateWorkingHours = (field, value) => {
+    const newWorkingHours = { ...workingHours, [field]: value };
+    setWorkingHours(newWorkingHours);
+
+    const generatedHours = generateWorkingHoursString(newWorkingHours);
+    setSettings({
+      ...settings,
+      working_hours: generatedHours.english,
+      working_hours_arabic: generatedHours.arabic,
+    });
+  };
+
+  // Parse existing working hours into dropdown values
+  const parseWorkingHours = (hoursString) => {
+    if (!hoursString) return null;
+
+    // Try to parse English format: "Sunday - Thursday: 9:00 AM - 6:00 PM"
+    const englishMatch = hoursString.match(
+      /^(\w+)\s*-\s*(\w+):\s*(\d+:\d+\s*(?:AM|PM))\s*-\s*(\d+:\d+\s*(?:AM|PM))$/i,
+    );
+    if (englishMatch) {
+      const startDay = englishMatch[1];
+      const endDay = englishMatch[2];
+      const startTime = englishMatch[3];
+      const endTime = englishMatch[4];
+
+      // Convert 12-hour format to 24-hour format for time inputs
+      const convertTo24Hour = (time12h) => {
+        const match = time12h.match(/(\d+):(\d+)\s*(AM|PM)/i);
+        if (match) {
+          let hour = parseInt(match[1]);
+          const minute = match[2];
+          const ampm = match[3].toUpperCase();
+          if (ampm === "PM" && hour !== 12) hour += 12;
+          if (ampm === "AM" && hour === 12) hour = 0;
+          return `${hour.toString().padStart(2, "0")}:${minute}`;
+        }
+        return "09:00";
+      };
+
+      return {
+        startDay,
+        endDay,
+        startTime: convertTo24Hour(startTime),
+        endTime: convertTo24Hour(endTime),
+      };
+    }
+    return null;
+  };
+
+  // Initialize working hours from settings
+  useEffect(() => {
+    if (settings.working_hours) {
+      const parsed = parseWorkingHours(settings.working_hours);
+      if (parsed) {
+        setWorkingHours(parsed);
+      }
+    }
+  }, [settings.working_hours]);
 
   // Fetch settings
   useEffect(() => {
@@ -26,6 +186,14 @@ const Settings = () => {
       if (response.data.success && response.data.data) {
         setSettings(response.data.data);
         setOriginalSettings(response.data.data);
+
+        // Parse working hours if they exist
+        if (response.data.data.working_hours) {
+          const parsed = parseWorkingHours(response.data.data.working_hours);
+          if (parsed) {
+            setWorkingHours(parsed);
+          }
+        }
       }
     } catch (error) {
       console.error("Error fetching settings:", error);
@@ -52,6 +220,12 @@ const Settings = () => {
 
   const handleReset = () => {
     setSettings(originalSettings);
+    if (originalSettings.working_hours) {
+      const parsed = parseWorkingHours(originalSettings.working_hours);
+      if (parsed) {
+        setWorkingHours(parsed);
+      }
+    }
     setMessage({
       type: "success",
       text:
@@ -104,65 +278,17 @@ const Settings = () => {
     {
       id: "general",
       label: language === "arabic" ? "عام" : "General",
-      icon: (
-        <svg
-          className="w-5 h-5"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-          />
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-          />
-        </svg>
-      ),
+      icon: SettingsIcon,
     },
     {
       id: "contact",
       label: language === "arabic" ? "معلومات الاتصال" : "Contact Info",
-      icon: (
-        <svg
-          className="w-5 h-5"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-          />
-        </svg>
-      ),
+      icon: Mail,
     },
     {
       id: "social",
       label: language === "arabic" ? "وسائل التواصل" : "Social Media",
-      icon: (
-        <svg
-          className="w-5 h-5"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
-          />
-        </svg>
-      ),
+      icon: Globe,
     },
   ];
 
@@ -186,9 +312,12 @@ const Settings = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
-            {language === "arabic" ? "الإعدادات" : "Settings"}
-          </h1>
+          <div className="flex items-center gap-2">
+            <SettingsIcon className="h-7 w-7 text-lawyer-accent" />
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
+              {language === "arabic" ? "الإعدادات" : "Settings"}
+            </h1>
+          </div>
           <p className="text-gray-600 mt-1 text-sm md:text-base">
             {language === "arabic"
               ? "إدارة إعدادات موقعك وتفضيلاته"
@@ -199,19 +328,7 @@ const Settings = () => {
           onClick={handleReset}
           className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
         >
-          <svg
-            className="w-4 h-4"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-            />
-          </svg>
+          <RefreshCw className="w-4 h-4" />
           {language === "arabic" ? "إعادة تعيين" : "Reset"}
         </button>
       </div>
@@ -231,33 +348,9 @@ const Settings = () => {
           >
             <div className="flex items-center gap-2">
               {message.type === "success" ? (
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M5 13l4 4L19 7"
-                  />
-                </svg>
+                <CheckCircle className="w-5 h-5" />
               ) : (
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
+                <AlertCircle className="w-5 h-5" />
               )}
               {message.text}
             </div>
@@ -268,20 +361,23 @@ const Settings = () => {
       {/* Tabs */}
       <div className="border-b border-gray-200 overflow-x-auto">
         <nav className="flex gap-1 min-w-max">
-          {tabs.map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 px-4 py-3 text-sm font-medium transition-all relative ${
-                activeTab === tab.id
-                  ? "text-lawyer-accent border-b-2 border-lawyer-accent"
-                  : "text-gray-500 hover:text-gray-700"
-              }`}
-            >
-              {tab.icon}
-              <span>{tab.label}</span>
-            </button>
-          ))}
+          {tabs.map((tab) => {
+            const IconComponent = tab.icon;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`flex items-center gap-2 px-4 py-3 text-sm font-medium transition-all relative ${
+                  activeTab === tab.id
+                    ? "text-lawyer-accent border-b-2 border-lawyer-accent"
+                    : "text-gray-500 hover:text-gray-700"
+                }`}
+              >
+                <IconComponent className="w-4 h-4" />
+                <span>{tab.label}</span>
+              </button>
+            );
+          })}
         </nav>
       </div>
 
@@ -474,35 +570,109 @@ const Settings = () => {
                       }
                     />
                   </div>
-                  <div>
-                    <label className={labelClasses}>
-                      {language === "arabic"
-                        ? "ساعات العمل (إنجليزي)"
-                        : "Working Hours (English)"}
-                    </label>
-                    <input
-                      type="text"
-                      name="working_hours"
-                      value={settings.working_hours || ""}
-                      onChange={handleChange}
-                      className={inputClasses}
-                      placeholder="Sunday - Thursday: 9:00 AM - 6:00 PM"
-                    />
-                  </div>
-                  <div>
-                    <label className={labelClasses}>
-                      {language === "arabic"
-                        ? "ساعات العمل (عربي)"
-                        : "Working Hours (Arabic)"}
-                    </label>
-                    <input
-                      type="text"
-                      name="working_hours_arabic"
-                      value={settings.working_hours_arabic || ""}
-                      onChange={handleChange}
-                      className={inputClasses}
-                      placeholder="الأحد - الخميس: 9:00 ص - 6:00 م"
-                    />
+
+                  {/* Working Hours Section */}
+                  <div className="md:col-span-2">
+                    <div className="border-t border-gray-200 pt-6 mt-4">
+                      <div className="flex items-center gap-2 mb-4">
+                        <Clock className="h-5 w-5 text-lawyer-accent" />
+                        <h3 className="text-lg font-semibold text-gray-900">
+                          {language === "arabic"
+                            ? "ساعات العمل"
+                            : "Working Hours"}
+                        </h3>
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <div>
+                          <label className={labelClasses}>
+                            {language === "arabic" ? "من يوم" : "From Day"}
+                          </label>
+                          <select
+                            value={workingHours.startDay}
+                            onChange={(e) =>
+                              updateWorkingHours("startDay", e.target.value)
+                            }
+                            className={inputClasses}
+                          >
+                            {(language === "arabic"
+                              ? dayOptions.arabic
+                              : dayOptions.english
+                            ).map((day) => (
+                              <option key={day.value} value={day.value}>
+                                {day.label}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+
+                        <div>
+                          <label className={labelClasses}>
+                            {language === "arabic" ? "إلى يوم" : "To Day"}
+                          </label>
+                          <select
+                            value={workingHours.endDay}
+                            onChange={(e) =>
+                              updateWorkingHours("endDay", e.target.value)
+                            }
+                            className={inputClasses}
+                          >
+                            {(language === "arabic"
+                              ? dayOptions.arabic
+                              : dayOptions.english
+                            ).map((day) => (
+                              <option key={day.value} value={day.value}>
+                                {day.label}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+
+                        <div>
+                          <label className={labelClasses}>
+                            {language === "arabic" ? "من الساعة" : "From Time"}
+                          </label>
+                          <input
+                            type="time"
+                            value={workingHours.startTime}
+                            onChange={(e) =>
+                              updateWorkingHours("startTime", e.target.value)
+                            }
+                            className={inputClasses}
+                          />
+                        </div>
+
+                        <div>
+                          <label className={labelClasses}>
+                            {language === "arabic" ? "إلى الساعة" : "To Time"}
+                          </label>
+                          <input
+                            type="time"
+                            value={workingHours.endTime}
+                            onChange={(e) =>
+                              updateWorkingHours("endTime", e.target.value)
+                            }
+                            className={inputClasses}
+                          />
+                        </div>
+                      </div>
+
+                      {/* Preview of generated working hours */}
+                      <div className="mt-4 p-3 bg-gray-50 rounded-lg">
+                        <p className="text-sm text-gray-500 mb-1">
+                          {language === "arabic" ? "معاينة:" : "Preview:"}
+                        </p>
+                        <p className="text-sm text-gray-700">
+                          {settings.working_hours}
+                        </p>
+                        <p
+                          className="text-sm text-gray-700 mt-1 font-arabic"
+                          dir="rtl"
+                        >
+                          {settings.working_hours_arabic}
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -513,7 +683,10 @@ const Settings = () => {
               <div className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <label className={labelClasses}>Facebook</label>
+                    <label className={labelClasses}>
+                      <Facebook className="inline w-4 h-4 mr-2" />
+                      Facebook
+                    </label>
                     <input
                       type="url"
                       name="facebook"
@@ -524,7 +697,10 @@ const Settings = () => {
                     />
                   </div>
                   <div>
-                    <label className={labelClasses}>Twitter / X</label>
+                    <label className={labelClasses}>
+                      <Twitter className="inline w-4 h-4 mr-2" />
+                      Twitter / X
+                    </label>
                     <input
                       type="url"
                       name="twitter"
@@ -535,7 +711,10 @@ const Settings = () => {
                     />
                   </div>
                   <div>
-                    <label className={labelClasses}>Instagram</label>
+                    <label className={labelClasses}>
+                      <Instagram className="inline w-4 h-4 mr-2" />
+                      Instagram
+                    </label>
                     <input
                       type="url"
                       name="instagram"
@@ -546,7 +725,10 @@ const Settings = () => {
                     />
                   </div>
                   <div>
-                    <label className={labelClasses}>LinkedIn</label>
+                    <label className={labelClasses}>
+                      <Linkedin className="inline w-4 h-4 mr-2" />
+                      LinkedIn
+                    </label>
                     <input
                       type="url"
                       name="linkedin"
@@ -565,17 +747,18 @@ const Settings = () => {
               <button
                 type="submit"
                 disabled={saving}
-                className="flex-1 bg-lawyer-accent text-white font-semibold py-3 rounded-lg hover:bg-lawyer-primary transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 bg-lawyer-accent text-white font-semibold py-3 rounded-lg hover:bg-lawyer-primary transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {saving ? (
-                  <div className="flex items-center justify-center gap-2">
+                  <>
                     <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                     {language === "arabic" ? "جاري الحفظ..." : "Saving..."}
-                  </div>
-                ) : language === "arabic" ? (
-                  "حفظ الإعدادات"
+                  </>
                 ) : (
-                  "Save Settings"
+                  <>
+                    <Save className="w-5 h-5" />
+                    {language === "arabic" ? "حفظ الإعدادات" : "Save Settings"}
+                  </>
                 )}
               </button>
             </div>
