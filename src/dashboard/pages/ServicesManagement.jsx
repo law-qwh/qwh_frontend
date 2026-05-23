@@ -2,8 +2,10 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import api from "../../services/api";
+import { useLanguage } from "../../contexts/LanguageContext";
 
 const ServicesManagement = () => {
+  const { language } = useLanguage();
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -385,11 +387,12 @@ const ServicesManagement = () => {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
-            Legal Services
+            {language === "arabic" ? "الخدمات القانونية" : "Legal Services"}
           </h1>
           <p className="text-gray-600 mt-1 text-sm md:text-base">
-            Manage your main legal services (Both active and inactive services
-            are shown here)
+            {language === "arabic"
+              ? "قم بإدارة خدماتك القانونية الرئيسية (يتم عرض الخدمات النشطة وغير النشطة هنا)"
+              : "Manage your main legal services (Both active and inactive services are shown here)"}
           </p>
         </div>
         <button
@@ -409,7 +412,7 @@ const ServicesManagement = () => {
               d="M12 4v16m8-8H4"
             />
           </svg>
-          Add New Service
+          {language === "arabic" ? "إضافة خدمة جديدة" : "Add New Service"}
         </button>
       </div>
 
@@ -418,7 +421,9 @@ const ServicesManagement = () => {
         <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">Total Services</p>
+              <p className="text-sm text-gray-500">
+                {language === "arabic" ? "إجمالي الخدمات" : "Total Services"}
+              </p>
               <p className="text-2xl font-bold text-gray-900">{stats.total}</p>
             </div>
             <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
@@ -430,7 +435,9 @@ const ServicesManagement = () => {
         <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">Active Services</p>
+              <p className="text-sm text-gray-500">
+                {language === "arabic" ? "الخدمات النشطة" : "Active Services"}
+              </p>
               <p className="text-2xl font-bold text-green-600">
                 {stats.active}
               </p>
@@ -444,7 +451,11 @@ const ServicesManagement = () => {
         <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">Featured Services</p>
+              <p className="text-sm text-gray-500">
+                {language === "arabic"
+                  ? "الخدمات المميزة"
+                  : "Featured Services"}
+              </p>
               <p className="text-2xl font-bold text-yellow-600">
                 {stats.featured}
               </p>
@@ -506,9 +517,17 @@ const ServicesManagement = () => {
             onChange={(e) => setFilterStatus(e.target.value)}
             className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-lawyer-accent bg-white"
           >
-            <option value="all">All Services</option>
-            <option value="active">Active Only</option>
-            <option value="inactive">Inactive Only</option>
+            <option value="all">
+              {language === "arabic" ? "جميع الخدمات" : "All Services"}
+            </option>
+
+            <option value="active">
+              {language === "arabic" ? "النشطة فقط" : "Active Only"}
+            </option>
+
+            <option value="inactive">
+              {language === "arabic" ? "غير النشطة فقط" : "Inactive Only"}
+            </option>
           </select>
         </div>
       </div>
@@ -520,22 +539,29 @@ const ServicesManagement = () => {
             <thead className="bg-gray-50">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-12">
-                  Order
+                  {language === "arabic" ? "الترتيب" : "Order"}
                 </th>
+
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Icon
+                  {language === "arabic" ? "الأيقونة" : "Icon"}
                 </th>
+
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Title (EN / AR)
+                  {language === "arabic"
+                    ? "العنوان (EN / AR)"
+                    : "Title (EN / AR)"}
                 </th>
+
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Description
+                  {language === "arabic" ? "الوصف" : "Description"}
                 </th>
+
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Status
+                  {language === "arabic" ? "الحالة" : "Status"}
                 </th>
+
                 <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Actions
+                  {language === "arabic" ? "الإجراءات" : "Actions"}
                 </th>
               </tr>
             </thead>
@@ -701,12 +727,18 @@ const ServicesManagement = () => {
           <div className="p-12 text-center">
             <div className="text-6xl mb-4">🔍</div>
             <h3 className="text-xl font-bold text-gray-900 mb-2">
-              No services found
+              {language === "arabic"
+                ? "لم يتم العثور على خدمات"
+                : "No services found"}
             </h3>
             <p className="text-gray-500 mb-4">
               {searchTerm
-                ? "Try adjusting your search or filter criteria"
-                : "Click the button above to add your first service"}
+                ? language === "arabic"
+                  ? "حاول تعديل البحث أو معايير التصفية"
+                  : "Try adjusting your search or filter criteria"
+                : language === "arabic"
+                  ? "اضغط على الزر أعلاه لإضافة خدمتك الأولى"
+                  : "Click the button above to add your first service"}
             </p>
           </div>
         )}
@@ -758,7 +790,9 @@ const ServicesManagement = () => {
               <form onSubmit={handleSubmit} className="p-6 space-y-5">
                 <div>
                   <label className="block text-gray-700 font-semibold mb-2">
-                    Service Icon *
+                    {language === "arabic"
+                      ? "أيقونة الخدمة *"
+                      : "Service Icon *"}
                   </label>
                   <div className="grid grid-cols-6 gap-2">
                     {iconOptions.map((icon) => (
@@ -781,7 +815,9 @@ const ServicesManagement = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-gray-700 font-semibold mb-2">
-                      Title (English) *
+                      {language === "arabic"
+                        ? "العنوان (بالإنجليزية) *"
+                        : "Title (English) *"}
                     </label>
                     <input
                       type="text"
@@ -793,14 +829,20 @@ const ServicesManagement = () => {
                         })
                       }
                       className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:border-lawyer-accent focus:ring-2 focus:ring-lawyer-accent/20"
-                      placeholder="Enter service title in English"
+                      placeholder={
+                        language === "arabic"
+                          ? "أدخل عنوان الخدمة باللغة الإنجليزية"
+                          : "Enter service title in English"
+                      }
                       required
                     />
                   </div>
 
                   <div>
                     <label className="block text-gray-700 font-semibold mb-2">
-                      Title (Arabic) *
+                      {language === "arabic"
+                        ? "العنوان (بالعربية) *"
+                        : "Title (Arabic) *"}
                     </label>
                     <input
                       type="text"
@@ -812,7 +854,11 @@ const ServicesManagement = () => {
                         })
                       }
                       className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:border-lawyer-accent text-right font-arabic"
-                      placeholder="أدخل عنوان الخدمة بالعربية"
+                      placeholder={
+                        language === "arabic"
+                          ? "أدخل عنوان الخدمة بالعربية"
+                          : "Enter service title in Arabic"
+                      }
                       dir="rtl"
                       required
                     />
@@ -822,7 +868,9 @@ const ServicesManagement = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-gray-700 font-semibold mb-2">
-                      Description (English) *
+                      {language === "arabic"
+                        ? "الوصف (بالإنجليزية) *"
+                        : "Description (English) *"}
                     </label>
                     <textarea
                       value={formData.description_english}
@@ -834,14 +882,20 @@ const ServicesManagement = () => {
                       }
                       rows="4"
                       className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:border-lawyer-accent resize-none"
-                      placeholder="Enter detailed description in English"
+                      placeholder={
+                        language === "arabic"
+                          ? "أدخل وصفًا تفصيليًا باللغة الإنجليزية"
+                          : "Enter detailed description in English"
+                      }
                       required
                     />
                   </div>
 
                   <div>
                     <label className="block text-gray-700 font-semibold mb-2">
-                      Description (Arabic) *
+                      {language === "arabic"
+                        ? "الوصف (بالعربية) *"
+                        : "Description (Arabic) *"}
                     </label>
                     <textarea
                       value={formData.description_arabic}
@@ -853,7 +907,11 @@ const ServicesManagement = () => {
                       }
                       rows="4"
                       className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:border-lawyer-accent resize-none text-right font-arabic"
-                      placeholder="أدخل الوصف التفصيلي بالعربية"
+                      placeholder={
+                        language === "arabic"
+                          ? "أدخل الوصف التفصيلي بالعربية"
+                          : "Enter detailed description in Arabic"
+                      }
                       dir="rtl"
                       required
                     />
@@ -863,7 +921,9 @@ const ServicesManagement = () => {
                 {!editingService && (
                   <div>
                     <label className="block text-gray-700 font-semibold mb-2">
-                      Featured Image
+                      {language === "arabic"
+                        ? "الصورة المميزة"
+                        : "Featured Image"}
                     </label>
                     <input
                       type="file"
@@ -872,7 +932,9 @@ const ServicesManagement = () => {
                       className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:border-lawyer-accent"
                     />
                     <p className="text-xs text-gray-500 mt-1">
-                      Optional. Recommended size: 800x600px
+                      {language === "arabic"
+                        ? "اختياري. الحجم الموصى به: 800 × 600 بكسل"
+                        : "Optional. Recommended size: 800x600px"}
                     </p>
                   </div>
                 )}
@@ -895,7 +957,9 @@ const ServicesManagement = () => {
                       htmlFor="is_featured"
                       className="text-gray-700 font-medium cursor-pointer"
                     >
-                      Mark as Featured Service (shows on homepage)
+                      {language === "arabic"
+                        ? "وضع علامة كخدمة مميزة (تظهر في الصفحة الرئيسية)"
+                        : "Mark as Featured Service (shows on homepage)"}
                     </label>
                   </div>
 
@@ -916,7 +980,9 @@ const ServicesManagement = () => {
                       htmlFor="is_active"
                       className="text-gray-700 font-medium cursor-pointer"
                     >
-                      Active (visible on website)
+                      {language === "arabic"
+                        ? "نشط (مرئي على الموقع)"
+                        : "Active (visible on website)"}
                     </label>
                   </div>
                 </div>
@@ -927,7 +993,7 @@ const ServicesManagement = () => {
                     onClick={handleCloseModal}
                     className="flex-1 px-4 py-2.5 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
                   >
-                    Cancel
+                    {language === "arabic" ? "إلغاء" : "Cancel"}
                   </button>
                   <button
                     type="submit"
@@ -937,10 +1003,16 @@ const ServicesManagement = () => {
                     {submitting ? (
                       <>
                         <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                        Saving...
+                        {language === "arabic" ? "جاري الحفظ..." : "Saving..."}
                       </>
                     ) : editingService ? (
-                      "Update Service"
+                      language === "arabic" ? (
+                        "تحديث الخدمة"
+                      ) : (
+                        "Update Service"
+                      )
+                    ) : language === "arabic" ? (
+                      "إضافة خدمة"
                     ) : (
                       "Add Service"
                     )}
