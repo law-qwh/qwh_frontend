@@ -26,10 +26,9 @@ import {
   BarChart,
   AlertCircle,
   Hash,
-  Shirt,
-  Passport,
   Eye,
   EyeOff,
+  Globe, // Alternative for Passport (Immigration)
 } from "lucide-react";
 
 const ServicesManagement = () => {
@@ -79,8 +78,16 @@ const ServicesManagement = () => {
       value: "users",
     },
     { component: Home, label: "Home - Real Estate Law", value: "home" },
-    { component: Shirt, label: "Professional Attire", value: "shirt" },
-    { component: Passport, label: "Passport - Immigration", value: "passport" },
+    {
+      component: Briefcase,
+      label: "Professional Services",
+      value: "professional",
+    }, // Replaces Shirt
+    {
+      component: Globe,
+      label: "Globe - Immigration/International",
+      value: "globe",
+    }, // Replaces Passport
     {
       component: Lightbulb,
       label: "Lightbulb - Legal Insights",
