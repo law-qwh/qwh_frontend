@@ -5,6 +5,7 @@ import { useInView } from "react-intersection-observer";
 import { useEffect, useState } from "react";
 import { apiService } from "../services/api";
 import { getImageUrl } from "../utils/imageHelper";
+import background_Image from "../assets/bg-image.jpeg";
 import {
   Scale,
   Building,
@@ -332,7 +333,7 @@ const Home = () => {
           style={{
             backgroundImage: heroData
               ? `url(${getImageUrl(heroData.image_path, heroData.image_url)})`
-              : "url('/assets/bg-image.jpeg')",
+              : `url(${background_Image})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
             opacity: 0.15,
