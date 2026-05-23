@@ -28,7 +28,7 @@ import {
   Hash,
   Eye,
   EyeOff,
-  Globe, // Alternative for Passport (Immigration)
+  Globe,
 } from "lucide-react";
 
 const ServicesManagement = () => {
@@ -41,7 +41,6 @@ const ServicesManagement = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState("all");
   const [submitting, setSubmitting] = useState(false);
-  const [imageFile, setImageFile] = useState(null);
 
   const [formData, setFormData] = useState({
     title_english: "",
@@ -82,12 +81,12 @@ const ServicesManagement = () => {
       component: Briefcase,
       label: "Professional Services",
       value: "professional",
-    }, // Replaces Shirt
+    },
     {
       component: Globe,
       label: "Globe - Immigration/International",
       value: "globe",
-    }, // Replaces Passport
+    },
     {
       component: Lightbulb,
       label: "Lightbulb - Legal Insights",
@@ -114,7 +113,6 @@ const ServicesManagement = () => {
   const getIconComponent = (iconValue) => {
     const icon = iconOptions.find((i) => i.value === iconValue);
     if (icon) return icon.component;
-    // Default to Scale if not found
     return Scale;
   };
 
@@ -169,14 +167,12 @@ const ServicesManagement = () => {
         order: services.length,
       });
     }
-    setImageFile(null);
     setIsModalOpen(true);
   };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setEditingService(null);
-    setImageFile(null);
     setFormData({
       title_english: "",
       title_arabic: "",
@@ -212,21 +208,21 @@ const ServicesManagement = () => {
       const token = localStorage.getItem("token");
       let response;
 
-      if (editingService) {
-        const updateData = {
-          title_english: formData.title_english,
-          title_arabic: formData.title_arabic,
-          description_english: formData.description_english,
-          description_arabic: formData.description_arabic,
-          icon: formData.icon,
-          is_featured: formData.is_featured ? 1 : 0,
-          is_active: formData.is_active ? 1 : 0,
-          order: formData.order,
-        };
+      const submitData = {
+        title_english: formData.title_english,
+        title_arabic: formData.title_arabic,
+        description_english: formData.description_english,
+        description_arabic: formData.description_arabic,
+        icon: formData.icon,
+        is_featured: formData.is_featured ? 1 : 0,
+        is_active: formData.is_active ? 1 : 0,
+        order: formData.order,
+      };
 
+      if (editingService) {
         response = await api.put(
           `/api/admin/services/${editingService.id}`,
-          updateData,
+          submitData,
           {
             headers: {
               "Content-Type": "application/json",
@@ -235,29 +231,9 @@ const ServicesManagement = () => {
           },
         );
       } else {
-        const formDataToSend = new FormData();
-        formDataToSend.append("title_english", formData.title_english);
-        formDataToSend.append("title_arabic", formData.title_arabic);
-        formDataToSend.append(
-          "description_english",
-          formData.description_english,
-        );
-        formDataToSend.append(
-          "description_arabic",
-          formData.description_arabic,
-        );
-        formDataToSend.append("icon", formData.icon);
-        formDataToSend.append("is_featured", formData.is_featured ? 1 : 0);
-        formDataToSend.append("is_active", formData.is_active ? 1 : 0);
-        formDataToSend.append("order", formData.order);
-
-        if (imageFile) {
-          formDataToSend.append("featured_image", imageFile);
-        }
-
-        response = await api.post("/api/admin/services", formDataToSend, {
+        response = await api.post("/api/admin/services", submitData, {
           headers: {
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
         });
@@ -942,27 +918,6 @@ const ServicesManagement = () => {
                     />
                   </div>
                 </div>
-
-                {!editingService && (
-                  <div>
-                    <label className="block text-gray-700 font-semibold mb-2">
-                      {language === "arabic"
-                        ? "الصورة المميزة"
-                        : "Featured Image"}
-                    </label>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => setImageFile(e.target.files[0])}
-                      className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:border-lawyer-accent"
-                    />
-                    <p className="text-xs text-gray-500 mt-1">
-                      {language === "arabic"
-                        ? "اختياري. الحجم الموصى به: 800 × 600 بكسل"
-                        : "Optional. Recommended size: 800x600px"}
-                    </p>
-                  </div>
-                )}
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="flex items-center gap-3">
