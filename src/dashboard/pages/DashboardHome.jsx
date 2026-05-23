@@ -5,6 +5,33 @@ import { useState, useEffect } from "react";
 import StatsCard from "../components/StatsCard";
 import { apiService } from "../../services/api";
 import { useLanguage } from "../../contexts/LanguageContext";
+import {
+  LayoutDashboard,
+  Users,
+  Mail,
+  Eye,
+  TrendingUp,
+  Plus,
+  UserPlus,
+  MessageSquare,
+  BarChart3,
+  Settings,
+  Sparkles,
+  ArrowRight,
+  CheckCircle,
+  Clock,
+  Sun,
+  Moon,
+  CloudSun,
+  MessageCircle,
+  Star,
+  Briefcase,
+  Scale,
+  FileText,
+  Palette,
+  MailOpen,
+  Calendar,
+} from "lucide-react";
 
 const DashboardHome = () => {
   const navigate = useNavigate();
@@ -162,37 +189,37 @@ const DashboardHome = () => {
   const quickActions = dashboardData?.quick_actions || [
     {
       name: language === "arabic" ? "تعديل القسم الرئيسي" : "Edit Main Section",
-      icon: "🎨",
+      icon: <Palette className="h-6 w-6" />,
       path: "/dashboard/hero",
       color: "from-pink-500 to-rose-500",
     },
     {
       name: language === "arabic" ? "إضافة خدمة جديدة" : "Add New Service",
-      icon: "➕",
+      icon: <Plus className="h-6 w-6" />,
       path: "/dashboard/services",
       color: "from-blue-500 to-cyan-500",
     },
     {
       name: language === "arabic" ? "إضافة عضو فريق" : "Add Team Member",
-      icon: "👤",
+      icon: <UserPlus className="h-6 w-6" />,
       path: "/dashboard/team",
       color: "from-green-500 to-emerald-500",
     },
     {
       name: language === "arabic" ? "عرض الرسائل" : "View Messages",
-      icon: "📧",
+      icon: <MessageCircle className="h-6 w-6" />,
       path: "/dashboard/contact",
       color: "from-purple-500 to-indigo-500",
     },
     {
       name: language === "arabic" ? "تحديث الإحصائيات" : "Update Stats",
-      icon: "📊",
+      icon: <BarChart3 className="h-6 w-6" />,
       path: "/dashboard/stats",
       color: "from-orange-500 to-red-500",
     },
     {
       name: language === "arabic" ? "إدارة الإعدادات" : "Manage Settings",
-      icon: "⚙️",
+      icon: <Settings className="h-6 w-6" />,
       path: "/dashboard/settings",
       color: "from-gray-600 to-gray-800",
     },
@@ -220,7 +247,13 @@ const DashboardHome = () => {
   const handleMessageView = (message) => {
     navigate("/dashboard/contact");
   };
-
+  // Get greeting icon based on time
+  const getGreetingIcon = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return <Sun className="h-8 w-8 text-yellow-300" />;
+    if (hour < 18) return <CloudSun className="h-8 w-8 text-orange-300" />;
+    return <Moon className="h-8 w-8 text-blue-200" />;
+  };
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -253,14 +286,8 @@ const DashboardHome = () => {
 
         <div className="relative z-10 flex flex-col md:flex-row md:items-center md:justify-between">
           <div>
-            <div className="flex items-center gap-2 mb-2">
-              <span className="text-3xl md:text-4xl">
-                {greeting === "Good Morning" ||
-                  (greeting === "صباح الخير" && "🌅")}
-                {greeting === "Good Afternoon" ||
-                  (greeting === "مساء الخير" && "☀️")}
-                {greeting === "Good Evening" && "🌙"}
-              </span>
+            <div className="flex items-center gap-3 mb-2">
+              {getGreetingIcon()}
               <h1 className="text-2xl md:text-3xl font-bold">{greeting}!</h1>
             </div>
             <p className="text-white/90 text-sm md:text-base mt-1">
