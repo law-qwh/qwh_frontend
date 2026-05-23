@@ -83,8 +83,8 @@ const Login = () => {
 
   // Demo credentials - Updated to match your seeded user
   const fillDemoCredentials = () => {
-    setEmail("admin@qwhlegal.com");
-    setPassword("password123");
+    setEmail("admin@qwh.com.sa");
+    setPassword("admin_123123Qwh*");
   };
 
   return (
@@ -169,7 +169,7 @@ const Login = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:border-lawyer-accent focus:ring-2 focus:ring-lawyer-accent/20 transition-all pl-10"
-                placeholder="admin@qwhlegal.com"
+                placeholder="admin@qwh.com.sa"
                 required
               />
             </div>
@@ -310,7 +310,7 @@ const Login = () => {
                 : "Use demo credentials"}
             </button>
             <div className="mt-2 text-xs text-gray-400">
-              <span>admin@qwhlegal.com / password123</span>
+              <span>admin@qwh.com.sa / admin_123123Qwh*</span>
             </div>
           </div>
         </div>
