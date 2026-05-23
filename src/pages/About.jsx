@@ -21,7 +21,7 @@ import {
   Zap,
   TrendingUp,
   Mail,
-  Linkedin as LinkedinIcon, // Alias to avoid confusion
+  LinkedinIcon, // ✅ Correct - use LinkedinIcon
   AlertCircle,
   ArrowDown,
 } from "lucide-react";
