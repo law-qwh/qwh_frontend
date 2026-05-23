@@ -49,7 +49,7 @@ export const apiService = {
     
     // ==================== HERO SLIDES ====================
     getHeroSlides: () => api.get('/api/hero'),
-    getHeroSlide: (id) => api.get(`/api/hero/${id}`),
+    getHeroSlide: (id) => api.get(`/api/hero/1`),
     createHeroSlide: (data) => api.post('/api/admin/hero-slides', data),
     updateHeroSlide: (id, data) => api.put(`/api/admin/hero-slides/${id}`, data),
     deleteHeroSlide: (id) => api.delete(`/api/admin/hero-slides/${id}`),
