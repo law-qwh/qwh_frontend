@@ -245,13 +245,7 @@ const Home = () => {
       try {
         const response = await apiService.getHeroSlide();
         if (response.data.success && response.data.data) {
-          if (
-            response.data.success &&
-            response.data.data &&
-            response.data.data.length > 0
-          ) {
-            setHeroData(response.data.data[0]);
-          }
+          setHeroData(response.data.data[0]);
         }
       } catch (error) {
         console.error("Error fetching hero data:", error);
