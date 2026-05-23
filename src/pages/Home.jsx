@@ -244,7 +244,7 @@ const Home = () => {
     const fetchHeroData = async () => {
       try {
         const response = await apiService.getHeroSlide();
-        console.log(response.data);
+        console.log(response.data.data.image_url);
         if (response.data.success && response.data.data) {
           setHeroData(response.data.data);
         }
