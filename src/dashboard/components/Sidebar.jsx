@@ -3,6 +3,25 @@ import { NavLink } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "../../contexts/LanguageContext";
 import { useState, useEffect } from "react";
+import {
+  LayoutDashboard,
+  Palette,
+  Scale,
+  TrendingUp,
+  FileText,
+  Users,
+  Mail,
+  Settings,
+  Home,
+  Edit3,
+  MessageCircle,
+  LogOut,
+  ChevronLeft,
+  ChevronRight,
+  Gavel,
+  Briefcase,
+  Star,
+} from "lucide-react";
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
   const { language, isRTL } = useLanguage();
@@ -21,28 +40,28 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
   const menuGroups = [
     {
       title: language === "arabic" ? "الرئيسية" : "Main",
-      icon: "📋",
+      icon: Home,
       items: [
         {
           path: "/dashboard",
           name: language === "arabic" ? "لوحة التحكم" : "Dashboard",
-          icon: "📊",
+          icon: LayoutDashboard,
         },
       ],
     },
     {
       title: language === "arabic" ? "إدارة المحتوى" : "Content Management",
-      icon: "✏️",
+      icon: Edit3,
       items: [
         {
           path: "/dashboard/hero",
           name: language === "arabic" ? "القسم الرئيسي" : "Main Section",
-          icon: "🎨",
+          icon: Palette,
         },
         {
           path: "/dashboard/services",
           name: language === "arabic" ? "الخدمات القانونية" : "Legal Services",
-          icon: "⚖️",
+          icon: Scale,
         },
         // {
         //   path: "/dashboard/featured-services",
@@ -52,39 +71,39 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
         {
           path: "/dashboard/stats",
           name: language === "arabic" ? "الأرقام المؤثرة" : "Impact Numbers",
-          icon: "📈",
+          icon: TrendingUp,
         },
         {
           path: "/dashboard/about",
           name: language === "arabic" ? "صفحة من نحن" : "About Page",
-          icon: "📄",
+          icon: FileText,
         },
         {
           path: "/dashboard/team",
           name: language === "arabic" ? "إدارة الفريق" : "Team Management",
-          icon: "👥",
+          icon: Users,
         },
       ],
     },
     {
       title: language === "arabic" ? "التواصل" : "Communication",
-      icon: "💬",
+      icon: MessageCircle,
       items: [
         {
           path: "/dashboard/contact",
           name: language === "arabic" ? "رسائل الاتصال" : "Contact Messages",
-          icon: "✉️",
+          icon: Mail,
         },
       ],
     },
     {
       title: language === "arabic" ? "الإعدادات" : "Settings",
-      icon: "⚙️",
+      icon: Settings,
       items: [
         {
           path: "/dashboard/settings",
           name: language === "arabic" ? "الإعدادات" : "Settings",
-          icon: "⚙️",
+          icon: Settings,
         },
       ],
     },

@@ -2,8 +2,10 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import api from "../../services/api";
+import { useLanguage } from "../../contexts/LanguageContext";
 
 const StatsManagement = () => {
+  const { language } = useLanguage();
   const [stats, setStats] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -362,10 +364,12 @@ const StatsManagement = () => {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
-            Impact Numbers
+            {language === "arabic" ? "أرقام التأثير" : "Impact Numbers"}
           </h1>
           <p className="text-gray-600 mt-1 text-sm md:text-base">
-            Manage statistics and metrics displayed on your website
+            {language === "arabic"
+              ? "إدارة الإحصائيات والمقاييس المعروضة على موقعك"
+              : "Manage statistics and metrics displayed on your website"}
           </p>
         </div>
         <div className="flex gap-3">
@@ -378,7 +382,7 @@ const StatsManagement = () => {
               {savingChanges ? (
                 <>
                   <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                  Saving...
+                  {language === "arabic" ? "جاري الحفظ..." : "Saving..."}
                 </>
               ) : (
                 <>
@@ -395,7 +399,8 @@ const StatsManagement = () => {
                       d="M5 13l4 4L19 7"
                     />
                   </svg>
-                  Save Changes ({modifiedStats.size})
+                  {language === "arabic" ? "حفظ التغييرات" : "Save Changes"} (
+                  {modifiedStats.size})
                 </>
               )}
             </button>
@@ -417,7 +422,9 @@ const StatsManagement = () => {
                 d="M12 4v16m8-8H4"
               />
             </svg>
-            Add New Statistic
+            {language === "arabic"
+              ? "إضافة إحصائية جديدة"
+              : "Add New Statistic"}
           </button>
         </div>
       </div>
@@ -427,7 +434,11 @@ const StatsManagement = () => {
         <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">Total Statistics</p>
+              <p className="text-sm text-gray-500">
+                {language === "arabic"
+                  ? "إجمالي الإحصائيات"
+                  : "Total Statistics"}
+              </p>
               <p className="text-2xl font-bold text-gray-900">{stats.length}</p>
             </div>
             <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
@@ -451,7 +462,11 @@ const StatsManagement = () => {
         <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">Active Statistics</p>
+              <p className="text-sm text-gray-500">
+                {language === "arabic"
+                  ? "الإحصائيات النشطة"
+                  : "Active Statistics"}
+              </p>
               <p className="text-2xl font-bold text-green-600">
                 {activeStats.length}
               </p>
@@ -477,7 +492,11 @@ const StatsManagement = () => {
         <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">Total Impact Value</p>
+              <p className="text-sm text-gray-500">
+                {language === "arabic"
+                  ? "قيمة التأثير الإجمالية"
+                  : "Total Impact Value"}
+              </p>
               <p className="text-2xl font-bold text-purple-600">
                 {totalValue.toLocaleString()}+
               </p>
@@ -531,10 +550,13 @@ const StatsManagement = () => {
       {/* Statistics Table */}
       <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
         <div className="p-6 border-b border-gray-200">
-          <h2 className="text-lg font-bold text-gray-900">Statistics List</h2>
+          <h2 className="text-lg font-bold text-gray-900">
+            {language === "arabic" ? "قائمة الإحصائيات" : "Statistics List"}
+          </h2>
           <p className="text-sm text-gray-500 mt-1">
-            Edit statistics below, then click "Save Changes" to update all at
-            once
+            {language === "arabic"
+              ? 'قم بتحرير الإحصائيات أدناه، ثم انقر على "حفظ التغييرات" لتحديث الكل دفعة واحدة'
+              : 'Edit statistics below, then click "Save Changes" to update all at once'}
           </p>
         </div>
 
@@ -543,25 +565,25 @@ const StatsManagement = () => {
             <thead className="bg-gray-50">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-12">
-                  Order
+                  {language === "arabic" ? "الترتيب" : "Order"}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Icon
+                  {language === "arabic" ? "الأيقونة" : "Icon"}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Label (EN)
+                  {language === "arabic" ? "التسمية (EN)" : "Label (EN)"}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Label (AR)
+                  {language === "arabic" ? "التسمية (AR)" : "Label (AR)"}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Value
+                  {language === "arabic" ? "القيمة" : "Value"}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Status
+                  {language === "arabic" ? "الحالة" : "Status"}
                 </th>
                 <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Actions
+                  {language === "arabic" ? "الإجراءات" : "Actions"}
                 </th>
               </tr>
             </thead>
@@ -645,7 +667,11 @@ const StatsManagement = () => {
                         )
                       }
                       className="w-full min-w-[200px] px-3 py-1.5 border rounded-lg focus:outline-none focus:border-lawyer-accent"
-                      placeholder="English label"
+                      placeholder={
+                        language === "arabic"
+                          ? "التسمية بالإنجليزية"
+                          : "English label"
+                      }
                     />
                   </td>
                   <td className="px-6 py-4">
@@ -660,7 +686,11 @@ const StatsManagement = () => {
                         )
                       }
                       className="w-full min-w-[200px] px-3 py-1.5 border rounded-lg focus:outline-none focus:border-lawyer-accent text-right font-arabic"
-                      placeholder="Arabic label"
+                      placeholder={
+                        language === "arabic"
+                          ? "التسمية بالعربية"
+                          : "Arabic label"
+                      }
                       dir="rtl"
                     />
                   </td>
@@ -672,7 +702,9 @@ const StatsManagement = () => {
                         handleLocalFieldChange(stat.id, "value", e.target.value)
                       }
                       className="w-28 px-3 py-1.5 border rounded-lg focus:outline-none focus:border-lawyer-accent"
-                      placeholder="e.g., 1000+"
+                      placeholder={
+                        language === "arabic" ? "مثال: 1000+" : "e.g., 1000+"
+                      }
                     />
                   </td>
                   <td className="px-6 py-4">
@@ -724,10 +756,14 @@ const StatsManagement = () => {
           <div className="p-12 text-center">
             <div className="text-6xl mb-4">📊</div>
             <h3 className="text-xl font-bold text-gray-900 mb-2">
-              No statistics found
+              {language === "arabic"
+                ? "لم يتم العثور على إحصائيات"
+                : "No statistics found"}
             </h3>
             <p className="text-gray-500 mb-4">
-              Click the button above to add your first statistic
+              {language === "arabic"
+                ? "انقر على الزر أعلاه لإضافة أول إحصائية لك"
+                : "Click the button above to add your first statistic"}
             </p>
           </div>
         )}
@@ -738,9 +774,13 @@ const StatsManagement = () => {
         <div className="bg-gradient-to-r from-lawyer-primary to-lawyer-secondary rounded-2xl shadow-xl overflow-hidden">
           <div className="p-6">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-bold text-white">Live Preview</h3>
+              <h3 className="text-xl font-bold text-white">
+                {language === "arabic" ? "معاينة مباشرة" : "Live Preview"}
+              </h3>
               <span className="text-xs text-white/70">
-                Real-time preview of your statistics
+                {language === "arabic"
+                  ? "معاينة فورية لإحصائياتك"
+                  : "Real-time preview of your statistics"}
               </span>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
@@ -786,14 +826,20 @@ const StatsManagement = () => {
             >
               <div className="p-6 border-b border-gray-200">
                 <h2 className="text-2xl font-bold text-gray-900">
-                  {editingStat ? "Edit Statistic" : "Add New Statistic"}
+                  {language === "arabic"
+                    ? editingStat
+                      ? "تحرير الإحصائية"
+                      : "إضافة إحصائية جديدة"
+                    : editingStat
+                      ? "Edit Statistic"
+                      : "Add New Statistic"}
                 </h2>
               </div>
 
               <div className="p-6 space-y-5">
                 <div>
                   <label className="block text-gray-700 font-semibold mb-2">
-                    Icon *
+                    {language === "arabic" ? "الأيقونة *" : "Icon *"}
                   </label>
                   <div className="grid grid-cols-8 gap-2">
                     {iconOptions.map((icon) => (
@@ -815,14 +861,20 @@ const StatsManagement = () => {
 
                 <div>
                   <label className="block text-gray-700 font-semibold mb-2">
-                    Label (English) *
+                    {language === "arabic"
+                      ? "التسمية (إنجليزي) *"
+                      : "Label (English) *"}
                   </label>
                   <input
                     type="text"
                     name="label_english"
                     value={formData.label_english}
                     onChange={handleFormChange}
-                    placeholder="e.g., Happy Clients"
+                    placeholder={
+                      language === "arabic"
+                        ? "مثال: عملاء سعداء"
+                        : "e.g., Happy Clients"
+                    }
                     className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:border-lawyer-accent"
                     required
                   />
@@ -830,14 +882,20 @@ const StatsManagement = () => {
 
                 <div>
                   <label className="block text-gray-700 font-semibold mb-2">
-                    Label (Arabic) *
+                    {language === "arabic"
+                      ? "التسمية (عربي) *"
+                      : "Label (Arabic) *"}
                   </label>
                   <input
                     type="text"
                     name="label_arabic"
                     value={formData.label_arabic}
                     onChange={handleFormChange}
-                    placeholder="أدخل التسمية بالعربية"
+                    placeholder={
+                      language === "arabic"
+                        ? "أدخل التسمية بالعربية"
+                        : "Enter label in Arabic"
+                    }
                     dir="rtl"
                     className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:border-lawyer-accent font-arabic"
                     required
@@ -846,14 +904,16 @@ const StatsManagement = () => {
 
                 <div>
                   <label className="block text-gray-700 font-semibold mb-2">
-                    Value *
+                    {language === "arabic" ? "القيمة *" : "Value *"}
                   </label>
                   <input
                     type="text"
                     name="value"
                     value={formData.value}
                     onChange={handleFormChange}
-                    placeholder="e.g., 1000+"
+                    placeholder={
+                      language === "arabic" ? "مثال: 1000+" : "e.g., 1000+"
+                    }
                     className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:border-lawyer-accent"
                     required
                   />
@@ -869,7 +929,9 @@ const StatsManagement = () => {
                       className="w-4 h-4 text-lawyer-accent focus:ring-lawyer-accent"
                     />
                     <span className="text-gray-700 font-medium">
-                      Active Status
+                      {language === "arabic"
+                        ? "الحالة النشطة"
+                        : "Active Status"}
                     </span>
                   </label>
                 </div>
@@ -880,7 +942,7 @@ const StatsManagement = () => {
                   onClick={handleCloseModal}
                   className="flex-1 px-4 py-2.5 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
                 >
-                  Cancel
+                  {language === "arabic" ? "إلغاء" : "Cancel"}
                 </button>
                 <button
                   onClick={handleSaveNewStat}
@@ -890,10 +952,16 @@ const StatsManagement = () => {
                   {submitting ? (
                     <>
                       <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                      Saving...
+                      {language === "arabic" ? "جاري الحفظ..." : "Saving..."}
                     </>
                   ) : editingStat ? (
-                    "Update"
+                    language === "arabic" ? (
+                      "تحديث"
+                    ) : (
+                      "Update"
+                    )
+                  ) : language === "arabic" ? (
+                    "إضافة"
                   ) : (
                     "Add"
                   )}
