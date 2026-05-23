@@ -63,11 +63,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
           name: language === "arabic" ? "الخدمات القانونية" : "Legal Services",
           icon: Scale,
         },
-        // {
-        //   path: "/dashboard/featured-services",
-        //   name: language === "arabic" ? "الخدمات المميزة" : "Featured Services",
-        //   icon: "⭐",
-        // },
         {
           path: "/dashboard/stats",
           name: language === "arabic" ? "الأرقام المؤثرة" : "Impact Numbers",
