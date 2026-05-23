@@ -200,9 +200,7 @@ const Services = () => {
           transition={{ duration: 1.5 }}
           className="absolute inset-0"
           style={{
-            backgroundImage: heroData
-              ? `url(${getImageUrl(heroData.image_path, heroData.image_url)})`
-              : `url(${background_Image})`,
+            backgroundImage: `url(${background_Image})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
             opacity: 0.15,
