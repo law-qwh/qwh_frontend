@@ -246,6 +246,19 @@ const Home = () => {
         const response = await apiService.getHeroSlide();
         console.log(response.data.data.image_url);
         if (response.data.success && response.data.data) {
+          const heroDataReceived = response.data.data;
+          console.log("Hero Data:", heroDataReceived);
+          console.log("Image URL from API:", heroDataReceived.image_url);
+
+          // Try to construct different possible URLs for debugging
+          const possibleUrls = [
+            heroDataReceived.image_url,
+            `${process.env.REACT_APP_API_URL}/storage/${heroDataReceived.image_url}`,
+            `https://qwh.com.sa/storage/${heroDataReceived.image_url}`,
+            heroDataReceived.image_url.replace("/storage", ""),
+          ];
+
+          console.log("Possible URL variations:", possibleUrls);
           setHeroData(response.data.data);
         }
       } catch (error) {
