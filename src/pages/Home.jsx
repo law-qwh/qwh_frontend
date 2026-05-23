@@ -5,6 +5,20 @@ import { useInView } from "react-intersection-observer";
 import { useEffect, useState } from "react";
 import { apiService } from "../services/api";
 import { getImageUrl } from "../utils/imageHelper";
+import {
+  Scale,
+  Building,
+  FileText,
+  Briefcase,
+  Lock,
+  Users,
+  Home as HomeIcon,
+  Lightbulb,
+  DollarSign,
+  Handshake,
+  BarChart,
+  Globe,
+} from "lucide-react";
 // Map icon string to Lucide component
 const getIconComponent = (iconName) => {
   const iconMap = {
@@ -14,7 +28,7 @@ const getIconComponent = (iconName) => {
     briefcase: Briefcase,
     lock: Lock,
     users: Users,
-    home: Home,
+    home: HomeIcon, // Changed from Home to HomeIcon
     lightbulb: Lightbulb,
     "dollar-sign": DollarSign,
     handshake: Handshake,
