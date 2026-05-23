@@ -213,7 +213,7 @@ const About = () => {
           style={{
             backgroundImage: heroData
               ? `url(${getImageUrl(heroData.image_path, heroData.image_url)})`
-              : "url('/src/assets/bg-image.jpeg')",
+              : "url('/assets/bg-image.jpeg')",
             backgroundSize: "cover",
             backgroundPosition: "center",
             opacity: 0.15,

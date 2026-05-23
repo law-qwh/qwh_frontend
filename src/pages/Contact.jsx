@@ -6,6 +6,21 @@ import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { apiService } from "../services/api";
 import { getImageUrl } from "../utils/imageHelper";
+import {
+  MapPin,
+  Phone,
+  Mail,
+  Clock,
+  Send,
+  CheckCircle,
+  AlertCircle,
+  ArrowRight,
+  MessageCircle,
+  Building,
+  User,
+  AtSign,
+  FileText,
+} from "lucide-react";
 
 const Contact = () => {
   const { language } = useLanguage();
@@ -50,7 +65,7 @@ const Contact = () => {
       console.error("Error fetching hero data:", error);
     }
   };
-  // Fetch settings
+
   useEffect(() => {
     fetchSettings();
     fetchHeroData();
@@ -58,7 +73,6 @@ const Contact = () => {
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    // Clear submit status when user starts typing
     if (submitStatus) setSubmitStatus(null);
   };
 
@@ -99,7 +113,6 @@ const Contact = () => {
       });
     } finally {
       setIsSubmitting(false);
-      // Clear success message after 5 seconds
       if (submitStatus?.type === "success") {
         setTimeout(() => setSubmitStatus(null), 5000);
       }
@@ -134,84 +147,22 @@ const Contact = () => {
 
   const contactInfo = [
     {
-      icon: (
-        <svg
-          className="w-6 h-6"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-          />
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-          />
-        </svg>
-      ),
+      icon: MapPin,
       title: language === "english" ? "Office Address" : "عنوان المكتب",
       content: settings.address,
     },
     {
-      icon: (
-        <svg
-          className="w-6 h-6"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-          />
-        </svg>
-      ),
+      icon: Phone,
       title: language === "english" ? "Phone Number" : "رقم الهاتف",
       content: settings.phone,
     },
     {
-      icon: (
-        <svg
-          className="w-6 h-6"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-          />
-        </svg>
-      ),
+      icon: Mail,
       title: language === "english" ? "Email Address" : "البريد الإلكتروني",
       content: settings.email,
     },
     {
-      icon: (
-        <svg
-          className="w-6 h-6"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-          />
-        </svg>
-      ),
+      icon: Clock,
       title: language === "english" ? "Working Hours" : "ساعات العمل",
       content: settings.working_hours,
     },
@@ -230,7 +181,7 @@ const Contact = () => {
           style={{
             backgroundImage: heroData
               ? `url(${getImageUrl(heroData.image_path, heroData.image_url)})`
-              : "url('/src/assets/bg-image.jpeg')",
+              : "url('/assets/bg-image.jpeg')",
             backgroundSize: "cover",
             backgroundPosition: "center",
             opacity: 0.15,
@@ -279,8 +230,9 @@ const Contact = () => {
               <motion.h2
                 initial={{ opacity: 0 }}
                 animate={formInView ? { opacity: 1 } : {}}
-                className="text-2xl md:text-3xl font-bold mb-6 text-lawyer-primary"
+                className="text-2xl md:text-3xl font-bold mb-6 text-lawyer-primary flex items-center gap-2"
               >
+                <MessageCircle className="w-6 h-6 text-lawyer-accent" />
                 {language === "english"
                   ? "Send us a message"
                   : "أرسل لنا رسالة"}
@@ -291,12 +243,17 @@ const Contact = () => {
                 <motion.div
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className={`mb-6 p-4 rounded-lg ${
+                  className={`mb-6 p-4 rounded-lg flex items-center gap-2 ${
                     submitStatus.type === "success"
                       ? "bg-green-50 border border-green-200 text-green-700"
                       : "bg-red-50 border border-red-200 text-red-700"
                   }`}
                 >
+                  {submitStatus.type === "success" ? (
+                    <CheckCircle className="w-5 h-5" />
+                  ) : (
+                    <AlertCircle className="w-5 h-5" />
+                  )}
                   {submitStatus.message}
                 </motion.div>
               )}
@@ -306,15 +263,18 @@ const Contact = () => {
                   <label className="block text-gray-700 font-semibold mb-2">
                     {language === "english" ? "Full Name" : "الاسم الكامل"} *
                   </label>
-                  <motion.input
-                    whileFocus={{ scale: 1.02 }}
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-lawyer-accent focus:ring-2 focus:ring-lawyer-accent transition-all duration-300"
-                  />
+                  <div className="relative">
+                    <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                    <motion.input
+                      whileFocus={{ scale: 1.02 }}
+                      type="text"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      required
+                      className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-lawyer-accent focus:ring-2 focus:ring-lawyer-accent transition-all duration-300"
+                    />
+                  </div>
                 </div>
 
                 <div className="mb-6">
@@ -324,44 +284,53 @@ const Contact = () => {
                       : "البريد الإلكتروني"}{" "}
                     *
                   </label>
-                  <motion.input
-                    whileFocus={{ scale: 1.02 }}
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-lawyer-accent focus:ring-2 focus:ring-lawyer-accent transition-all duration-300"
-                  />
+                  <div className="relative">
+                    <AtSign className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                    <motion.input
+                      whileFocus={{ scale: 1.02 }}
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      required
+                      className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-lawyer-accent focus:ring-2 focus:ring-lawyer-accent transition-all duration-300"
+                    />
+                  </div>
                 </div>
 
                 <div className="mb-6">
                   <label className="block text-gray-700 font-semibold mb-2">
                     {language === "english" ? "Phone Number" : "رقم الهاتف"}
                   </label>
-                  <motion.input
-                    whileFocus={{ scale: 1.02 }}
-                    type="tel"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-lawyer-accent focus:ring-2 focus:ring-lawyer-accent transition-all duration-300"
-                  />
+                  <div className="relative">
+                    <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                    <motion.input
+                      whileFocus={{ scale: 1.02 }}
+                      type="tel"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-lawyer-accent focus:ring-2 focus:ring-lawyer-accent transition-all duration-300"
+                    />
+                  </div>
                 </div>
 
                 <div className="mb-6">
                   <label className="block text-gray-700 font-semibold mb-2">
                     {language === "english" ? "Your Message" : "رسالتك"} *
                   </label>
-                  <motion.textarea
-                    whileFocus={{ scale: 1.02 }}
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    required
-                    rows="5"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-lawyer-accent focus:ring-2 focus:ring-lawyer-accent transition-all duration-300 resize-none"
-                  ></motion.textarea>
+                  <div className="relative">
+                    <FileText className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
+                    <motion.textarea
+                      whileFocus={{ scale: 1.02 }}
+                      name="message"
+                      value={formData.message}
+                      onChange={handleChange}
+                      required
+                      rows="5"
+                      className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-lawyer-accent focus:ring-2 focus:ring-lawyer-accent transition-all duration-300 resize-none"
+                    ></motion.textarea>
+                  </div>
                 </div>
 
                 <motion.button
@@ -369,15 +338,23 @@ const Contact = () => {
                   whileTap={{ scale: 0.95 }}
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-lawyer-accent hover:bg-lawyer-gold text-white font-semibold py-3 rounded-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full bg-lawyer-accent hover:bg-lawyer-gold text-white font-semibold py-3 rounded-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
-                  {isSubmitting
-                    ? language === "english"
-                      ? "Sending..."
-                      : "جاري الإرسال..."
-                    : language === "english"
-                      ? "Send Message"
-                      : "إرسال الرسالة"}
+                  {isSubmitting ? (
+                    <>
+                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                      {language === "english"
+                        ? "Sending..."
+                        : "جاري الإرسال..."}
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-5 h-5" />
+                      {language === "english"
+                        ? "Send Message"
+                        : "إرسال الرسالة"}
+                    </>
+                  )}
                 </motion.button>
               </form>
             </motion.div>
@@ -390,7 +367,8 @@ const Contact = () => {
               transition={{ duration: 0.6 }}
             >
               <div className="bg-gradient-to-r from-lawyer-primary to-lawyer-secondary rounded-2xl shadow-xl p-8 text-white mb-8">
-                <h2 className="text-2xl md:text-3xl font-bold mb-6">
+                <h2 className="text-2xl md:text-3xl font-bold mb-6 flex items-center gap-2">
+                  <Building className="w-6 h-6" />
                   {language === "english"
                     ? "Contact Information"
                     : "معلومات الاتصال"}
@@ -401,24 +379,27 @@ const Contact = () => {
                   animate={formInView ? "visible" : "hidden"}
                   className="space-y-6"
                 >
-                  {contactInfo.map((info, index) => (
-                    <motion.div
-                      key={index}
-                      variants={fadeInUp}
-                      whileHover={{ x: 10 }}
-                      className="flex items-start space-x-4 p-4 rounded-xl hover:bg-white/10 transition-all duration-300"
-                    >
-                      <div className="w-12 h-12 bg-lawyer-accent rounded-full flex items-center justify-center flex-shrink-0">
-                        {info.icon}
-                      </div>
-                      <div>
-                        <h3 className="font-semibold mb-1 text-lg">
-                          {info.title}
-                        </h3>
-                        <p className="text-gray-200">{info.content}</p>
-                      </div>
-                    </motion.div>
-                  ))}
+                  {contactInfo.map((info, index) => {
+                    const IconComponent = info.icon;
+                    return (
+                      <motion.div
+                        key={index}
+                        variants={fadeInUp}
+                        whileHover={{ x: 10 }}
+                        className="flex items-start space-x-4 p-4 rounded-xl hover:bg-white/10 transition-all duration-300"
+                      >
+                        <div className="w-12 h-12 bg-lawyer-accent rounded-full flex items-center justify-center flex-shrink-0">
+                          <IconComponent className="w-6 h-6 text-white" />
+                        </div>
+                        <div>
+                          <h3 className="font-semibold mb-1 text-lg">
+                            {info.title}
+                          </h3>
+                          <p className="text-gray-200">{info.content}</p>
+                        </div>
+                      </motion.div>
+                    );
+                  })}
                 </motion.div>
               </div>
 
