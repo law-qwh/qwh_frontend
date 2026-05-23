@@ -28,7 +28,7 @@ import {
   Rocket,
   Zap,
 } from "lucide-react";
-// Map icon string to Lucide component
+
 // Get stats icon component
 const getStatIconComponent = (iconName) => {
   const iconMap = {
@@ -51,6 +51,27 @@ const getStatIconComponent = (iconName) => {
   };
   const IconComponent = iconMap[iconName];
   return IconComponent || BarChart;
+};
+
+// Get service icon component
+const getIconComponent = (iconName) => {
+  const iconMap = {
+    scale: Scale,
+    building: Building,
+    "file-text": FileText,
+    briefcase: Briefcase,
+    lock: Lock,
+    users: Users,
+    home: HomeIcon,
+    lightbulb: Lightbulb,
+    "dollar-sign": DollarSign,
+    handshake: Handshake,
+    "bar-chart": BarChart,
+    globe: Globe,
+  };
+
+  const IconComponent = iconMap[iconName];
+  return IconComponent || Scale;
 };
 
 const Home = () => {
