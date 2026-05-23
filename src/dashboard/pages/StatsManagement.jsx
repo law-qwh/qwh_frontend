@@ -60,50 +60,50 @@ const StatsManagement = () => {
   });
 
   const iconOptions = [
-    { component: Calendar, label: "Calendar - Years/Time", value: "calendar" },
-    { component: Users, label: "Users - Clients/People", value: "users" },
-    { component: Scale, label: "Scale - Justice/Law", value: "scale" },
+    { component: Calendar, label: "Calendar", value: "calendar" },
+    { component: Users, label: "Users", value: "users" },
+    { component: Scale, label: "Scale", value: "scale" },
     {
       component: BadgeCheck,
-      label: "Badge - Certified/Expert",
+      label: "Badge",
       value: "badge-check",
     },
     {
       component: Target,
-      label: "Target - Goals/Achievements",
+      label: "Target",
       value: "target",
     },
-    { component: Star, label: "Star - Excellence/Rating", value: "star" },
-    { component: Trophy, label: "Trophy - Awards/Wins", value: "trophy" },
+    { component: Star, label: "star", value: "star" },
+    { component: Trophy, label: "Trophy", value: "trophy" },
     {
       component: Briefcase,
-      label: "Briefcase - Business/Cases",
+      label: "Briefcase",
       value: "briefcase",
     },
-    { component: Globe, label: "Globe - International/Global", value: "globe" },
+    { component: Globe, label: "Globe", value: "globe" },
     {
       component: BarChart,
-      label: "Bar Chart - Analytics/Stats",
+      label: "Bar Chart",
       value: "bar-chart",
     },
     {
       component: TrendingUp,
-      label: "Trending Up - Growth",
+      label: "Trending Up",
       value: "trending-up",
     },
     {
       component: Lightbulb,
-      label: "Lightbulb - Insights/Solutions",
+      label: "Lightbulb",
       value: "lightbulb",
     },
     {
       component: Handshake,
-      label: "Handshake - Agreements",
+      label: "Handshake",
       value: "handshake",
     },
-    { component: Award, label: "Award - Recognition", value: "award" },
-    { component: Rocket, label: "Rocket - Success/Growth", value: "rocket" },
-    { component: Zap, label: "Zap - Fast/Efficient", value: "zap" },
+    { component: Award, label: "Award", value: "award" },
+    { component: Rocket, label: "Rocket", value: "rocket" },
+    { component: Zap, label: "Zap", value: "zap" },
   ];
 
   // Get icon component by value
@@ -867,7 +867,6 @@ const StatsManagement = () => {
           </div>
         </div>
       )}
-
       {/* Add/Edit Modal */}
       <AnimatePresence>
         {isModalOpen && (
@@ -882,30 +881,39 @@ const StatsManagement = () => {
               initial={{ scale: 0.9, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.9, opacity: 0, y: 20 }}
-              className="bg-white rounded-2xl max-w-md w-full shadow-2xl"
+              className="bg-white rounded-2xl max-w-2xl w-full shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="p-6 border-b border-gray-200">
-                <div className="flex items-center gap-2">
-                  <BarChart className="h-6 w-6 text-lawyer-accent" />
-                  <h2 className="text-2xl font-bold text-gray-900">
-                    {language === "arabic"
-                      ? editingStat
-                        ? "تحرير الإحصائية"
-                        : "إضافة إحصائية جديدة"
-                      : editingStat
-                        ? "Edit Statistic"
-                        : "Add New Statistic"}
-                  </h2>
+              <div className="p-6 md:p-8 border-b border-gray-200">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-lawyer-accent/10 rounded-xl flex items-center justify-center">
+                    <BarChart className="h-6 w-6 text-lawyer-accent" />
+                  </div>
+                  <div>
+                    <h2 className="text-2xl font-bold text-gray-900">
+                      {language === "arabic"
+                        ? editingStat
+                          ? "تحرير الإحصائية"
+                          : "إضافة إحصائية جديدة"
+                        : editingStat
+                          ? "Edit Statistic"
+                          : "Add New Statistic"}
+                    </h2>
+                    <p className="text-sm text-gray-500 mt-1">
+                      {language === "arabic"
+                        ? "قم بإدخال تفاصيل الإحصائية"
+                        : "Enter statistic details"}
+                    </p>
+                  </div>
                 </div>
               </div>
 
-              <div className="p-6 space-y-5">
+              <div className="p-6 md:p-8 space-y-6">
                 <div>
-                  <label className="block text-gray-700 font-semibold mb-2">
+                  <label className="block text-gray-700 font-semibold mb-3">
                     {language === "arabic" ? "الأيقونة *" : "Icon *"}
                   </label>
-                  <div className="grid grid-cols-4 gap-2">
+                  <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-3">
                     {iconOptions.map((icon) => {
                       const IconComponent = icon.component;
                       return (
@@ -915,16 +923,16 @@ const StatsManagement = () => {
                           onClick={() =>
                             setFormData({ ...formData, icon: icon.value })
                           }
-                          className={`p-2 rounded-lg border transition-all flex flex-col items-center gap-1 ${
+                          className={`p-3 rounded-xl border transition-all flex flex-col items-center gap-2 ${
                             formData.icon === icon.value
-                              ? "border-lawyer-accent bg-lawyer-accent/10 ring-2 ring-lawyer-accent/20"
-                              : "border-gray-200 hover:border-gray-300 hover:bg-gray-50"
+                              ? "border-lawyer-accent bg-lawyer-accent/10 ring-2 ring-lawyer-accent/20 shadow-md"
+                              : "border-gray-200 hover:border-gray-300 hover:bg-gray-50 hover:shadow-sm"
                           }`}
                           title={icon.label}
                         >
-                          <IconComponent className="w-5 h-5 text-gray-700" />
-                          <span className="text-xs text-gray-500 truncate max-w-full">
-                            {icon.value}
+                          <IconComponent className="w-6 h-6 text-gray-700" />
+                          <span className="text-xs text-gray-500 truncate max-w-full capitalize">
+                            {icon.value.replace(/-/g, " ")}
                           </span>
                         </button>
                       );
@@ -932,112 +940,131 @@ const StatsManagement = () => {
                   </div>
                 </div>
 
-                <div>
-                  <label className="block text-gray-700 font-semibold mb-2">
-                    {language === "arabic"
-                      ? "التسمية (إنجليزي) *"
-                      : "Label (English) *"}
-                  </label>
-                  <input
-                    type="text"
-                    name="label_english"
-                    value={formData.label_english}
-                    onChange={handleFormChange}
-                    placeholder={
-                      language === "arabic"
-                        ? "مثال: عملاء سعداء"
-                        : "e.g., Happy Clients"
-                    }
-                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:border-lawyer-accent"
-                    required
-                  />
-                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  <div>
+                    <label className="block text-gray-700 font-semibold mb-2">
+                      {language === "arabic"
+                        ? "التسمية (إنجليزي) *"
+                        : "Label (English) *"}
+                    </label>
+                    <input
+                      type="text"
+                      name="label_english"
+                      value={formData.label_english}
+                      onChange={handleFormChange}
+                      placeholder={
+                        language === "arabic"
+                          ? "مثال: عملاء سعداء"
+                          : "e.g., Happy Clients"
+                      }
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-lawyer-accent focus:ring-2 focus:ring-lawyer-accent/20 transition-all"
+                      required
+                    />
+                  </div>
 
-                <div>
-                  <label className="block text-gray-700 font-semibold mb-2">
-                    {language === "arabic"
-                      ? "التسمية (عربي) *"
-                      : "Label (Arabic) *"}
-                  </label>
-                  <input
-                    type="text"
-                    name="label_arabic"
-                    value={formData.label_arabic}
-                    onChange={handleFormChange}
-                    placeholder={
-                      language === "arabic"
-                        ? "أدخل التسمية بالعربية"
-                        : "Enter label in Arabic"
-                    }
-                    dir="rtl"
-                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:border-lawyer-accent font-arabic"
-                    required
-                  />
+                  <div>
+                    <label className="block text-gray-700 font-semibold mb-2">
+                      {language === "arabic"
+                        ? "التسمية (عربي) *"
+                        : "Label (Arabic) *"}
+                    </label>
+                    <input
+                      type="text"
+                      name="label_arabic"
+                      value={formData.label_arabic}
+                      onChange={handleFormChange}
+                      placeholder={
+                        language === "arabic"
+                          ? "أدخل التسمية بالعربية"
+                          : "Enter label in Arabic"
+                      }
+                      dir="rtl"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-lawyer-accent focus:ring-2 focus:ring-lawyer-accent/20 transition-all font-arabic"
+                      required
+                    />
+                  </div>
                 </div>
 
                 <div>
                   <label className="block text-gray-700 font-semibold mb-2">
                     {language === "arabic" ? "القيمة *" : "Value *"}
                   </label>
-                  <input
-                    type="text"
-                    name="value"
-                    value={formData.value}
-                    onChange={handleFormChange}
-                    placeholder={
-                      language === "arabic" ? "مثال: 1000+" : "e.g., 1000+"
-                    }
-                    className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:border-lawyer-accent"
-                    required
-                  />
+                  <div className="relative">
+                    <input
+                      type="text"
+                      name="value"
+                      value={formData.value}
+                      onChange={handleFormChange}
+                      placeholder={
+                        language === "arabic" ? "مثال: 1000+" : "e.g., 1000+"
+                      }
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-lawyer-accent focus:ring-2 focus:ring-lawyer-accent/20 transition-all pl-12"
+                      required
+                    />
+                    <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400">
+                      <TrendingUp className="w-5 h-5" />
+                    </div>
+                  </div>
+                  <p className="text-xs text-gray-500 mt-1">
+                    {language === "arabic"
+                      ? "يمكنك استخدام أرقام ورموز مثل +، %، K، M"
+                      : "You can use numbers and symbols like +, %, K, M"}
+                  </p>
                 </div>
 
-                <div>
+                <div className="bg-gray-50 rounded-xl p-4">
                   <label className="flex items-center gap-3 cursor-pointer">
                     <input
                       type="checkbox"
                       name="is_active"
                       checked={formData.is_active}
                       onChange={handleFormChange}
-                      className="w-4 h-4 text-lawyer-accent focus:ring-lawyer-accent"
+                      className="w-5 h-5 text-lawyer-accent focus:ring-lawyer-accent rounded"
                     />
-                    <span className="text-gray-700 font-medium">
-                      {language === "arabic"
-                        ? "الحالة النشطة"
-                        : "Active Status"}
-                    </span>
+                    <div>
+                      <span className="text-gray-700 font-medium">
+                        {language === "arabic"
+                          ? "الحالة النشطة"
+                          : "Active Status"}
+                      </span>
+                      <p className="text-xs text-gray-500 mt-0.5">
+                        {language === "arabic"
+                          ? "الإحصائيات النشطة فقط ستظهر على الموقع"
+                          : "Only active statistics will appear on the website"}
+                      </p>
+                    </div>
                   </label>
                 </div>
               </div>
 
-              <div className="flex gap-3 p-6 border-t border-gray-200">
+              <div className="flex gap-3 p-6 md:p-8 border-t border-gray-200 bg-gray-50 rounded-b-2xl">
                 <button
                   onClick={handleCloseModal}
-                  className="flex-1 px-4 py-2.5 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors flex items-center justify-center gap-2"
+                  className="flex-1 px-4 py-3 border-2 border-gray-300 rounded-xl text-gray-700 hover:bg-gray-100 transition-all flex items-center justify-center gap-2 font-medium"
                 >
-                  <X className="w-4 h-4" />
+                  <X className="w-5 h-5" />
                   {language === "arabic" ? "إلغاء" : "Cancel"}
                 </button>
                 <button
                   onClick={handleSaveNewStat}
                   disabled={submitting}
-                  className="flex-1 bg-lawyer-accent text-white px-4 py-2.5 rounded-lg hover:bg-lawyer-primary transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                  className="flex-1 bg-lawyer-accent text-white px-4 py-3 rounded-xl hover:bg-lawyer-primary transition-all disabled:opacity-50 flex items-center justify-center gap-2 font-medium shadow-md hover:shadow-lg transform hover:scale-[1.02]"
                 >
                   {submitting ? (
                     <>
-                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                       {language === "arabic" ? "جاري الحفظ..." : "Saving..."}
                     </>
                   ) : editingStat ? (
                     language === "arabic" ? (
-                      "تحديث"
+                      "تحديث الإحصائية"
                     ) : (
-                      "Update"
+                      "Update Statistic"
                     )
                   ) : language === "arabic" ? (
-                    "إضافة"
+                    "إضافة إحصائية"
                   ) : (
-                    "Add"
+                    "Add Statistic"
                   )}
                 </button>
               </div>
