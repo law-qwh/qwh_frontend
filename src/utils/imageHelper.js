@@ -1,5 +1,9 @@
 export const getImageUrl = (imagePath, imageUrl) => {
-  if (imageUrl) return imageUrl;
-  if (imagePath) return `https://qwh.com.sa/storage/${imagePath}`;
+  if (imagePath) {
+    return `${import.meta.env.VITE_API_URL || 'https://qwh.com.sa/backend/public'}/storage/${imagePath}`;
+  }
+  if (imageUrl) {
+    return imageUrl;
+  }
   return null;
 };
