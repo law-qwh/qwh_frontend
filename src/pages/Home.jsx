@@ -333,7 +333,7 @@ const Home = () => {
           className="absolute inset-0"
           style={{
             backgroundImage: heroData
-              ? `url(${getImageUrl(heroData.image_url)})`
+              ? `url(${heroData.image_url})`
               : `url(${background_Image})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
