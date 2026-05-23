@@ -3,6 +3,42 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import api from "../../services/api";
 import { useLanguage } from "../../contexts/LanguageContext";
+import {
+  Plus,
+  Edit,
+  Trash2,
+  ChevronUp,
+  ChevronDown,
+  Search,
+  X,
+  CheckCircle,
+  Star,
+  FileText,
+  Scale,
+  Building,
+  Lock,
+  Users,
+  Home,
+  Briefcase,
+  Lightbulb,
+  DollarSign,
+  Handshake,
+  BarChart,
+  AlertCircle,
+  Hash,
+  Eye,
+  EyeOff,
+  Globe,
+  BadgeCheck,
+  Calendar,
+  Target,
+  Trophy,
+  TrendingUp,
+  Award,
+  Rocket,
+  Zap,
+  Save,
+} from "lucide-react";
 
 const StatsManagement = () => {
   const { language } = useLanguage();
@@ -13,34 +49,69 @@ const StatsManagement = () => {
   const [message, setMessage] = useState(null);
   const [submitting, setSubmitting] = useState(false);
   const [savingChanges, setSavingChanges] = useState(false);
-  const [modifiedStats, setModifiedStats] = useState(new Set()); // Track modified stats
+  const [modifiedStats, setModifiedStats] = useState(new Set());
   const [formData, setFormData] = useState({
     label_english: "",
     label_arabic: "",
     value: "",
-    icon: "📊",
+    icon: "calendar",
     is_active: true,
     order: 0,
   });
 
   const iconOptions = [
-    "📅",
-    "👥",
-    "⚖️",
-    "👨‍⚖️",
-    "🎯",
-    "⭐",
-    "🏆",
-    "💼",
-    "🌍",
-    "📊",
-    "📈",
-    "💡",
-    "🤝",
-    "🎓",
-    "🚀",
-    "💪",
+    { component: Calendar, label: "Calendar - Years/Time", value: "calendar" },
+    { component: Users, label: "Users - Clients/People", value: "users" },
+    { component: Scale, label: "Scale - Justice/Law", value: "scale" },
+    {
+      component: BadgeCheck,
+      label: "Badge - Certified/Expert",
+      value: "badge-check",
+    },
+    {
+      component: Target,
+      label: "Target - Goals/Achievements",
+      value: "target",
+    },
+    { component: Star, label: "Star - Excellence/Rating", value: "star" },
+    { component: Trophy, label: "Trophy - Awards/Wins", value: "trophy" },
+    {
+      component: Briefcase,
+      label: "Briefcase - Business/Cases",
+      value: "briefcase",
+    },
+    { component: Globe, label: "Globe - International/Global", value: "globe" },
+    {
+      component: BarChart,
+      label: "Bar Chart - Analytics/Stats",
+      value: "bar-chart",
+    },
+    {
+      component: TrendingUp,
+      label: "Trending Up - Growth",
+      value: "trending-up",
+    },
+    {
+      component: Lightbulb,
+      label: "Lightbulb - Insights/Solutions",
+      value: "lightbulb",
+    },
+    {
+      component: Handshake,
+      label: "Handshake - Agreements",
+      value: "handshake",
+    },
+    { component: Award, label: "Award - Recognition", value: "award" },
+    { component: Rocket, label: "Rocket - Success/Growth", value: "rocket" },
+    { component: Zap, label: "Zap - Fast/Efficient", value: "zap" },
   ];
+
+  // Get icon component by value
+  const getIconComponent = (iconValue) => {
+    const icon = iconOptions.find((i) => i.value === iconValue);
+    if (icon) return icon.component;
+    return BarChart;
+  };
 
   // Fetch stats on component mount
   useEffect(() => {
@@ -74,7 +145,7 @@ const StatsManagement = () => {
         label_english: stat.label_english || "",
         label_arabic: stat.label_arabic || "",
         value: stat.value || "",
-        icon: stat.icon || "📊",
+        icon: stat.icon || "bar-chart",
         is_active: stat.is_active === 1 || stat.is_active === true,
         order: stat.order || 0,
       });
@@ -84,7 +155,7 @@ const StatsManagement = () => {
         label_english: "",
         label_arabic: "",
         value: "",
-        icon: "📊",
+        icon: "bar-chart",
         is_active: true,
         order: stats.length,
       });
@@ -105,7 +176,6 @@ const StatsManagement = () => {
     });
   };
 
-  // Track field changes for inline editing
   const handleLocalFieldChange = (id, field, value) => {
     setStats(
       stats.map((stat) =>
@@ -115,10 +185,15 @@ const StatsManagement = () => {
     setModifiedStats((prev) => new Set([...prev, id]));
   };
 
-  // Save all changes
   const handleSaveAllChanges = async () => {
     if (modifiedStats.size === 0) {
-      setMessage({ type: "info", text: "No changes to save" });
+      setMessage({
+        type: "info",
+        text:
+          language === "arabic"
+            ? "لا توجد تغييرات للحفظ"
+            : "No changes to save",
+      });
       setTimeout(() => setMessage(null), 2000);
       return;
     }
@@ -130,7 +205,6 @@ const StatsManagement = () => {
     try {
       const token = localStorage.getItem("token");
 
-      // Save each modified stat
       for (const id of modifiedStats) {
         const stat = stats.find((s) => s.id === id);
         if (stat) {
@@ -161,18 +235,33 @@ const StatsManagement = () => {
       if (successCount > 0) {
         setMessage({
           type: "success",
-          text: `${successCount} statistic(s) updated successfully!${errorCount > 0 ? ` ${errorCount} failed.` : ""}`,
+          text:
+            language === "arabic"
+              ? `تم تحديث ${successCount} إحصائية بنجاح!${errorCount > 0 ? ` فشل ${errorCount}.` : ""}`
+              : `${successCount} statistic(s) updated successfully!${errorCount > 0 ? ` ${errorCount} failed.` : ""}`,
         });
         setModifiedStats(new Set());
-        await fetchStats(); // Refresh data
+        await fetchStats();
       } else if (errorCount > 0) {
-        setMessage({ type: "error", text: "Failed to save changes" });
+        setMessage({
+          type: "error",
+          text:
+            language === "arabic"
+              ? "فشل حفظ التغييرات"
+              : "Failed to save changes",
+        });
       }
 
       setTimeout(() => setMessage(null), 3000);
     } catch (error) {
       console.error("Error saving changes:", error);
-      setMessage({ type: "error", text: "Failed to save changes" });
+      setMessage({
+        type: "error",
+        text:
+          language === "arabic"
+            ? "فشل حفظ التغييرات"
+            : "Failed to save changes",
+      });
       setTimeout(() => setMessage(null), 3000);
     } finally {
       setSavingChanges(false);
@@ -183,7 +272,10 @@ const StatsManagement = () => {
     if (!formData.label_english || !formData.label_arabic || !formData.value) {
       setMessage({
         type: "error",
-        text: "Please fill in all required fields (English & Arabic labels, and value)",
+        text:
+          language === "arabic"
+            ? "يرجى ملء جميع الحقول المطلوبة (التسمية بالإنجليزية والعربية والقيمة)"
+            : "Please fill in all required fields (English & Arabic labels, and value)",
       });
       setTimeout(() => setMessage(null), 3000);
       return;
@@ -227,8 +319,12 @@ const StatsManagement = () => {
         setMessage({
           type: "success",
           text: editingStat
-            ? "Statistic updated successfully!"
-            : "Statistic added successfully!",
+            ? language === "arabic"
+              ? "تم تحديث الإحصائية بنجاح!"
+              : "Statistic updated successfully!"
+            : language === "arabic"
+              ? "تم إضافة الإحصائية بنجاح!"
+              : "Statistic added successfully!",
         });
         await fetchStats();
         handleCloseModal();
@@ -236,7 +332,10 @@ const StatsManagement = () => {
       }
     } catch (error) {
       console.error("Error saving statistic:", error);
-      let errorMessage = "Failed to save statistic";
+      let errorMessage =
+        language === "arabic"
+          ? "فشل حفظ الإحصائية"
+          : "Failed to save statistic";
       if (error.response?.data?.errors) {
         const errors = error.response.data.errors;
         errorMessage = Object.values(errors).flat().join(", ");
@@ -253,7 +352,9 @@ const StatsManagement = () => {
   const handleDeleteStat = async (id) => {
     if (
       window.confirm(
-        "Are you sure you want to delete this statistic? This action cannot be undone.",
+        language === "arabic"
+          ? "هل أنت متأكد من حذف هذه الإحصائية؟ لا يمكن التراجع عن هذا الإجراء."
+          : "Are you sure you want to delete this statistic? This action cannot be undone.",
       )
     ) {
       try {
@@ -265,7 +366,10 @@ const StatsManagement = () => {
         if (response.data.success) {
           setMessage({
             type: "success",
-            text: "Statistic deleted successfully!",
+            text:
+              language === "arabic"
+                ? "تم حذف الإحصائية بنجاح!"
+                : "Statistic deleted successfully!",
           });
           await fetchStats();
           setModifiedStats(new Set());
@@ -273,14 +377,19 @@ const StatsManagement = () => {
         }
       } catch (error) {
         console.error("Error deleting statistic:", error);
-        setMessage({ type: "error", text: "Failed to delete statistic" });
+        setMessage({
+          type: "error",
+          text:
+            language === "arabic"
+              ? "فشل حذف الإحصائية"
+              : "Failed to delete statistic",
+        });
         setTimeout(() => setMessage(null), 3000);
       }
     }
   };
 
   const handleToggleStatus = async (id, currentStatus) => {
-    // Update locally first
     handleLocalFieldChange(id, "is_active", !currentStatus);
   };
 
@@ -301,13 +410,25 @@ const StatsManagement = () => {
       );
 
       if (response.data.success) {
-        setMessage({ type: "success", text: "Order updated successfully!" });
+        setMessage({
+          type: "success",
+          text:
+            language === "arabic"
+              ? "تم تحديث الترتيب بنجاح!"
+              : "Order updated successfully!",
+        });
         await fetchStats();
         setTimeout(() => setMessage(null), 2000);
       }
     } catch (error) {
       console.error("Error reordering stats:", error);
-      setMessage({ type: "error", text: "Failed to update order" });
+      setMessage({
+        type: "error",
+        text:
+          language === "arabic"
+            ? "فشل تحديث الترتيب"
+            : "Failed to update order",
+      });
       setTimeout(() => setMessage(null), 3000);
     }
   };
@@ -350,7 +471,11 @@ const StatsManagement = () => {
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-lawyer-accent mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading statistics...</p>
+          <p className="mt-4 text-gray-600">
+            {language === "arabic"
+              ? "جاري تحميل الإحصائيات..."
+              : "Loading statistics..."}
+          </p>
         </div>
       </div>
     );
@@ -363,9 +488,12 @@ const StatsManagement = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
-            {language === "arabic" ? "أرقام التأثير" : "Impact Numbers"}
-          </h1>
+          <div className="flex items-center gap-2">
+            <BarChart className="h-7 w-7 text-lawyer-accent" />
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
+              {language === "arabic" ? "أرقام التأثير" : "Impact Numbers"}
+            </h1>
+          </div>
           <p className="text-gray-600 mt-1 text-sm md:text-base">
             {language === "arabic"
               ? "إدارة الإحصائيات والمقاييس المعروضة على موقعك"
@@ -386,19 +514,7 @@ const StatsManagement = () => {
                 </>
               ) : (
                 <>
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M5 13l4 4L19 7"
-                    />
-                  </svg>
+                  <Save className="w-5 h-5" />
                   {language === "arabic" ? "حفظ التغييرات" : "Save Changes"} (
                   {modifiedStats.size})
                 </>
@@ -409,19 +525,7 @@ const StatsManagement = () => {
             onClick={() => handleOpenModal()}
             className="inline-flex items-center gap-2 bg-lawyer-accent text-white px-5 py-2.5 rounded-lg hover:bg-lawyer-primary transition-all transform hover:scale-105 shadow-md"
           >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 4v16m8-8H4"
-              />
-            </svg>
+            <Plus className="w-5 h-5" />
             {language === "arabic"
               ? "إضافة إحصائية جديدة"
               : "Add New Statistic"}
@@ -442,19 +546,7 @@ const StatsManagement = () => {
               <p className="text-2xl font-bold text-gray-900">{stats.length}</p>
             </div>
             <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-              <svg
-                className="w-5 h-5 text-blue-600"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                />
-              </svg>
+              <BarChart className="w-5 h-5 text-blue-600" />
             </div>
           </div>
         </div>
@@ -472,19 +564,7 @@ const StatsManagement = () => {
               </p>
             </div>
             <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-              <svg
-                className="w-5 h-5 text-green-600"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M5 13l4 4L19 7"
-                />
-              </svg>
+              <CheckCircle className="w-5 h-5 text-green-600" />
             </div>
           </div>
         </div>
@@ -502,19 +582,7 @@ const StatsManagement = () => {
               </p>
             </div>
             <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
-              <svg
-                className="w-5 h-5 text-purple-600"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
-                />
-              </svg>
+              <TrendingUp className="w-5 h-5 text-purple-600" />
             </div>
           </div>
         </div>
@@ -536,12 +604,14 @@ const StatsManagement = () => {
             }`}
           >
             <div className="flex items-center gap-2">
-              {message.type === "success"
-                ? "✓"
-                : message.type === "info"
-                  ? "ℹ️"
-                  : "⚠️"}{" "}
-              {message.text}
+              {message.type === "success" ? (
+                <CheckCircle className="w-5 h-5" />
+              ) : message.type === "info" ? (
+                <AlertCircle className="w-5 h-5" />
+              ) : (
+                <AlertCircle className="w-5 h-5" />
+              )}
+              <span>{message.text}</span>
             </div>
           </motion.div>
         )}
@@ -565,7 +635,10 @@ const StatsManagement = () => {
             <thead className="bg-gray-50">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-12">
-                  {language === "arabic" ? "الترتيب" : "Order"}
+                  <div className="flex items-center gap-1">
+                    <Hash className="w-3 h-3" />
+                    {language === "arabic" ? "الترتيب" : "Order"}
+                  </div>
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   {language === "arabic" ? "الأيقونة" : "Icon"}
@@ -588,173 +661,153 @@ const StatsManagement = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
-              {stats.map((stat, index) => (
-                <tr
-                  key={stat.id}
-                  className={`hover:bg-gray-50 transition-colors ${modifiedStats.has(stat.id) ? "bg-yellow-50" : ""}`}
-                >
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm text-gray-500 w-8">
-                        {index + 1}
-                      </span>
-                      <div className="flex flex-col">
-                        <button
-                          onClick={() => handleMoveUp(index)}
-                          disabled={index === 0}
-                          className="text-gray-400 hover:text-gray-600 disabled:opacity-30"
-                        >
-                          <svg
-                            className="w-4 h-4"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
+              {stats.map((stat, index) => {
+                const IconComponent = getIconComponent(stat.icon);
+                return (
+                  <tr
+                    key={stat.id}
+                    className={`hover:bg-gray-50 transition-colors ${modifiedStats.has(stat.id) ? "bg-yellow-50" : ""}`}
+                  >
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm text-gray-500 w-8">
+                          {index + 1}
+                        </span>
+                        <div className="flex flex-col">
+                          <button
+                            onClick={() => handleMoveUp(index)}
+                            disabled={index === 0}
+                            className="text-gray-400 hover:text-gray-600 disabled:opacity-30"
                           >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M5 15l7-7 7 7"
-                            />
-                          </svg>
-                        </button>
-                        <button
-                          onClick={() => handleMoveDown(index)}
-                          disabled={index === stats.length - 1}
-                          className="text-gray-400 hover:text-gray-600 disabled:opacity-30"
-                        >
-                          <svg
-                            className="w-4 h-4"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
+                            <ChevronUp className="w-4 h-4" />
+                          </button>
+                          <button
+                            onClick={() => handleMoveDown(index)}
+                            disabled={index === stats.length - 1}
+                            className="text-gray-400 hover:text-gray-600 disabled:opacity-30"
                           >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M19 9l-7 7-7-7"
-                            />
-                          </svg>
+                            <ChevronDown className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="relative">
+                        <select
+                          value={stat.icon}
+                          onChange={(e) =>
+                            handleLocalFieldChange(
+                              stat.id,
+                              "icon",
+                              e.target.value,
+                            )
+                          }
+                          className="w-32 px-2 py-1 border rounded-lg focus:outline-none focus:border-lawyer-accent appearance-none bg-white"
+                        >
+                          {iconOptions.map((icon) => (
+                            <option key={icon.value} value={icon.value}>
+                              {icon.label}
+                            </option>
+                          ))}
+                        </select>
+                        <div className="absolute left-2 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                          <IconComponent className="w-4 h-4 text-gray-500" />
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <input
+                        type="text"
+                        value={stat.label_english}
+                        onChange={(e) =>
+                          handleLocalFieldChange(
+                            stat.id,
+                            "label_english",
+                            e.target.value,
+                          )
+                        }
+                        className="w-full min-w-[200px] px-3 py-1.5 border rounded-lg focus:outline-none focus:border-lawyer-accent"
+                        placeholder={
+                          language === "arabic"
+                            ? "التسمية بالإنجليزية"
+                            : "English label"
+                        }
+                      />
+                    </td>
+                    <td className="px-6 py-4">
+                      <input
+                        type="text"
+                        value={stat.label_arabic}
+                        onChange={(e) =>
+                          handleLocalFieldChange(
+                            stat.id,
+                            "label_arabic",
+                            e.target.value,
+                          )
+                        }
+                        className="w-full min-w-[200px] px-3 py-1.5 border rounded-lg focus:outline-none focus:border-lawyer-accent text-right font-arabic"
+                        placeholder={
+                          language === "arabic"
+                            ? "التسمية بالعربية"
+                            : "Arabic label"
+                        }
+                        dir="rtl"
+                      />
+                    </td>
+                    <td className="px-6 py-4">
+                      <input
+                        type="text"
+                        value={stat.value}
+                        onChange={(e) =>
+                          handleLocalFieldChange(
+                            stat.id,
+                            "value",
+                            e.target.value,
+                          )
+                        }
+                        className="w-28 px-3 py-1.5 border rounded-lg focus:outline-none focus:border-lawyer-accent"
+                        placeholder={
+                          language === "arabic" ? "مثال: 1000+" : "e.g., 1000+"
+                        }
+                      />
+                    </td>
+                    <td className="px-6 py-4">
+                      <button
+                        onClick={() =>
+                          handleToggleStatus(stat.id, stat.is_active)
+                        }
+                        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                          stat.is_active ? "bg-lawyer-accent" : "bg-gray-300"
+                        }`}
+                      >
+                        <span
+                          className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                            stat.is_active ? "translate-x-6" : "translate-x-1"
+                          }`}
+                        />
+                      </button>
+                    </td>
+                    <td className="px-6 py-4 text-right">
+                      <div className="flex items-center justify-end gap-2">
+                        <button
+                          onClick={() => handleDeleteStat(stat.id)}
+                          className="text-red-500 hover:text-red-700 p-1 transition-colors"
+                          title={language === "arabic" ? "حذف" : "Delete"}
+                        >
+                          <Trash2 className="w-5 h-5" />
                         </button>
                       </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <select
-                      value={stat.icon}
-                      onChange={(e) =>
-                        handleLocalFieldChange(stat.id, "icon", e.target.value)
-                      }
-                      className="w-20 px-2 py-1 border rounded-lg text-center text-2xl focus:outline-none focus:border-lawyer-accent"
-                    >
-                      {iconOptions.map((icon) => (
-                        <option key={icon} value={icon}>
-                          {icon}
-                        </option>
-                      ))}
-                    </select>
-                  </td>
-                  <td className="px-6 py-4">
-                    <input
-                      type="text"
-                      value={stat.label_english}
-                      onChange={(e) =>
-                        handleLocalFieldChange(
-                          stat.id,
-                          "label_english",
-                          e.target.value,
-                        )
-                      }
-                      className="w-full min-w-[200px] px-3 py-1.5 border rounded-lg focus:outline-none focus:border-lawyer-accent"
-                      placeholder={
-                        language === "arabic"
-                          ? "التسمية بالإنجليزية"
-                          : "English label"
-                      }
-                    />
-                  </td>
-                  <td className="px-6 py-4">
-                    <input
-                      type="text"
-                      value={stat.label_arabic}
-                      onChange={(e) =>
-                        handleLocalFieldChange(
-                          stat.id,
-                          "label_arabic",
-                          e.target.value,
-                        )
-                      }
-                      className="w-full min-w-[200px] px-3 py-1.5 border rounded-lg focus:outline-none focus:border-lawyer-accent text-right font-arabic"
-                      placeholder={
-                        language === "arabic"
-                          ? "التسمية بالعربية"
-                          : "Arabic label"
-                      }
-                      dir="rtl"
-                    />
-                  </td>
-                  <td className="px-6 py-4">
-                    <input
-                      type="text"
-                      value={stat.value}
-                      onChange={(e) =>
-                        handleLocalFieldChange(stat.id, "value", e.target.value)
-                      }
-                      className="w-28 px-3 py-1.5 border rounded-lg focus:outline-none focus:border-lawyer-accent"
-                      placeholder={
-                        language === "arabic" ? "مثال: 1000+" : "e.g., 1000+"
-                      }
-                    />
-                  </td>
-                  <td className="px-6 py-4">
-                    <button
-                      onClick={() =>
-                        handleToggleStatus(stat.id, stat.is_active)
-                      }
-                      className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                        stat.is_active ? "bg-lawyer-accent" : "bg-gray-300"
-                      }`}
-                    >
-                      <span
-                        className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                          stat.is_active ? "translate-x-6" : "translate-x-1"
-                        }`}
-                      />
-                    </button>
-                  </td>
-                  <td className="px-6 py-4 text-right">
-                    <div className="flex items-center justify-end gap-2">
-                      <button
-                        onClick={() => handleDeleteStat(stat.id)}
-                        className="text-red-500 hover:text-red-700 p-1"
-                        title="Delete"
-                      >
-                        <svg
-                          className="w-5 h-5"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                          />
-                        </svg>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
 
         {stats.length === 0 && (
           <div className="p-12 text-center">
-            <div className="text-6xl mb-4">📊</div>
+            <BarChart className="w-16 h-16 text-gray-300 mx-auto mb-4" />
             <h3 className="text-xl font-bold text-gray-900 mb-2">
               {language === "arabic"
                 ? "لم يتم العثور على إحصائيات"
@@ -774,9 +827,12 @@ const StatsManagement = () => {
         <div className="bg-gradient-to-r from-lawyer-primary to-lawyer-secondary rounded-2xl shadow-xl overflow-hidden">
           <div className="p-6">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-xl font-bold text-white">
-                {language === "arabic" ? "معاينة مباشرة" : "Live Preview"}
-              </h3>
+              <div className="flex items-center gap-2">
+                <Eye className="h-5 w-5 text-white" />
+                <h3 className="text-xl font-bold text-white">
+                  {language === "arabic" ? "معاينة مباشرة" : "Live Preview"}
+                </h3>
+              </div>
               <span className="text-xs text-white/70">
                 {language === "arabic"
                   ? "معاينة فورية لإحصائياتك"
@@ -784,24 +840,29 @@ const StatsManagement = () => {
               </span>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-              {activeStats.map((stat) => (
-                <motion.div
-                  key={stat.id}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="group"
-                >
-                  <div className="text-5xl mb-3 transform group-hover:scale-110 transition-transform duration-300">
-                    {stat.icon}
-                  </div>
-                  <div className="text-3xl md:text-4xl font-bold text-white mb-1">
-                    {stat.value}
-                  </div>
-                  <div className="text-sm text-white/80 group-hover:text-white transition-colors">
-                    {stat.label_english}
-                  </div>
-                </motion.div>
-              ))}
+              {activeStats.map((stat) => {
+                const IconComponent = getIconComponent(stat.icon);
+                return (
+                  <motion.div
+                    key={stat.id}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="group"
+                  >
+                    <div className="flex justify-center mb-3">
+                      <IconComponent className="w-12 h-12 text-white/90 transform group-hover:scale-110 transition-transform duration-300" />
+                    </div>
+                    <div className="text-3xl md:text-4xl font-bold text-white mb-1">
+                      {stat.value}
+                    </div>
+                    <div className="text-sm text-white/80 group-hover:text-white transition-colors">
+                      {language === "arabic"
+                        ? stat.label_arabic
+                        : stat.label_english}
+                    </div>
+                  </motion.div>
+                );
+              })}
             </div>
           </div>
         </div>
@@ -825,15 +886,18 @@ const StatsManagement = () => {
               onClick={(e) => e.stopPropagation()}
             >
               <div className="p-6 border-b border-gray-200">
-                <h2 className="text-2xl font-bold text-gray-900">
-                  {language === "arabic"
-                    ? editingStat
-                      ? "تحرير الإحصائية"
-                      : "إضافة إحصائية جديدة"
-                    : editingStat
-                      ? "Edit Statistic"
-                      : "Add New Statistic"}
-                </h2>
+                <div className="flex items-center gap-2">
+                  <BarChart className="h-6 w-6 text-lawyer-accent" />
+                  <h2 className="text-2xl font-bold text-gray-900">
+                    {language === "arabic"
+                      ? editingStat
+                        ? "تحرير الإحصائية"
+                        : "إضافة إحصائية جديدة"
+                      : editingStat
+                        ? "Edit Statistic"
+                        : "Add New Statistic"}
+                  </h2>
+                </div>
               </div>
 
               <div className="p-6 space-y-5">
@@ -841,21 +905,30 @@ const StatsManagement = () => {
                   <label className="block text-gray-700 font-semibold mb-2">
                     {language === "arabic" ? "الأيقونة *" : "Icon *"}
                   </label>
-                  <div className="grid grid-cols-8 gap-2">
-                    {iconOptions.map((icon) => (
-                      <button
-                        key={icon}
-                        type="button"
-                        onClick={() => setFormData({ ...formData, icon })}
-                        className={`text-2xl p-2 rounded-lg border transition-all ${
-                          formData.icon === icon
-                            ? "border-lawyer-accent bg-lawyer-accent/10"
-                            : "border-gray-200 hover:border-gray-300"
-                        }`}
-                      >
-                        {icon}
-                      </button>
-                    ))}
+                  <div className="grid grid-cols-4 gap-2">
+                    {iconOptions.map((icon) => {
+                      const IconComponent = icon.component;
+                      return (
+                        <button
+                          key={icon.value}
+                          type="button"
+                          onClick={() =>
+                            setFormData({ ...formData, icon: icon.value })
+                          }
+                          className={`p-2 rounded-lg border transition-all flex flex-col items-center gap-1 ${
+                            formData.icon === icon.value
+                              ? "border-lawyer-accent bg-lawyer-accent/10 ring-2 ring-lawyer-accent/20"
+                              : "border-gray-200 hover:border-gray-300 hover:bg-gray-50"
+                          }`}
+                          title={icon.label}
+                        >
+                          <IconComponent className="w-5 h-5 text-gray-700" />
+                          <span className="text-xs text-gray-500 truncate max-w-full">
+                            {icon.value}
+                          </span>
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
 
@@ -940,8 +1013,9 @@ const StatsManagement = () => {
               <div className="flex gap-3 p-6 border-t border-gray-200">
                 <button
                   onClick={handleCloseModal}
-                  className="flex-1 px-4 py-2.5 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+                  className="flex-1 px-4 py-2.5 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors flex items-center justify-center gap-2"
                 >
+                  <X className="w-4 h-4" />
                   {language === "arabic" ? "إلغاء" : "Cancel"}
                 </button>
                 <button
