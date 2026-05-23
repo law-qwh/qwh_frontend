@@ -45,7 +45,7 @@ const HeroSection = () => {
     setFetching(true);
     try {
       // Use the correct API endpoint - /hero (not /hero-slides)
-      const response = await apiService.getHeroSlides();
+      const response = await apiService.getHeroSlide();
 
       if (response.data.success && response.data.data) {
         const data = response.data.data;
