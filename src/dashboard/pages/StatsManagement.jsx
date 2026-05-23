@@ -881,13 +881,13 @@ const StatsManagement = () => {
               initial={{ scale: 0.9, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.9, opacity: 0, y: 20 }}
-              className="bg-white rounded-2xl max-w-2xl w-full shadow-2xl"
+              className="bg-white rounded-2xl max-w-4xl w-full shadow-2xl"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="p-6 md:p-8 border-b border-gray-200">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-lawyer-accent/10 rounded-xl flex items-center justify-center">
-                    <BarChart className="h-6 w-6 text-lawyer-accent" />
+                  <div className="w-12 h-12 bg-lawyer-accent/10 rounded-xl flex items-center justify-center">
+                    <BarChart className="h-7 w-7 text-lawyer-accent" />
                   </div>
                   <div>
                     <h2 className="text-2xl font-bold text-gray-900">
@@ -913,7 +913,7 @@ const StatsManagement = () => {
                   <label className="block text-gray-700 font-semibold mb-3">
                     {language === "arabic" ? "الأيقونة *" : "Icon *"}
                   </label>
-                  <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-3">
+                  <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-3">
                     {iconOptions.map((icon) => {
                       const IconComponent = icon.component;
                       return (
