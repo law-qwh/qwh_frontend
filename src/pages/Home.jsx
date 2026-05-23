@@ -243,9 +243,15 @@ const Home = () => {
   useEffect(() => {
     const fetchHeroData = async () => {
       try {
-        const response = await apiService.getHeroSlide();
+        const response = await apiService.getHeroSlides();
         if (response.data.success && response.data.data) {
-          setHeroData(response.data.data);
+          if (
+            response.data.success &&
+            response.data.data &&
+            response.data.data.length > 0
+          ) {
+            setHeroData(response.data.data[0]);
+          }
         }
       } catch (error) {
         console.error("Error fetching hero data:", error);
