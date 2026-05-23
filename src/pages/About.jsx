@@ -21,7 +21,7 @@ import {
   Zap,
   TrendingUp,
   Mail,
-  Linkedin,
+  LinkedinIcon, // ✅ Correct - use LinkedinIcon
   AlertCircle,
   ArrowDown,
 } from "lucide-react";
@@ -515,7 +515,7 @@ const About = () => {
                             whileHover={{ scale: 1.1 }}
                             className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center hover:bg-lawyer-accent group/link transition-all duration-300"
                           >
-                            <Linkedin className="w-4 h-4 text-gray-600 group-hover/link:text-white" />
+                            <LinkedinIcon className="w-4 h-4 text-gray-600 group-hover/link:text-white" />
                           </motion.a>
                         )}
                         {member.email && (
