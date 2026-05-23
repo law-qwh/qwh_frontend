@@ -18,26 +18,39 @@ import {
   Handshake,
   BarChart,
   Globe,
+  Calendar,
+  BadgeCheck,
+  Target,
+  Star,
+  Trophy,
+  TrendingUp,
+  Award,
+  Rocket,
+  Zap,
 } from "lucide-react";
 // Map icon string to Lucide component
-const getIconComponent = (iconName) => {
+// Get stats icon component
+const getStatIconComponent = (iconName) => {
   const iconMap = {
-    scale: Scale,
-    building: Building,
-    "file-text": FileText,
-    briefcase: Briefcase,
-    lock: Lock,
+    calendar: Calendar,
     users: Users,
-    home: HomeIcon, // Changed from Home to HomeIcon
-    lightbulb: Lightbulb,
-    "dollar-sign": DollarSign,
-    handshake: Handshake,
-    "bar-chart": BarChart,
+    scale: Scale,
+    "badge-check": BadgeCheck,
+    target: Target,
+    star: Star,
+    trophy: Trophy,
+    briefcase: Briefcase,
     globe: Globe,
+    "bar-chart": BarChart,
+    "trending-up": TrendingUp,
+    lightbulb: Lightbulb,
+    handshake: Handshake,
+    award: Award,
+    rocket: Rocket,
+    zap: Zap,
   };
-
   const IconComponent = iconMap[iconName];
-  return IconComponent || Scale; // Default to Scale if not found
+  return IconComponent || BarChart;
 };
 
 const Home = () => {
@@ -656,6 +669,7 @@ const Home = () => {
       </section>
 
       {/* Statistics Section */}
+      {/* Statistics Section */}
       <section className="py-20 bg-lawyer-primary text-white" ref={statsRef}>
         <div className="container-custom">
           <motion.div
@@ -682,23 +696,28 @@ const Home = () => {
             animate={statsInView ? "visible" : "hidden"}
             className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center"
           >
-            {statsData.slice(0, 4).map((stat, index) => (
-              <motion.div
-                key={stat.id}
-                variants={statsVariant}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                whileHover={{ scale: 1.05, y: -5 }}
-                className="p-6 rounded-2xl bg-white/10 backdrop-blur-sm"
-              >
-                <div className="text-5xl mb-3">{stat.icon || "📊"}</div>
-                <div className="text-4xl md:text-5xl font-bold mb-2 text-white">
-                  {stat.value}
-                </div>
-                <div className="text-gray-200 text-sm md:text-base">
-                  {getStatLabel(stat)}
-                </div>
-              </motion.div>
-            ))}
+            {statsData.slice(0, 4).map((stat, index) => {
+              const StatIcon = getStatIconComponent(stat.icon);
+              return (
+                <motion.div
+                  key={stat.id}
+                  variants={statsVariant}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  whileHover={{ scale: 1.05, y: -5 }}
+                  className="p-6 rounded-2xl bg-white/10 backdrop-blur-sm"
+                >
+                  <div className="mb-3">
+                    <StatIcon className="w-12 h-12 text-lawyer-accent mx-auto" />
+                  </div>
+                  <div className="text-4xl md:text-5xl font-bold mb-2 text-white">
+                    {stat.value}
+                  </div>
+                  <div className="text-gray-200 text-sm md:text-base">
+                    {getStatLabel(stat)}
+                  </div>
+                </motion.div>
+              );
+            })}
           </motion.div>
         </div>
       </section>
