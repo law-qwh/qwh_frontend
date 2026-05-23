@@ -52,7 +52,7 @@ const About = () => {
           apiService.getActiveStats(),
           apiService.getAboutContent(langCode),
           apiService.getCoreValues(),
-          apiService.getHeroSlides(),
+          apiService.getHeroSlide(),
         ]);
         if (teamResponse.data.success) {
           setTeamMembers(teamResponse.data.data);
