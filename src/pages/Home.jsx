@@ -244,9 +244,9 @@ const Home = () => {
     const fetchHeroData = async () => {
       try {
         const response = await apiService.getHeroSlide();
-        console.log(response);
+        console.log(response.data);
         if (response.data.success && response.data.data) {
-          setHeroData(response.data.data[0]);
+          setHeroData(response.data.data);
         }
       } catch (error) {
         console.error("Error fetching hero data:", error);
