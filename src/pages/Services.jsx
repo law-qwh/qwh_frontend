@@ -7,6 +7,30 @@ import { useInView } from "react-intersection-observer";
 import api from "../services/api";
 import { getImageUrl } from "../utils/imageHelper";
 import { apiService } from "../services/api";
+import {
+  Scale,
+  Building,
+  FileText,
+  Briefcase,
+  Lock,
+  Users,
+  Home as HomeIcon,
+  Lightbulb,
+  DollarSign,
+  Handshake,
+  BarChart,
+  Globe,
+  Award,
+  Target,
+  Eye,
+  CheckCircle,
+  TrendingUp,
+  Rocket,
+  Zap,
+  Calendar,
+  Trophy,
+  Star,
+} from "lucide-react";
 
 const Services = () => {
   const { language } = useLanguage();
@@ -22,21 +46,38 @@ const Services = () => {
     threshold: 0.1,
   });
 
+  // Get service icon component
+  const getIconComponent = (iconName) => {
+    const iconMap = {
+      scale: Scale,
+      building: Building,
+      "file-text": FileText,
+      briefcase: Briefcase,
+      lock: Lock,
+      users: Users,
+      home: HomeIcon,
+      lightbulb: Lightbulb,
+      "dollar-sign": DollarSign,
+      handshake: Handshake,
+      "bar-chart": BarChart,
+      globe: Globe,
+    };
+    const IconComponent = iconMap[iconName];
+    return IconComponent || Scale;
+  };
+
   const fetchServices = async () => {
     try {
       setLoading(true);
-      // Fetch all active services (only show active ones to public)
       const response = await api.get("/api/services");
 
       if (response.data.success && response.data.data) {
         const allServices = response.data.data;
-        // Filter only active services for public view
         const activeServices = allServices.filter(
           (service) => service.is_active === 1 || service.is_active === true,
         );
         setServices(activeServices);
 
-        // Filter featured and active services
         const featured = activeServices.filter(
           (service) =>
             service.is_featured === 1 || service.is_featured === true,
@@ -52,6 +93,7 @@ const Services = () => {
       setLoading(false);
     }
   };
+
   const fetchHeroData = async () => {
     try {
       const response = await apiService.getHeroSlide();
@@ -62,60 +104,22 @@ const Services = () => {
       console.error("Error fetching hero data:", error);
     }
   };
-  // Fetch services from API
+
   useEffect(() => {
     fetchHeroData();
     fetchServices();
   }, []);
 
-  // Helper function to get title based on language
   const getTitle = (service) => {
     return language === "english"
       ? service.title_english
       : service.title_arabic;
   };
 
-  // Helper function to get description based on language
   const getDescription = (service) => {
     return language === "english"
       ? service.description_english
       : service.description_arabic;
-  };
-
-  // Helper function to get icon
-  const getServiceIcon = (service) => {
-    if (service.icon) {
-      return service.icon;
-    }
-    return "⚖️";
-  };
-
-  // Get SVG icon based on index (for featured services)
-  const getFeaturedIcon = (index) => {
-    const icons = [
-      // Legal Consultations icon
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
-        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-      />,
-      // Legal Representation icon
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
-        d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"
-      />,
-      // Contract Drafting icon
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
-        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
-      />,
-    ];
-    return icons[index % icons.length];
   };
 
   // Animation variants
@@ -144,6 +148,9 @@ const Services = () => {
     },
   };
 
+  // Featured icons for the main services (scale, building, file-text)
+  const featuredIcons = [Scale, Building, FileText];
+
   if (loading) {
     return (
       <div className="pt-20 min-h-screen flex items-center justify-center">
@@ -163,8 +170,8 @@ const Services = () => {
     return (
       <div className="pt-20 min-h-screen flex items-center justify-center">
         <div className="text-center text-red-600">
+          <AlertCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
           <p className="text-xl mb-4">
-            ⚠️{" "}
             {language === "english"
               ? "Error loading services"
               : "خطأ في تحميل الخدمات"}
@@ -239,53 +246,50 @@ const Services = () => {
               initial="hidden"
               animate={inView ? "visible" : "hidden"}
             >
-              {featuredServices.map((service, index) => (
-                <motion.div
-                  key={service.id}
-                  variants={index % 2 === 0 ? fadeInLeft : fadeInRight}
-                  transition={{ duration: 0.6, delay: index * 0.2 }}
-                  className={`mb-16 ${index % 2 === 1 ? "bg-gradient-to-r from-gray-50 to-white" : ""} rounded-2xl p-8 transition-all duration-500 hover:shadow-xl`}
-                >
-                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-                    <div className="lg:col-span-1">
-                      <motion.div
-                        whileHover={{ scale: 1.1, rotate: 5 }}
-                        className="w-20 h-20 bg-lawyer-accent rounded-2xl flex items-center justify-center mb-4 transition-all duration-300"
-                      >
-                        <svg
-                          className="w-10 h-10 text-white"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
+              {featuredServices.map((service, index) => {
+                const FeaturedIcon =
+                  featuredIcons[index % featuredIcons.length];
+                return (
+                  <motion.div
+                    key={service.id}
+                    variants={index % 2 === 0 ? fadeInLeft : fadeInRight}
+                    transition={{ duration: 0.6, delay: index * 0.2 }}
+                    className={`mb-16 ${index % 2 === 1 ? "bg-gradient-to-r from-gray-50 to-white" : ""} rounded-2xl p-8 transition-all duration-500 hover:shadow-xl`}
+                  >
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+                      <div className="lg:col-span-1">
+                        <motion.div
+                          whileHover={{ scale: 1.1, rotate: 5 }}
+                          className="w-20 h-20 bg-lawyer-accent rounded-2xl flex items-center justify-center mb-4 transition-all duration-300"
                         >
-                          {getFeaturedIcon(index)}
-                        </svg>
-                      </motion.div>
-                      <h2 className="text-2xl md:text-3xl font-bold text-lawyer-primary mb-4">
-                        {getTitle(service)}
-                      </h2>
-                    </div>
-                    <div className="lg:col-span-2">
-                      <p className="text-gray-600 text-lg leading-relaxed">
-                        {getDescription(service)}
-                      </p>
-                      <motion.div
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                      >
-                        <Link
-                          to="/contact"
-                          className="inline-block mt-6 bg-lawyer-accent hover:bg-lawyer-gold text-white font-semibold px-6 py-3 rounded-lg transition-all duration-300"
+                          <FeaturedIcon className="w-10 h-10 text-white" />
+                        </motion.div>
+                        <h2 className="text-2xl md:text-3xl font-bold text-lawyer-primary mb-4">
+                          {getTitle(service)}
+                        </h2>
+                      </div>
+                      <div className="lg:col-span-2">
+                        <p className="text-gray-600 text-lg leading-relaxed">
+                          {getDescription(service)}
+                        </p>
+                        <motion.div
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
                         >
-                          {language === "english"
-                            ? "Request This Service"
-                            : "اطلب هذه الخدمة"}
-                        </Link>
-                      </motion.div>
+                          <Link
+                            to="/contact"
+                            className="inline-block mt-6 bg-lawyer-accent hover:bg-lawyer-gold text-white font-semibold px-6 py-3 rounded-lg transition-all duration-300"
+                          >
+                            {language === "english"
+                              ? "Request This Service"
+                              : "اطلب هذه الخدمة"}
+                          </Link>
+                        </motion.div>
+                      </div>
                     </div>
-                  </div>
-                </motion.div>
-              ))}
+                  </motion.div>
+                );
+              })}
             </motion.div>
           </div>
         </section>
@@ -318,33 +322,37 @@ const Services = () => {
             animate={servicesInView ? "visible" : "hidden"}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
           >
-            {services.map((service, index) => (
-              <motion.div
-                key={service.id}
-                variants={fadeInUp}
-                transition={{ duration: 0.5, delay: index * 0.05 }}
-                className="bg-white rounded-2xl p-6 shadow-md transition-all duration-500 ease-out hover:scale-[1.02] hover:shadow-2xl cursor-pointer group"
-              >
+            {services.map((service, index) => {
+              const IconComponent = getIconComponent(service.icon);
+              return (
                 <motion.div
-                  whileHover={{ scale: 1.1, rotate: 3 }}
-                  className="text-5xl mb-4 inline-block"
+                  key={service.id}
+                  variants={fadeInUp}
+                  transition={{ duration: 0.5, delay: index * 0.05 }}
+                  className="bg-white rounded-2xl p-6 shadow-md transition-all duration-500 ease-out hover:scale-[1.02] hover:shadow-2xl cursor-pointer group"
                 >
-                  {getServiceIcon(service)}
+                  <motion.div
+                    whileHover={{ scale: 1.1, rotate: 3 }}
+                    className="w-14 h-14 bg-lawyer-accent/10 rounded-xl flex items-center justify-center mb-4 group-hover:bg-lawyer-accent transition-all duration-300"
+                  >
+                    <IconComponent className="w-7 h-7 text-lawyer-accent group-hover:text-white transition-all duration-300" />
+                  </motion.div>
+                  <h3 className="text-xl font-bold mb-3 text-lawyer-primary group-hover:text-lawyer-accent transition-colors duration-300">
+                    {getTitle(service)}
+                  </h3>
+                  <p className="text-gray-600 mb-4 group-hover:text-gray-700 transition-colors duration-300">
+                    {getDescription(service).substring(0, 150)}
+                    {getDescription(service).length > 150 && "..."}
+                  </p>
+                  <div className="h-1 w-0 bg-lawyer-accent group-hover:w-full transition-all duration-500"></div>
                 </motion.div>
-                <h3 className="text-xl font-bold mb-3 text-lawyer-primary group-hover:text-lawyer-accent transition-colors duration-300">
-                  {getTitle(service)}
-                </h3>
-                <p className="text-gray-600 mb-4 group-hover:text-gray-700 transition-colors duration-300">
-                  {getDescription(service).substring(0, 150)}
-                  {getDescription(service).length > 150 && "..."}
-                </p>
-                <div className="h-1 w-0 bg-lawyer-accent group-hover:w-full transition-all duration-500"></div>
-              </motion.div>
-            ))}
+              );
+            })}
           </motion.div>
 
           {services.length === 0 && (
             <div className="text-center py-12">
+              <Scale className="w-16 h-16 text-gray-300 mx-auto mb-4" />
               <p className="text-gray-500">
                 {language === "english"
                   ? "No services available at the moment."
@@ -379,7 +387,7 @@ const Services = () => {
                     language === "english"
                       ? "Over 20 years of combined legal experience"
                       : "أكثر من 20 عاماً من الخبرة القانونية المشتركة",
-                  icon: "🎓",
+                  icon: Award,
                 },
                 {
                   title:
@@ -390,7 +398,7 @@ const Services = () => {
                     language === "english"
                       ? "Personalized attention to every case"
                       : "اهتمام شخصي بكل قضية",
-                  icon: "🤝",
+                  icon: Handshake,
                 },
                 {
                   title:
@@ -399,23 +407,28 @@ const Services = () => {
                     language === "english"
                       ? "Successful resolution of thousands of cases"
                       : "حل ناجح لآلاف القضايا",
-                  icon: "🏆",
+                  icon: Trophy,
                 },
-              ].map((item, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.5, delay: index * 0.2 }}
-                  viewport={{ once: true }}
-                  whileHover={{ scale: 1.05 }}
-                  className="text-center p-6 rounded-xl bg-white/10 backdrop-blur-sm"
-                >
-                  <div className="text-5xl mb-4">{item.icon}</div>
-                  <h3 className="text-xl font-bold mb-2">{item.title}</h3>
-                  <p className="text-gray-200">{item.description}</p>
-                </motion.div>
-              ))}
+              ].map((item, index) => {
+                const ItemIcon = item.icon;
+                return (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.5, delay: index * 0.2 }}
+                    viewport={{ once: true }}
+                    whileHover={{ scale: 1.05 }}
+                    className="text-center p-6 rounded-xl bg-white/10 backdrop-blur-sm"
+                  >
+                    <div className="mb-4">
+                      <ItemIcon className="w-12 h-12 text-lawyer-accent mx-auto" />
+                    </div>
+                    <h3 className="text-xl font-bold mb-2">{item.title}</h3>
+                    <p className="text-gray-200">{item.description}</p>
+                  </motion.div>
+                );
+              })}
             </div>
           </div>
         </div>
