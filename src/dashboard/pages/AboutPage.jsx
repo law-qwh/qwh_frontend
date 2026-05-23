@@ -357,7 +357,9 @@ const AboutPage = () => {
                 <div className="flex items-center gap-2 mb-3">
                   <Globe className="h-5 w-5 text-blue-600" />
                   <h3 className="font-semibold text-blue-800">
-                    English Version
+                    {language === "arabic"
+                      ? "النسخة الإنجليزية"
+                      : "English Version"}
                   </h3>
                 </div>
                 <div className="mb-4">
@@ -399,7 +401,9 @@ const AboutPage = () => {
                 <div className="flex items-center gap-2 mb-3">
                   <MessageCircle className="h-5 w-5 text-green-600" />
                   <h3 className="font-semibold text-green-800">
-                    Arabic Version
+                    {language === "arabic"
+                      ? "النسخة العربية"
+                      : "Arabic Version"}
                   </h3>
                 </div>
                 <div className="mb-4">

@@ -104,24 +104,74 @@ const Settings = () => {
     {
       id: "general",
       label: language === "arabic" ? "عام" : "General",
-      icon: "⚙️",
+      icon: (
+        <svg
+          className="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+          />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+          />
+        </svg>
+      ),
     },
     {
       id: "contact",
       label: language === "arabic" ? "معلومات الاتصال" : "Contact Info",
-      icon: "📞",
+      icon: (
+        <svg
+          className="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+          />
+        </svg>
+      ),
     },
     {
       id: "social",
       label: language === "arabic" ? "وسائل التواصل" : "Social Media",
-      icon: "📱",
+      icon: (
+        <svg
+          className="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+          />
+        </svg>
+      ),
     },
-    // { id: "seo", label: "SEO", icon: "🔍" },
   ];
 
-  const inputClasses =
-    "w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:border-lawyer-accent focus:ring-2 focus:ring-lawyer-accent/20 transition-all duration-200";
-  const labelClasses = "block text-gray-700 font-semibold mb-2";
+  const inputClasses = `w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:border-lawyer-accent focus:ring-2 focus:ring-lawyer-accent/20 transition-all duration-200 ${
+    language === "arabic" ? "text-right" : "text-left"
+  }`;
+  const labelClasses = `block text-gray-700 font-semibold mb-2 ${
+    language === "arabic" ? "text-right" : "text-left"
+  }`;
 
   if (loading) {
     return (
@@ -132,7 +182,7 @@ const Settings = () => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6" dir={language === "arabic" ? "rtl" : "ltr"}>
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
@@ -228,7 +278,7 @@ const Settings = () => {
                   : "text-gray-500 hover:text-gray-700"
               }`}
             >
-              <span>{tab.icon}</span>
+              {tab.icon}
               <span>{tab.label}</span>
             </button>
           ))}
@@ -262,7 +312,11 @@ const Settings = () => {
                       value={settings.site_name || ""}
                       onChange={handleChange}
                       className={inputClasses}
-                      placeholder="Enter site name"
+                      placeholder={
+                        language === "arabic"
+                          ? "أدخل اسم الموقع"
+                          : "Enter site name"
+                      }
                     />
                   </div>
                   <div>
@@ -277,7 +331,11 @@ const Settings = () => {
                       value={settings.site_name_arabic || ""}
                       onChange={handleChange}
                       className={inputClasses}
-                      placeholder="أدخل اسم الموقع"
+                      placeholder={
+                        language === "arabic"
+                          ? "أدخل اسم الموقع"
+                          : "Enter site name"
+                      }
                     />
                   </div>
                   <div>
@@ -292,7 +350,11 @@ const Settings = () => {
                       value={settings.site_tagline || ""}
                       onChange={handleChange}
                       className={inputClasses}
-                      placeholder="Enter site tagline"
+                      placeholder={
+                        language === "arabic"
+                          ? "أدخل الشعار الفرعي"
+                          : "Enter site tagline"
+                      }
                     />
                   </div>
                   <div>
@@ -307,7 +369,11 @@ const Settings = () => {
                       value={settings.site_tagline_arabic || ""}
                       onChange={handleChange}
                       className={inputClasses}
-                      placeholder="أدخل الشعار الفرعي"
+                      placeholder={
+                        language === "arabic"
+                          ? "أدخل الشعار الفرعي"
+                          : "Enter site tagline"
+                      }
                     />
                   </div>
                 </div>
@@ -382,7 +448,11 @@ const Settings = () => {
                       value={settings.address || ""}
                       onChange={handleChange}
                       className={inputClasses}
-                      placeholder="Enter office address"
+                      placeholder={
+                        language === "arabic"
+                          ? "أدخل عنوان المكتب"
+                          : "Enter office address"
+                      }
                     />
                   </div>
                   <div className="md:col-span-2">
@@ -397,7 +467,11 @@ const Settings = () => {
                       value={settings.address_arabic || ""}
                       onChange={handleChange}
                       className={inputClasses}
-                      placeholder="أدخل عنوان المكتب"
+                      placeholder={
+                        language === "arabic"
+                          ? "أدخل عنوان المكتب"
+                          : "Enter office address"
+                      }
                     />
                   </div>
                   <div>
@@ -485,129 +559,6 @@ const Settings = () => {
                 </div>
               </div>
             )}
-
-            {/* SEO Tab */}
-            {/* {activeTab === "seo" && (
-              <div className="space-y-6">
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-                  <div className="flex items-start gap-3">
-                    <svg
-                      className="w-5 h-5 text-blue-600 mt-0.5"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                      />
-                    </svg>
-                    <div>
-                      <p className="text-sm text-blue-800">
-                        {language === "arabic"
-                          ? "إعدادات SEO تساعد في تحسين ظهور موقعك في محركات البحث"
-                          : "SEO settings help improve your website's visibility in search engines"}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="space-y-6">
-                  <div>
-                    <label className={labelClasses}>
-                      {language === "arabic"
-                        ? "عنوان الميتا (إنجليزي)"
-                        : "Meta Title (English)"}
-                    </label>
-                    <input
-                      type="text"
-                      name="meta_title"
-                      value={settings.meta_title || ""}
-                      onChange={handleChange}
-                      className={inputClasses}
-                      placeholder="Your page title for search engines"
-                    />
-                    <p className="text-xs text-gray-500 mt-1">
-                      {language === "arabic"
-                        ? "موصى به: 50-60 حرف"
-                        : "Recommended: 50-60 characters"}
-                    </p>
-                  </div>
-                  <div>
-                    <label className={labelClasses}>
-                      {language === "arabic"
-                        ? "عنوان الميتا (عربي)"
-                        : "Meta Title (Arabic)"}
-                    </label>
-                    <input
-                      type="text"
-                      name="meta_title_arabic"
-                      value={settings.meta_title_arabic || ""}
-                      onChange={handleChange}
-                      className={inputClasses}
-                      placeholder="عنوان الصفحة لمحركات البحث"
-                    />
-                  </div>
-                  <div>
-                    <label className={labelClasses}>
-                      {language === "arabic"
-                        ? "وصف الميتا (إنجليزي)"
-                        : "Meta Description (English)"}
-                    </label>
-                    <textarea
-                      name="meta_description"
-                      value={settings.meta_description || ""}
-                      onChange={handleChange}
-                      rows="3"
-                      className={inputClasses}
-                      placeholder="Brief description of your page"
-                    />
-                    <p className="text-xs text-gray-500 mt-1">
-                      {language === "arabic"
-                        ? "موصى به: 150-160 حرف"
-                        : "Recommended: 150-160 characters"}
-                    </p>
-                  </div>
-                  <div>
-                    <label className={labelClasses}>
-                      {language === "arabic"
-                        ? "وصف الميتا (عربي)"
-                        : "Meta Description (Arabic)"}
-                    </label>
-                    <textarea
-                      name="meta_description_arabic"
-                      value={settings.meta_description_arabic || ""}
-                      onChange={handleChange}
-                      rows="3"
-                      className={inputClasses}
-                      placeholder="وصف مختصر لصفحتك"
-                    />
-                  </div>
-                  <div>
-                    <label className={labelClasses}>
-                      {language === "arabic"
-                        ? "الكلمات المفتاحية"
-                        : "Meta Keywords"}
-                    </label>
-                    <input
-                      type="text"
-                      name="meta_keywords"
-                      value={settings.meta_keywords || ""}
-                      onChange={handleChange}
-                      className={inputClasses}
-                      placeholder="lawyer, legal services, attorney"
-                    />
-                    <p className="text-xs text-gray-500 mt-1">
-                      {language === "arabic"
-                        ? "افصل الكلمات بفواصل"
-                        : "Separate keywords with commas"}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            )} */}
 
             {/* Actions */}
             <div className="flex gap-3 pt-8 mt-8 border-t border-gray-200">
