@@ -4,6 +4,27 @@ import { useInView } from "react-intersection-observer";
 import { apiService } from "../services/api";
 import { useEffect, useState } from "react";
 import { getImageUrl } from "../utils/imageHelper";
+import {
+  Target,
+  Eye,
+  CheckCircle,
+  BarChart,
+  Users,
+  Briefcase,
+  Scale,
+  Globe,
+  Calendar,
+  Trophy,
+  Star,
+  Award,
+  Rocket,
+  Zap,
+  TrendingUp,
+  Mail,
+  Linkedin,
+  AlertCircle,
+  ArrowDown,
+} from "lucide-react";
 
 const About = () => {
   const { language } = useLanguage();
@@ -33,14 +54,32 @@ const About = () => {
   const [error, setError] = useState(null);
   const [heroData, setHeroData] = useState(null);
 
+  // Get stats icon component
+  const getStatIconComponent = (iconName) => {
+    const iconMap = {
+      calendar: Calendar,
+      users: Users,
+      scale: Scale,
+      star: Star,
+      trophy: Trophy,
+      briefcase: Briefcase,
+      globe: Globe,
+      "bar-chart": BarChart,
+      "trending-up": TrendingUp,
+      award: Award,
+      rocket: Rocket,
+      zap: Zap,
+    };
+    const IconComponent = iconMap[iconName];
+    return IconComponent || BarChart;
+  };
+
   useEffect(() => {
     const fetchAllData = async () => {
       setLoading(true);
       setError(null);
       try {
-        // Get language code
         const langCode = language === "english" ? "en" : "ar";
-        // Fetch all data in parallel
         const [
           teamResponse,
           statsResponse,
@@ -83,6 +122,7 @@ const About = () => {
 
     fetchAllData();
   }, [language]);
+
   // Animation variants
   const fadeInUp = {
     hidden: { opacity: 0, y: 50 },
@@ -148,7 +188,7 @@ const About = () => {
     return (
       <div className="pt-20 min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="text-red-500 text-xl mb-4">⚠️</div>
+          <AlertCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
           <p className="text-gray-600">{error}</p>
           <button
             onClick={() => window.location.reload()}
@@ -215,19 +255,7 @@ const About = () => {
           className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
         >
           <div className="animate-bounce">
-            <svg
-              className="w-6 h-6 text-white"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M19 14l-7 7m0 0l-7-7m7 7V3"
-              />
-            </svg>
+            <ArrowDown className="w-6 h-6 text-white" />
           </div>
         </motion.div>
       </section>
@@ -249,19 +277,7 @@ const About = () => {
                 transition={{ duration: 0.6 }}
                 className="w-20 h-20 bg-lawyer-accent rounded-2xl flex items-center justify-center mb-6"
               >
-                <svg
-                  className="w-10 h-10 text-white"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M13 10V3L4 14h7v7l9-11h-7z"
-                  />
-                </svg>
+                <Target className="w-10 h-10 text-white" />
               </motion.div>
               <h2 className="text-3xl font-bold mb-4 text-lawyer-primary">
                 {language === "english" ? "Our Mission" : "مهمتنا"}
@@ -286,25 +302,7 @@ const About = () => {
                 transition={{ duration: 0.6 }}
                 className="w-20 h-20 bg-lawyer-accent rounded-2xl flex items-center justify-center mb-6"
               >
-                <svg
-                  className="w-10 h-10 text-white"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                  />
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                  />
-                </svg>
+                <Eye className="w-10 h-10 text-white" />
               </motion.div>
               <h2 className="text-3xl font-bold mb-4 text-lawyer-primary">
                 {language === "english" ? "Our Vision" : "رؤيتنا"}
@@ -349,19 +347,7 @@ const About = () => {
                     className="flex items-center space-x-3 p-3 rounded-lg hover:bg-lawyer-accent/10 transition-all duration-300 cursor-pointer"
                   >
                     <div className="w-10 h-10 bg-lawyer-accent rounded-full flex items-center justify-center flex-shrink-0">
-                      <svg
-                        className="w-5 h-5 text-white"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
+                      <CheckCircle className="w-5 h-5 text-white" />
                     </div>
                     <span className="text-gray-700 font-medium text-lg">
                       {language === "english"
@@ -410,23 +396,28 @@ const About = () => {
             className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center"
           >
             {statsData && statsData.length > 0 ? (
-              statsData.slice(0, 4).map((stat, index) => (
-                <motion.div
-                  key={stat.id}
-                  variants={numberCount}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  whileHover={{ scale: 1.05, y: -5 }}
-                  className="p-6 rounded-2xl bg-white/10 backdrop-blur-sm"
-                >
-                  <div className="text-5xl mb-3">{stat.icon || "📊"}</div>
-                  <div className="text-4xl md:text-5xl font-bold mb-2 text-white">
-                    {stat.value}
-                  </div>
-                  <div className="text-gray-200 text-sm md:text-base">
-                    {getStatLabel(stat)}
-                  </div>
-                </motion.div>
-              ))
+              statsData.slice(0, 4).map((stat, index) => {
+                const StatIcon = getStatIconComponent(stat.icon);
+                return (
+                  <motion.div
+                    key={stat.id}
+                    variants={numberCount}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                    whileHover={{ scale: 1.05, y: -5 }}
+                    className="p-6 rounded-2xl bg-white/10 backdrop-blur-sm"
+                  >
+                    <div className="mb-3">
+                      <StatIcon className="w-12 h-12 text-lawyer-accent mx-auto" />
+                    </div>
+                    <div className="text-4xl md:text-5xl font-bold mb-2 text-white">
+                      {stat.value}
+                    </div>
+                    <div className="text-gray-200 text-sm md:text-base">
+                      {getStatLabel(stat)}
+                    </div>
+                  </motion.div>
+                );
+              })
             ) : (
               <div className="col-span-full text-center text-gray-300 py-12">
                 No statistics available
@@ -490,7 +481,7 @@ const About = () => {
                       />
                     ) : (
                       <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                        <span className="text-gray-400">No Image</span>
+                        <Users className="w-16 h-16 text-gray-400" />
                       </div>
                     )}
                   </div>
@@ -524,13 +515,7 @@ const About = () => {
                             whileHover={{ scale: 1.1 }}
                             className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center hover:bg-lawyer-accent group/link transition-all duration-300"
                           >
-                            <svg
-                              className="w-4 h-4 text-gray-600 group-hover/link:text-white"
-                              fill="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451c.979 0 1.771-.773 1.771-1.729V1.729C24 .774 23.204 0 22.225 0z" />
-                            </svg>
+                            <Linkedin className="w-4 h-4 text-gray-600 group-hover/link:text-white" />
                           </motion.a>
                         )}
                         {member.email && (
@@ -539,19 +524,7 @@ const About = () => {
                             whileHover={{ scale: 1.1 }}
                             className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center hover:bg-lawyer-accent group/link transition-all duration-300"
                           >
-                            <svg
-                              className="w-4 h-4 text-gray-600 group-hover/link:text-white"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                              />
-                            </svg>
+                            <Mail className="w-4 h-4 text-gray-600 group-hover/link:text-white" />
                           </motion.a>
                         )}
                       </div>
