@@ -3,6 +3,34 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import api from "../../services/api";
 import { useLanguage } from "../../contexts/LanguageContext";
+import {
+  Plus,
+  Edit,
+  Trash2,
+  ChevronUp,
+  ChevronDown,
+  Search,
+  X,
+  CheckCircle,
+  Star,
+  FileText,
+  Scale,
+  Building,
+  Lock,
+  Users,
+  Home,
+  Briefcase,
+  Lightbulb,
+  DollarSign,
+  Handshake,
+  BarChart,
+  AlertCircle,
+  Hash,
+  Shirt,
+  Passport,
+  Eye,
+  EyeOff,
+} from "lucide-react";
 
 const ServicesManagement = () => {
   const { language } = useLanguage();
@@ -21,27 +49,67 @@ const ServicesManagement = () => {
     title_arabic: "",
     description_english: "",
     description_arabic: "",
-    icon: "⚖️",
+    icon: "scale",
     is_featured: true,
     is_active: true,
     order: 0,
   });
 
   const iconOptions = [
-    "⚖️",
-    "🏛️",
-    "📝",
-    "🏢",
-    "🔒",
-    "👨‍👩‍👧‍👦",
-    "🏠",
-    "👔",
-    "🛂",
-    "💡",
-    "💰",
-    "🤝",
-    "📊",
+    { component: Scale, label: "Balance Scale - Justice", value: "scale" },
+    {
+      component: Building,
+      label: "Building - Court/Law Firm",
+      value: "building",
+    },
+    {
+      component: FileText,
+      label: "Document - Legal Papers",
+      value: "file-text",
+    },
+    {
+      component: Briefcase,
+      label: "Briefcase - Corporate Law",
+      value: "briefcase",
+    },
+    { component: Lock, label: "Lock - Confidential/Security", value: "lock" },
+    {
+      component: Users,
+      label: "Users - Family/Client Services",
+      value: "users",
+    },
+    { component: Home, label: "Home - Real Estate Law", value: "home" },
+    { component: Shirt, label: "Professional Attire", value: "shirt" },
+    { component: Passport, label: "Passport - Immigration", value: "passport" },
+    {
+      component: Lightbulb,
+      label: "Lightbulb - Legal Insights",
+      value: "lightbulb",
+    },
+    {
+      component: DollarSign,
+      label: "Dollar - Financial/Tax Law",
+      value: "dollar-sign",
+    },
+    {
+      component: Handshake,
+      label: "Handshake - Agreements",
+      value: "handshake",
+    },
+    {
+      component: BarChart,
+      label: "Bar Chart - Legal Analytics",
+      value: "bar-chart",
+    },
   ];
+
+  // Get icon component by value
+  const getIconComponent = (iconValue) => {
+    const icon = iconOptions.find((i) => i.value === iconValue);
+    if (icon) return icon.component;
+    // Default to Scale if not found
+    return Scale;
+  };
 
   // Fetch ALL services (both active and inactive) for dashboard management
   useEffect(() => {
@@ -52,7 +120,6 @@ const ServicesManagement = () => {
     try {
       setLoading(true);
       const token = localStorage.getItem("token");
-      // Use main endpoint to get ALL services for management
       const response = await api.get("/api/services", {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -77,7 +144,7 @@ const ServicesManagement = () => {
         title_arabic: service.title_arabic || "",
         description_english: service.description_english || "",
         description_arabic: service.description_arabic || "",
-        icon: service.icon || "⚖️",
+        icon: service.icon || "scale",
         is_featured: service.is_featured || false,
         is_active: service.is_active !== undefined ? service.is_active : true,
         order: service.order || 0,
@@ -89,7 +156,7 @@ const ServicesManagement = () => {
         title_arabic: "",
         description_english: "",
         description_arabic: "",
-        icon: "⚖️",
+        icon: "scale",
         is_featured: true,
         is_active: true,
         order: services.length,
@@ -108,7 +175,7 @@ const ServicesManagement = () => {
       title_arabic: "",
       description_english: "",
       description_arabic: "",
-      icon: "⚖️",
+      icon: "scale",
       is_featured: true,
       is_active: true,
       order: services.length,
@@ -139,7 +206,6 @@ const ServicesManagement = () => {
       let response;
 
       if (editingService) {
-        // Update existing service
         const updateData = {
           title_english: formData.title_english,
           title_arabic: formData.title_arabic,
@@ -162,7 +228,6 @@ const ServicesManagement = () => {
           },
         );
       } else {
-        // Create new service
         const formDataToSend = new FormData();
         formDataToSend.append("title_english", formData.title_english);
         formDataToSend.append("title_arabic", formData.title_arabic);
@@ -198,7 +263,7 @@ const ServicesManagement = () => {
             ? "Service updated successfully!"
             : "Service added successfully!",
         });
-        fetchServices(); // Refresh the list
+        fetchServices();
         handleCloseModal();
         setTimeout(() => setMessage(null), 3000);
       }
@@ -237,7 +302,7 @@ const ServicesManagement = () => {
             type: "success",
             text: "Service deleted successfully!",
           });
-          fetchServices(); // Refresh the list
+          fetchServices();
           setTimeout(() => setMessage(null), 3000);
         }
       } catch (error) {
@@ -261,7 +326,7 @@ const ServicesManagement = () => {
 
       if (response.data.success) {
         setMessage({ type: "success", text: "Status updated successfully!" });
-        fetchServices(); // Refresh the list
+        fetchServices();
         setTimeout(() => setMessage(null), 2000);
       }
     } catch (error) {
@@ -287,7 +352,7 @@ const ServicesManagement = () => {
           type: "success",
           text: "Featured status updated successfully!",
         });
-        fetchServices(); // Refresh the list
+        fetchServices();
         setTimeout(() => setMessage(null), 2000);
       }
     } catch (error) {
@@ -315,7 +380,7 @@ const ServicesManagement = () => {
 
       if (response.data.success) {
         setMessage({ type: "success", text: "Order updated successfully!" });
-        fetchServices(); // Refresh the list
+        fetchServices();
         setTimeout(() => setMessage(null), 2000);
       }
     } catch (error) {
@@ -388,9 +453,12 @@ const ServicesManagement = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
-            {language === "arabic" ? "الخدمات القانونية" : "Legal Services"}
-          </h1>
+          <div className="flex items-center gap-2">
+            <Scale className="h-7 w-7 text-lawyer-accent" />
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
+              {language === "arabic" ? "الخدمات القانونية" : "Legal Services"}
+            </h1>
+          </div>
           <p className="text-gray-600 mt-1 text-sm md:text-base">
             {language === "arabic"
               ? "قم بإدارة خدماتك القانونية الرئيسية (يتم عرض الخدمات النشطة وغير النشطة هنا)"
@@ -401,19 +469,7 @@ const ServicesManagement = () => {
           onClick={() => handleOpenModal()}
           className="inline-flex items-center gap-2 bg-lawyer-accent text-white px-5 py-2.5 rounded-lg hover:bg-lawyer-primary transition-all transform hover:scale-105 shadow-md"
         >
-          <svg
-            className="w-5 h-5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M12 4v16m8-8H4"
-            />
-          </svg>
+          <Plus className="w-5 h-5" />
           {language === "arabic" ? "إضافة خدمة جديدة" : "Add New Service"}
         </button>
       </div>
@@ -429,7 +485,7 @@ const ServicesManagement = () => {
               <p className="text-2xl font-bold text-gray-900">{stats.total}</p>
             </div>
             <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-              <span className="text-xl">📋</span>
+              <FileText className="w-5 h-5 text-blue-600" />
             </div>
           </div>
         </div>
@@ -445,7 +501,7 @@ const ServicesManagement = () => {
               </p>
             </div>
             <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-              <span className="text-xl">✅</span>
+              <CheckCircle className="w-5 h-5 text-green-600" />
             </div>
           </div>
         </div>
@@ -463,7 +519,7 @@ const ServicesManagement = () => {
               </p>
             </div>
             <div className="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center">
-              <span className="text-xl">⭐</span>
+              <Star className="w-5 h-5 text-yellow-600" />
             </div>
           </div>
         </div>
@@ -483,7 +539,12 @@ const ServicesManagement = () => {
             }`}
           >
             <div className="flex items-center gap-2">
-              {message.type === "success" ? "✓" : "⚠️"} {message.text}
+              {message.type === "success" ? (
+                <CheckCircle className="w-5 h-5" />
+              ) : (
+                <AlertCircle className="w-5 h-5" />
+              )}
+              <span>{message.text}</span>
             </div>
           </motion.div>
         )}
@@ -493,19 +554,7 @@ const ServicesManagement = () => {
       <div className="bg-white rounded-xl shadow-sm p-4">
         <div className="flex flex-col md:flex-row gap-4">
           <div className="flex-1 relative">
-            <svg
-              className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-              />
-            </svg>
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
             <input
               type="text"
               placeholder={
@@ -526,11 +575,9 @@ const ServicesManagement = () => {
             <option value="all">
               {language === "arabic" ? "جميع الخدمات" : "All Services"}
             </option>
-
             <option value="active">
               {language === "arabic" ? "النشطة فقط" : "Active Only"}
             </option>
-
             <option value="inactive">
               {language === "arabic" ? "غير النشطة فقط" : "Inactive Only"}
             </option>
@@ -545,199 +592,155 @@ const ServicesManagement = () => {
             <thead className="bg-gray-50">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-12">
-                  {language === "arabic" ? "الترتيب" : "Order"}
+                  <div className="flex items-center gap-1">
+                    <Hash className="w-3 h-3" />
+                    {language === "arabic" ? "الترتيب" : "Order"}
+                  </div>
                 </th>
-
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   {language === "arabic" ? "الأيقونة" : "Icon"}
                 </th>
-
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   {language === "arabic"
                     ? "العنوان (EN / AR)"
                     : "Title (EN / AR)"}
                 </th>
-
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   {language === "arabic" ? "الوصف" : "Description"}
                 </th>
-
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   {language === "arabic" ? "الحالة" : "Status"}
                 </th>
-
                 <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                   {language === "arabic" ? "الإجراءات" : "Actions"}
                 </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
-              {filteredServices.map((service, index) => (
-                <tr
-                  key={service.id}
-                  className="hover:bg-gray-50 transition-colors"
-                >
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm text-gray-500 w-8">
-                        {index + 1}
-                      </span>
-                      <div className="flex flex-col">
-                        <button
-                          onClick={() => handleMoveUp(index)}
-                          disabled={index === 0}
-                          className="text-gray-400 hover:text-gray-600 disabled:opacity-30"
-                        >
-                          <svg
-                            className="w-4 h-4"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
+              {filteredServices.map((service, index) => {
+                const IconComponent = getIconComponent(service.icon);
+                return (
+                  <tr
+                    key={service.id}
+                    className="hover:bg-gray-50 transition-colors"
+                  >
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm text-gray-500 w-8">
+                          {index + 1}
+                        </span>
+                        <div className="flex flex-col">
+                          <button
+                            onClick={() => handleMoveUp(index)}
+                            disabled={index === 0}
+                            className="text-gray-400 hover:text-gray-600 disabled:opacity-30"
                           >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M5 15l7-7 7 7"
-                            />
-                          </svg>
-                        </button>
-                        <button
-                          onClick={() => handleMoveDown(index)}
-                          disabled={index === filteredServices.length - 1}
-                          className="text-gray-400 hover:text-gray-600 disabled:opacity-30"
-                        >
-                          <svg
-                            className="w-4 h-4"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
+                            <ChevronUp className="w-4 h-4" />
+                          </button>
+                          <button
+                            onClick={() => handleMoveDown(index)}
+                            disabled={index === filteredServices.length - 1}
+                            className="text-gray-400 hover:text-gray-600 disabled:opacity-30"
                           >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M19 9l-7 7-7-7"
-                            />
-                          </svg>
-                        </button>
+                            <ChevronDown className="w-4 h-4" />
+                          </button>
+                        </div>
                       </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="text-3xl">{service.icon}</div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div>
-                      <div className="font-semibold text-gray-900">
-                        {service.title_english}
+                    </td>
+                    <td className="px-6 py-4">
+                      <IconComponent className="w-6 h-6 text-lawyer-primary" />
+                    </td>
+                    <td className="px-6 py-4">
+                      <div>
+                        <div className="font-semibold text-gray-900">
+                          {service.title_english}
+                        </div>
+                        <div
+                          className="text-sm text-gray-600 font-arabic"
+                          dir="rtl"
+                        >
+                          {service.title_arabic}
+                        </div>
                       </div>
-                      <div
-                        className="text-sm text-gray-600 font-arabic"
-                        dir="rtl"
-                      >
-                        {service.title_arabic}
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="max-w-md">
+                        <p className="text-sm text-gray-600 line-clamp-2">
+                          {service.description_english}
+                        </p>
+                        <p
+                          className="text-sm text-gray-500 mt-1 line-clamp-2 font-arabic"
+                          dir="rtl"
+                        >
+                          {service.description_arabic}
+                        </p>
                       </div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="max-w-md">
-                      <p className="text-sm text-gray-600 line-clamp-2">
-                        {service.description_english}
-                      </p>
-                      <p
-                        className="text-sm text-gray-500 mt-1 line-clamp-2 font-arabic"
-                        dir="rtl"
-                      >
-                        {service.description_arabic}
-                      </p>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="flex flex-col gap-2">
-                      <button
-                        onClick={() => handleToggleStatus(service.id)}
-                        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                          service.is_active ? "bg-lawyer-accent" : "bg-gray-300"
-                        }`}
-                      >
-                        <span
-                          className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="flex flex-col gap-2">
+                        <button
+                          onClick={() => handleToggleStatus(service.id)}
+                          className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
                             service.is_active
-                              ? "translate-x-6"
-                              : "translate-x-1"
+                              ? "bg-lawyer-accent"
+                              : "bg-gray-300"
                           }`}
-                        />
-                      </button>
-                      <button
-                        onClick={() => handleToggleFeatured(service.id)}
-                        className={`text-xs px-2 py-1 rounded-full transition-colors ${
-                          service.is_featured
-                            ? "bg-yellow-100 text-yellow-800"
-                            : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                        }`}
-                      >
-                        {language === "arabic"
-                          ? service.is_featured
-                            ? "⭐ مميز"
-                            : "☆ تعيين كمميز"
-                          : service.is_featured
-                            ? "⭐ Featured"
-                            : "☆ Set Featured"}
-                      </button>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 text-right">
-                    <div className="flex items-center justify-end gap-2">
-                      <button
-                        onClick={() => handleOpenModal(service)}
-                        className="text-blue-500 hover:text-blue-700 p-1"
-                        title="Edit"
-                      >
-                        <svg
-                          className="w-5 h-5"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
                         >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                          <span
+                            className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                              service.is_active
+                                ? "translate-x-6"
+                                : "translate-x-1"
+                            }`}
                           />
-                        </svg>
-                      </button>
-                      <button
-                        onClick={() => handleDelete(service.id)}
-                        className="text-red-500 hover:text-red-700 p-1"
-                        title="Delete"
-                      >
-                        <svg
-                          className="w-5 h-5"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
+                        </button>
+                        <button
+                          onClick={() => handleToggleFeatured(service.id)}
+                          className={`text-xs px-2 py-1 rounded-full transition-colors flex items-center gap-1 justify-center ${
+                            service.is_featured
+                              ? "bg-yellow-100 text-yellow-800"
+                              : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                          }`}
                         >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                          />
-                        </svg>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
+                          <Star className="w-3 h-3" />
+                          {language === "arabic"
+                            ? service.is_featured
+                              ? "مميز"
+                              : "تعيين كمميز"
+                            : service.is_featured
+                              ? "Featured"
+                              : "Set Featured"}
+                        </button>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 text-right">
+                      <div className="flex items-center justify-end gap-2">
+                        <button
+                          onClick={() => handleOpenModal(service)}
+                          className="text-blue-500 hover:text-blue-700 p-1 transition-colors"
+                          title="Edit"
+                        >
+                          <Edit className="w-5 h-5" />
+                        </button>
+                        <button
+                          onClick={() => handleDelete(service.id)}
+                          className="text-red-500 hover:text-red-700 p-1 transition-colors"
+                          title="Delete"
+                        >
+                          <Trash2 className="w-5 h-5" />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
 
         {filteredServices.length === 0 && (
           <div className="p-12 text-center">
-            <div className="text-6xl mb-4">🔍</div>
+            <Search className="w-16 h-16 text-gray-300 mx-auto mb-4" />
             <h3 className="text-xl font-bold text-gray-900 mb-2">
               {language === "arabic"
                 ? "لم يتم العثور على خدمات"
@@ -756,7 +759,7 @@ const ServicesManagement = () => {
         )}
       </div>
 
-      {/* Add/Edit Modal - Keep the same as before */}
+      {/* Add/Edit Modal */}
       <AnimatePresence>
         {isModalOpen && (
           <motion.div
@@ -775,32 +778,23 @@ const ServicesManagement = () => {
             >
               <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4">
                 <div className="flex justify-between items-center">
-                  <h2 className="text-2xl font-bold text-gray-900">
-                    {language === "arabic"
-                      ? editingService
-                        ? "تحرير الخدمة"
-                        : "إضافة خدمة جديدة"
-                      : editingService
-                        ? "Edit Service"
-                        : "Add New Service"}
-                  </h2>
+                  <div className="flex items-center gap-2">
+                    <Scale className="h-6 w-6 text-lawyer-accent" />
+                    <h2 className="text-2xl font-bold text-gray-900">
+                      {language === "arabic"
+                        ? editingService
+                          ? "تحرير الخدمة"
+                          : "إضافة خدمة جديدة"
+                        : editingService
+                          ? "Edit Service"
+                          : "Add New Service"}
+                    </h2>
+                  </div>
                   <button
                     onClick={handleCloseModal}
                     className="text-gray-400 hover:text-gray-600 transition-colors"
                   >
-                    <svg
-                      className="w-6 h-6"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M6 18L18 6M6 6l12 12"
-                      />
-                    </svg>
+                    <X className="w-6 h-6" />
                   </button>
                 </div>
               </div>
@@ -813,20 +807,26 @@ const ServicesManagement = () => {
                       : "Service Icon *"}
                   </label>
                   <div className="grid grid-cols-6 gap-2">
-                    {iconOptions.map((icon) => (
-                      <button
-                        key={icon}
-                        type="button"
-                        onClick={() => setFormData({ ...formData, icon })}
-                        className={`text-2xl p-2 rounded-lg border transition-all ${
-                          formData.icon === icon
-                            ? "border-lawyer-accent bg-lawyer-accent/10 ring-2 ring-lawyer-accent/20"
-                            : "border-gray-200 hover:border-gray-300 hover:bg-gray-50"
-                        }`}
-                      >
-                        {icon}
-                      </button>
-                    ))}
+                    {iconOptions.map((icon) => {
+                      const IconComponent = icon.component;
+                      return (
+                        <button
+                          key={icon.value}
+                          type="button"
+                          onClick={() =>
+                            setFormData({ ...formData, icon: icon.value })
+                          }
+                          className={`p-2 rounded-lg border transition-all flex items-center justify-center ${
+                            formData.icon === icon.value
+                              ? "border-lawyer-accent bg-lawyer-accent/10 ring-2 ring-lawyer-accent/20"
+                              : "border-gray-200 hover:border-gray-300 hover:bg-gray-50"
+                          }`}
+                          title={icon.label}
+                        >
+                          <IconComponent className="w-6 h-6 text-gray-700" />
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
 
@@ -973,8 +973,9 @@ const ServicesManagement = () => {
                     />
                     <label
                       htmlFor="is_featured"
-                      className="text-gray-700 font-medium cursor-pointer"
+                      className="text-gray-700 font-medium cursor-pointer flex items-center gap-1"
                     >
+                      <Star className="w-4 h-4 text-yellow-500" />
                       {language === "arabic"
                         ? "وضع علامة كخدمة مميزة (تظهر في الصفحة الرئيسية)"
                         : "Mark as Featured Service (shows on homepage)"}
@@ -996,8 +997,9 @@ const ServicesManagement = () => {
                     />
                     <label
                       htmlFor="is_active"
-                      className="text-gray-700 font-medium cursor-pointer"
+                      className="text-gray-700 font-medium cursor-pointer flex items-center gap-1"
                     >
+                      <CheckCircle className="w-4 h-4 text-green-500" />
                       {language === "arabic"
                         ? "نشط (مرئي على الموقع)"
                         : "Active (visible on website)"}
@@ -1009,8 +1011,9 @@ const ServicesManagement = () => {
                   <button
                     type="button"
                     onClick={handleCloseModal}
-                    className="flex-1 px-4 py-2.5 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+                    className="flex-1 px-4 py-2.5 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors flex items-center justify-center gap-2"
                   >
+                    <X className="w-4 h-4" />
                     {language === "arabic" ? "إلغاء" : "Cancel"}
                   </button>
                   <button

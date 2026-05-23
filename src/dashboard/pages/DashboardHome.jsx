@@ -594,7 +594,9 @@ const DashboardHome = () => {
       >
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div className="flex items-start gap-3">
-            <div className="text-3xl">💡</div>
+            <div className="rounded-full bg-amber-100 p-2">
+              <Sparkles className="h-5 w-5 text-amber-600" />
+            </div>
             <div>
               <h3 className="font-bold text-gray-900 text-lg">
                 {language === "arabic" ? "نصيحة احترافية" : "Pro Tip"}
