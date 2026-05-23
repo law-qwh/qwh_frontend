@@ -243,7 +243,7 @@ const Home = () => {
   useEffect(() => {
     const fetchHeroData = async () => {
       try {
-        const response = await apiService.getHeroSlides();
+        const response = await apiService.getHeroSlide();
         if (response.data.success && response.data.data) {
           if (
             response.data.success &&
