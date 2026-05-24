@@ -244,32 +244,21 @@ const Home = () => {
     const fetchHeroData = async () => {
       try {
         const response = await apiService.getHeroSlide();
-        console.log(response.data.data.image_url);
         if (response.data.success && response.data.data) {
           const heroDataReceived = response.data.data;
-          console.log("Hero Data:", heroDataReceived);
-          console.log("Image URL from API:", heroDataReceived.image_url);
-
-          // Try to construct different possible URLs for debugging
-          const possibleUrls = [
-            heroDataReceived.image_url,
-            `${process.env.REACT_APP_API_URL}/storage/${heroDataReceived.image_url}`,
-            `https://qwh.com.sa/storage/${heroDataReceived.image_url}`,
-            heroDataReceived.image_url.replace("/storage", ""),
-          ];
-
-          console.log("Possible URL variations:", possibleUrls);
-          console.log("heroData:", heroData);
-          console.log("image_path:", heroData?.image_path);
+          console.log("image_path:", heroDataReceived.image_path); // Changed this line
           console.log(
             "Generated URL:",
-            heroData?.image_path ? getImageUrl(heroData.image_path) : "no path",
-          );
+            getImageUrl(heroDataReceived.image_path),
+          ); // Changed this line
+
+          setHeroData(heroDataReceived); // Set this first
+
+          // Then test after setting
           const testPath =
             "hero-slides/oCfjacZtc8Sj4yHna2ShCiBwg1caJ5xshR7i97h9.jpg";
           const testUrl = getImageUrl(testPath);
           console.log("Test URL:", testUrl);
-          setHeroData(response.data.data);
         }
       } catch (error) {
         console.error("Error fetching hero data:", error);
