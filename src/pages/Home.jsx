@@ -345,8 +345,8 @@ const Home = () => {
           transition={{ duration: 1.5 }}
           className="absolute inset-0"
           style={{
-            backgroundImage: heroData?.image_url
-              ? `url(${heroData.image_url})`
+            backgroundImage: heroData?.image_path
+              ? `url(${getImageUrl(heroData.image_path)})`
               : `url(${background_Image})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
