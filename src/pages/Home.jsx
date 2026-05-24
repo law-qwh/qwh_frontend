@@ -259,6 +259,16 @@ const Home = () => {
           ];
 
           console.log("Possible URL variations:", possibleUrls);
+          console.log("heroData:", heroData);
+          console.log("image_path:", heroData?.image_path);
+          console.log(
+            "Generated URL:",
+            heroData?.image_path ? getImageUrl(heroData.image_path) : "no path",
+          );
+          const testPath =
+            "hero-slides/oCfjacZtc8Sj4yHna2ShCiBwg1caJ5xshR7i97h9.jpg";
+          const testUrl = getImageUrl(testPath);
+          console.log("Test URL:", testUrl);
           setHeroData(response.data.data);
         }
       } catch (error) {
