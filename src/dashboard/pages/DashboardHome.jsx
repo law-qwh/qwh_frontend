@@ -588,7 +588,7 @@ const DashboardHome = () => {
       </div>
 
       {/* Performance Tips Card */}
-      <motion.div
+      {/* <motion.div
         variants={itemVariants}
         className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-4 md:p-6 shadow-lg border border-amber-200"
       >
@@ -628,7 +628,7 @@ const DashboardHome = () => {
             </svg>
           </button>
         </div>
-      </motion.div>
+      </motion.div> */}
     </motion.div>
   );
 };
