@@ -150,7 +150,8 @@ const Contact = () => {
     {
       icon: MapPin,
       title: language === "english" ? "Office Address" : "عنوان المكتب",
-      content: settings.address,
+      content:
+        language === "english" ? settings.address : settings.address_arabic,
     },
     {
       icon: Phone,
@@ -165,7 +166,10 @@ const Contact = () => {
     {
       icon: Clock,
       title: language === "english" ? "Working Hours" : "ساعات العمل",
-      content: settings.working_hours,
+      content:
+        language === "english"
+          ? settings.working_hours
+          : settings.working_hours_arabic,
     },
   ];
 
