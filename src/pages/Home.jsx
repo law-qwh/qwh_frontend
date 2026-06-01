@@ -248,19 +248,7 @@ const Home = () => {
         const response = await apiService.getHeroSlide();
         if (response.data.success && response.data.data) {
           const heroDataReceived = response.data.data;
-          console.log("image_path:", heroDataReceived.image_path); // Changed this line
-          console.log(
-            "Generated URL:",
-            getImageUrl(heroDataReceived.image_path),
-          ); // Changed this line
-
           setHeroData(heroDataReceived); // Set this first
-
-          // Then test after setting
-          const testPath =
-            "hero-slides/oCfjacZtc8Sj4yHna2ShCiBwg1caJ5xshR7i97h9.jpg";
-          const testUrl = getImageUrl(testPath);
-          console.log("Test URL:", testUrl);
         }
       } catch (error) {
         console.error("Error fetching hero data:", error);

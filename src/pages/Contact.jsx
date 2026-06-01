@@ -184,7 +184,9 @@ const Contact = () => {
           transition={{ duration: 1.5 }}
           className="absolute inset-0"
           style={{
-            backgroundImage: `url(${background_Image})`,
+            backgroundImage: heroData?.image_path
+              ? `url(${getImageUrl(heroData.image_path)})`
+              : `url(${background_Image})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
             opacity: 0.15,
