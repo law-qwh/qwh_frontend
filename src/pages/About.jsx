@@ -202,7 +202,7 @@ const About = () => {
   }
 
   return (
-    <div className="pt-20 overflow-x-hidden">
+    <div className="pt-16 overflow-x-hidden">
       {/* Hero Section */}
       <section className="relative bg-gradient-to-r from-lawyer-primary to-lawyer-secondary text-white py-24 overflow-hidden">
         <div className="absolute inset-0 bg-black opacity-50"></div>

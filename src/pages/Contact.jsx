@@ -170,7 +170,7 @@ const Contact = () => {
   ];
 
   return (
-    <div className="pt-20">
+    <div className="pt-16">
       {/* Hero Section */}
       <section className="relative bg-gradient-to-r from-lawyer-primary to-lawyer-secondary text-white py-20 overflow-hidden">
         <div className="absolute inset-0 bg-black opacity-40"></div>

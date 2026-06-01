@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { apiService } from "../services/api";
 import { getImageUrl } from "../utils/imageHelper";
 import background_Image from "../assets/bg-image.jpeg";
+
 import {
   Scale,
   Building,
@@ -28,6 +29,7 @@ import {
   Award,
   Rocket,
   Zap,
+  SaudiRiyal,
 } from "lucide-react";
 
 // Get stats icon component
@@ -334,7 +336,7 @@ const Home = () => {
   };
 
   return (
-    <div className="pt-18 overflow-x-hidden">
+    <div className="pt-16 overflow-x-hidden">
       {/* Hero Section */}
       <section className="relative bg-gradient-to-r from-lawyer-primary to-lawyer-secondary text-white min-h-screen flex items-center">
         <div className="absolute inset-0 bg-black opacity-30"></div>
@@ -873,7 +875,7 @@ const Home = () => {
                     <span
                       className={`absolute ${language === "english" ? "right-4" : "left-12"} top-1/2 transform -translate-y-1/2 text-gray-500`}
                     >
-                      SAR
+                      <SaudiRiyal className="w-5 mx-6" />
                     </span>
                   </div>
                 </div>
@@ -932,8 +934,9 @@ const Home = () => {
                       <span>
                         {language === "english" ? "Sale Value" : "قيمة البيع"}
                       </span>
-                      <span className="font-semibold">
-                        SAR {taxResult.saleValue.toLocaleString()}
+                      <span className="font-semibold flex">
+                        <SaudiRiyal className="w-4 mx-1" />{" "}
+                        {taxResult.saleValue.toLocaleString()}
                       </span>
                     </div>
                     <div className="flex justify-between py-2 border-b">
@@ -942,8 +945,8 @@ const Home = () => {
                           ? "Exclusive of VAT"
                           : "قبل الضريبة"}
                       </span>
-                      <span>
-                        SAR{" "}
+                      <span className="flex">
+                        <SaudiRiyal className="w-4 mx-1" />{" "}
                         {taxResult.exclusiveVAT.toLocaleString(undefined, {
                           minimumFractionDigits: 2,
                         })}
@@ -953,8 +956,8 @@ const Home = () => {
                       <span>
                         {language === "english" ? "VAT Amount" : "قيمة الضريبة"}
                       </span>
-                      <span className="font-semibold text-lawyer-accent">
-                        SAR{" "}
+                      <span className="font-semibold text-lawyer-accent flex">
+                        <SaudiRiyal className="w-4 mx-1" />{" "}
                         {taxResult.vatAmount.toLocaleString(undefined, {
                           minimumFractionDigits: 2,
                         })}
@@ -966,8 +969,8 @@ const Home = () => {
                           ? "Total Value"
                           : "القيمة الإجمالية"}
                       </span>
-                      <span className="font-bold text-lawyer-primary">
-                        SAR{" "}
+                      <span className="font-bold text-lawyer-primary flex">
+                        <SaudiRiyal className="w-4 mx-1" />{" "}
                         {taxResult.totalValue.toLocaleString(undefined, {
                           minimumFractionDigits: 2,
                         })}
@@ -1105,8 +1108,8 @@ const Home = () => {
                           ? "Total Benefit"
                           : "إجمالي المكافأة"}
                       </span>
-                      <span className="text-2xl font-bold text-lawyer-primary">
-                        SAR{" "}
+                      <span className="text-2xl font-bold text-lawyer-primary flex items-center">
+                        <SaudiRiyal className=" mx-1" />{" "}
                         {eosResult.toLocaleString(undefined, {
                           minimumFractionDigits: 2,
                         })}

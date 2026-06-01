@@ -169,7 +169,7 @@ const Services = () => {
 
   if (error) {
     return (
-      <div className="pt-20 min-h-screen flex items-center justify-center">
+      <div className="pt-16 min-h-screen flex items-center justify-center">
         <div className="text-center text-red-600">
           <AlertCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
           <p className="text-xl mb-4">
