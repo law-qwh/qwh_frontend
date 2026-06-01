@@ -334,7 +334,7 @@ const Home = () => {
   };
 
   return (
-    <div className="pt-20 overflow-x-hidden">
+    <div className="pt-18 overflow-x-hidden">
       {/* Hero Section */}
       <section className="relative bg-gradient-to-r from-lawyer-primary to-lawyer-secondary text-white min-h-screen flex items-center">
         <div className="absolute inset-0 bg-black opacity-30"></div>
