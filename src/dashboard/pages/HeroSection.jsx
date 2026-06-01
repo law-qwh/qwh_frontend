@@ -546,7 +546,9 @@ const HeroSection = () => {
               <div className="space-y-5">
                 <div>
                   <label className="block text-gray-700 font-semibold mb-2">
-                    Hero Title (English)
+                    {language === "arabic"
+                      ? "العنوان الرئيسي (الإنجليزية)"
+                      : "Hero Title (English)"}
                   </label>
                   <input
                     type="text"
@@ -554,17 +556,25 @@ const HeroSection = () => {
                     value={heroData.title_english}
                     onChange={handleChange}
                     className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:border-lawyer-accent focus:ring-2 focus:ring-lawyer-accent/20 transition-all"
-                    placeholder="Enter hero title"
+                    placeholder={
+                      language === "arabic"
+                        ? "أدخل العنوان الرئيسي"
+                        : "Enter hero title"
+                    }
                     required
                   />
                   <p className="text-xs text-gray-500 mt-1">
-                    Recommended: 5-10 words
+                    {language === "arabic"
+                      ? "يوصى باستخدام من 5 إلى 10 كلمات"
+                      : "Recommended: 5-10 words"}
                   </p>
                 </div>
 
                 <div>
                   <label className="block text-gray-700 font-semibold mb-2">
-                    Subtitle (English)
+                    {language === "arabic"
+                      ? "العنوان الفرعي (الإنجليزية)"
+                      : "Subtitle (English)"}
                   </label>
                   <input
                     type="text"
@@ -572,13 +582,19 @@ const HeroSection = () => {
                     value={heroData.subtitle_english}
                     onChange={handleChange}
                     className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:border-lawyer-accent focus:ring-2 focus:ring-lawyer-accent/20 transition-all"
-                    placeholder="Enter subtitle"
+                    placeholder={
+                      language === "arabic"
+                        ? "أدخل العنوان الفرعي"
+                        : "Enter subtitle"
+                    }
                   />
                 </div>
 
                 <div>
                   <label className="block text-gray-700 font-semibold mb-2">
-                    Description (English)
+                    {language === "arabic"
+                      ? "الوصف (الإنجليزية)"
+                      : "Description (English)"}
                   </label>
                   <textarea
                     name="description_english"
@@ -586,10 +602,14 @@ const HeroSection = () => {
                     onChange={handleChange}
                     rows="4"
                     className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:border-lawyer-accent focus:ring-2 focus:ring-lawyer-accent/20 transition-all resize-none"
-                    placeholder="Enter description"
+                    placeholder={
+                      language === "arabic" ? "أدخل الوصف" : "Enter description"
+                    }
                   />
                   <p className="text-xs text-gray-500 mt-1">
-                    Recommended: 15-30 words
+                    {language === "arabic"
+                      ? "يوصى: 15-30 كلمة"
+                      : "Recommended: 15-30 words"}
                   </p>
                 </div>
               </div>
@@ -597,7 +617,9 @@ const HeroSection = () => {
               <div className="space-y-5">
                 <div>
                   <label className="block text-gray-700 font-semibold mb-2 text-right">
-                    العنوان الرئيسي (عربي)
+                    {language === "arabic"
+                      ? "العنوان الرئيسي (العربية)"
+                      : "Hero Title (Arabic)"}
                   </label>
                   <input
                     type="text"
@@ -605,18 +627,26 @@ const HeroSection = () => {
                     value={heroData.title_arabic}
                     onChange={handleChange}
                     className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:border-lawyer-accent focus:ring-2 focus:ring-lawyer-accent/20 transition-all text-right"
-                    placeholder="أدخل العنوان الرئيسي"
+                    placeholder={
+                      language === "arabic"
+                        ? "أدخل العنوان الرئيسي"
+                        : "Enter hero title in Arabic"
+                    }
                     required
                     dir="rtl"
                   />
                   <p className="text-xs text-gray-500 mt-1 text-right">
-                    يوصى: 5-10 كلمات
+                    {language === "arabic"
+                      ? "يوصى باستخدام من 5 إلى 10 كلمات"
+                      : "Recommended: 5-10 words"}
                   </p>
                 </div>
 
                 <div>
                   <label className="block text-gray-700 font-semibold mb-2 text-right">
-                    العنوان الفرعي (عربي)
+                    {language === "arabic"
+                      ? "العنوان الفرعي (العربية)"
+                      : "Subtitle (Arabic)"}
                   </label>
                   <input
                     type="text"
@@ -624,14 +654,20 @@ const HeroSection = () => {
                     value={heroData.subtitle_arabic}
                     onChange={handleChange}
                     className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:border-lawyer-accent focus:ring-2 focus:ring-lawyer-accent/20 transition-all text-right"
-                    placeholder="أدخل العنوان الفرعي"
+                    placeholder={
+                      language === "arabic"
+                        ? "أدخل العنوان الفرعي"
+                        : "Enter subtitle in Arabic"
+                    }
                     dir="rtl"
                   />
                 </div>
 
                 <div>
                   <label className="block text-gray-700 font-semibold mb-2 text-right">
-                    الوصف (عربي)
+                    {language === "arabic"
+                      ? "الوصف (العربية)"
+                      : "Description (Arabic)"}
                   </label>
                   <textarea
                     name="description_arabic"
@@ -639,11 +675,17 @@ const HeroSection = () => {
                     onChange={handleChange}
                     rows="4"
                     className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:border-lawyer-accent focus:ring-2 focus:ring-lawyer-accent/20 transition-all resize-none text-right"
-                    placeholder="أدخل الوصف"
+                    placeholder={
+                      language === "arabic"
+                        ? "أدخل الوصف"
+                        : "Enter description in Arabic"
+                    }
                     dir="rtl"
                   />
                   <p className="text-xs text-gray-500 mt-1 text-right">
-                    يوصى: 15-30 كلمة
+                    {language === "arabic"
+                      ? "يوصى: 15-30 كلمة"
+                      : "Recommended: 15-30 words"}
                   </p>
                 </div>
               </div>
@@ -673,7 +715,9 @@ const HeroSection = () => {
                       className="max-h-32 mx-auto rounded-lg object-cover"
                     />
                     <p className="text-sm text-gray-500 mt-2">
-                      Click to change image (Max 2MB)
+                      {language === "arabic"
+                        ? "انقر لتغيير الصورة (الحد الأقصى 2 ميجابايت)"
+                        : "Click to change image (Max 2MB)"}
                     </p>
                   </div>
                 ) : (
@@ -692,7 +736,9 @@ const HeroSection = () => {
                       />
                     </svg>
                     <p className="text-sm text-gray-500 mt-2">
-                      Click to upload image (JPEG, PNG, JPG, WEBP, max 2MB)
+                      {language === "arabic"
+                        ? "انقر لرفع صورة (JPEG، PNG، JPG، WEBP، الحد الأقصى 2 ميجابايت)"
+                        : "Click to upload image (JPEG, PNG, JPG, WEBP, max 2MB)"}
                     </p>
                   </>
                 )}
