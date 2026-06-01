@@ -60,6 +60,56 @@ const Settings = () => {
   };
 
   // Generate working hours string
+  // const generateWorkingHoursString = (hours) => {
+  //   const startDayEn = hours.startDay;
+  //   const endDayEn = hours.endDay;
+  //   const startTime = hours.startTime;
+  //   const endTime = hours.endTime;
+
+  //   // Format time to 12-hour format
+  //   const formatTime = (time) => {
+  //     const [hour, minute] = time.split(":");
+  //     const h = parseInt(hour);
+  //     const ampm = h >= 12 ? "PM" : "AM";
+  //     const hour12 = h % 12 || 12;
+  //     return `${hour12}:${minute} ${ampm}`;
+  //   };
+
+  //   const startTimeFormatted = formatTime(startTime);
+  //   const endTimeFormatted = formatTime(endTime);
+
+  //   // English version
+  //   const englishHours = `${startDayEn} - ${endDayEn}: ${startTimeFormatted} - ${endTimeFormatted}`;
+
+  //   // Get Arabic day names
+  //   const getArabicDay = (day) => {
+  //     const arabicDays = {
+  //       Sunday: "الأحد",
+  //       Monday: "الاثنين",
+  //       Tuesday: "الثلاثاء",
+  //       Wednesday: "الأربعاء",
+  //       Thursday: "الخميس",
+  //       Friday: "الجمعة",
+  //       Saturday: "السبت",
+  //     };
+  //     return arabicDays[day];
+  //   };
+
+  //   // Format time in Arabic (24-hour format for Arabic)
+  //   const formatTimeArabic = (time) => {
+  //     const [hour, minute] = time.split(":");
+  //     return `${hour}:${minute}`;
+  //   };
+
+  //   const startTimeArabic = formatTimeArabic(startTime);
+  //   const endTimeArabic = formatTimeArabic(endTime);
+
+  //   // Arabic version
+  //   const arabicHours = `${getArabicDay(startDayEn)} - ${getArabicDay(endDayEn)}: ${startTimeArabic} - ${endTimeArabic}`;
+
+  //   return { english: englishHours, arabic: arabicHours };
+  // };
+
   const generateWorkingHoursString = (hours) => {
     const startDayEn = hours.startDay;
     const endDayEn = hours.endDay;
@@ -95,10 +145,13 @@ const Settings = () => {
       return arabicDays[day];
     };
 
-    // Format time in Arabic (24-hour format for Arabic)
+    // Format time in 12-hour format for Arabic as well (same as English)
     const formatTimeArabic = (time) => {
       const [hour, minute] = time.split(":");
-      return `${hour}:${minute}`;
+      const h = parseInt(hour);
+      const ampm = h >= 12 ? "م" : "ص"; // م for PM, ص for AM in Arabic
+      const hour12 = h % 12 || 12;
+      return `${hour12}:${minute} ${ampm}`;
     };
 
     const startTimeArabic = formatTimeArabic(startTime);
@@ -109,7 +162,6 @@ const Settings = () => {
 
     return { english: englishHours, arabic: arabicHours };
   };
-
   // Update working hours and sync with settings
   const updateWorkingHours = (field, value) => {
     const newWorkingHours = { ...workingHours, [field]: value };
