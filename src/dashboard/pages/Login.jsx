@@ -253,7 +253,7 @@ const Login = () => {
                 type="checkbox"
                 checked={rememberMe}
                 onChange={(e) => setRememberMe(e.target.checked)}
-                className="w-4 h-4 text-lawyer-accent border-gray-300 rounded focus:ring-lawyer-accent"
+                className="w-4 h-4 text-lawyer-accent border-gray-300 rounded focus:ring-lawyer-accent mx-3"
               />
               <span className="ml-2 text-sm text-gray-600">
                 {language === "arabic" ? "تذكرني" : "Remember me"}

@@ -185,7 +185,14 @@ const Settings = () => {
         setOriginalSettings(response.data.data);
 
         // Parse working hours if they exist
-        if (response.data.data.working_hours) {
+        if (response.data.data.working_hours_arabic) {
+          const parsed = parseWorkingHours(
+            response.data.data.working_hours_arabic,
+          );
+          if (parsed) {
+            setWorkingHours(parsed);
+          }
+        } else if (response.data.data.working_hours) {
           const parsed = parseWorkingHours(response.data.data.working_hours);
           if (parsed) {
             setWorkingHours(parsed);
@@ -217,7 +224,12 @@ const Settings = () => {
 
   const handleReset = () => {
     setSettings(originalSettings);
-    if (originalSettings.working_hours) {
+    if (originalSettings.working_hours_arabic) {
+      const parsed = parseWorkingHours(originalSettings.working_hours_arabic);
+      if (parsed) {
+        setWorkingHours(parsed);
+      }
+    } else if (originalSettings.working_hours) {
       const parsed = parseWorkingHours(originalSettings.working_hours);
       if (parsed) {
         setWorkingHours(parsed);
